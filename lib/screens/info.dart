@@ -15,8 +15,8 @@ class InfoPage extends StatelessWidget {
         alignment: Alignment.center,
         child: Text("Information Center Page"),
       ),
-       floatingActionButton: Stack(
-      children: [
+    floatingActionButton: Stack(
+        children: [
         Positioned(
           bottom: kBottomNavigationBarHeight / 2,
           left: (MediaQuery.of(context).size.width - 56) / 2, // Adjust the left position
@@ -38,55 +38,55 @@ class InfoPage extends StatelessWidget {
         ),
       ],
     ),
-floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-bottomNavigationBar: BottomAppBar(
-  child: Row(
-    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    children: [
-      IconButton(
-        icon: Icon(Icons.home),
-        color: AppColors.kMainText,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => HomePage()),
-          );
-        },
+    floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+    bottomNavigationBar: BottomAppBar(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          IconButton(
+            icon: Icon(Icons.home),
+            color: AppColors.kMainText,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.calendar_month),
+            color: AppColors.kMainText,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CalendarPage()),
+              );
+            },
+          ),
+          SizedBox(width: 56), // Empty space for the float button
+          IconButton(
+            icon: Icon(Icons.school),
+            color: AppColors.kMainText,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ClassesPage()),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.newspaper),
+            color: AppColors.kPrimary400,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => InfoPage()),
+              );
+            },
+          ),
+        ],
       ),
-      IconButton(
-        icon: Icon(Icons.calendar_month),
-        color: AppColors.kMainText,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CalendarPage()),
-          );
-        },
-      ),
-      SizedBox(width: 56), // Empty space for the float button
-      IconButton(
-        icon: Icon(Icons.school),
-        color: AppColors.kMainText,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ClassesPage()),
-          );
-        },
-      ),
-      IconButton(
-        icon: Icon(Icons.newspaper),
-        color: AppColors.kPrimary400,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => InfoPage()),
-          );
-        },
-      ),
-    ],
-  ),
-)
+    )
     );
   }
 }

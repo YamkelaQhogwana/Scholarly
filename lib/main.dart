@@ -1,9 +1,5 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:scholarly/screens/home.dart';
-import 'package:scholarly/screens/calendar.dart';
-import 'package:scholarly/screens/classes.dart';
-import 'package:scholarly/screens/info.dart';
 
 void main() => runApp(const MyApp());
 
