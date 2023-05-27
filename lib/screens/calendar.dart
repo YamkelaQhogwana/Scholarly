@@ -319,7 +319,7 @@ class _CalendarPageState extends State<CalendarPage> {
                                               ),
                                             ),
                                             minimumSize: MaterialStateProperty.all<Size>(
-                                              Size(double.infinity, 0), // Take full width of dialog
+                                              const Size(double.infinity, 0), // Take full width of dialog
                                             ),
                                           ),
                                         ),
@@ -329,7 +329,7 @@ class _CalendarPageState extends State<CalendarPage> {
                                             onPressed: () {
                                               Navigator.of(context).pop();
                                             },
-                                            child: Text(
+                                            child: const Text(
                                               'Cancel',
                                               style: TextStyle(color: AppColors.kDarkGray),
                                             ),
