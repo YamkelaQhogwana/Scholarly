@@ -3,6 +3,7 @@ import 'package:scholarly/constants/colors.dart';
 import 'package:intl/intl.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/ci.dart';
+import 'package:scholarly/screens/menu-stats.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({Key? key}) : super(key: key);
@@ -69,7 +70,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 const Spacer(),
                 IconButton(
                   onPressed: () {
-                    // Placeholder code for menu button
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const MenuStatistics()),
+                    );
                     print('Menu button pressed');
                   },
                   icon: const Iconify(Ci.menu_alt_05, color: AppColors.kMainText, size: 30,),
