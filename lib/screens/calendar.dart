@@ -70,7 +70,7 @@ bottomNavigationBar: BottomAppBar(
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ClassesPage()),
+          MaterialPageRoute(builder: (context) => ClassesPage()),
           );
         },
       ),
