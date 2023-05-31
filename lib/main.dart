@@ -1,9 +1,5 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:scholarly/screens/home.dart';
-import 'package:scholarly/screens/calendar.dart';
-import 'package:scholarly/screens/classes.dart';
-import 'package:scholarly/screens/info.dart';
+import 'package:scholarly/screens/onboarding.dart';
 
 void main() => runApp(const MyApp());
 
@@ -17,7 +13,7 @@ class MyApp extends StatelessWidget {
       title: 'Scholarly',
 
       theme: ThemeData(fontFamily: 'Poppins', ),
-      home: const HomePage(),
+      home: OnboardingPage(),
     );
   }
 }

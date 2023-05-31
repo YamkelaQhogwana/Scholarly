@@ -41,6 +41,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.17.0"
+  colorful_iconify_flutter:
+    dependency: transitive
+    description:
+      name: colorful_iconify_flutter
+      sha256: a1a412d1d7972b1a7f0f5418a1d8e63645410e93e6c041055d995e0b32ff649d
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -83,14 +91,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  horizontal_calendar:
+  iconify_flutter:
     dependency: "direct main"
     description:
-      name: horizontal_calendar
-      sha256: f7013e43006ffa1251befe956bc284e5357ad6ed3a6c24bd39c48875f0df47cd
+      name: iconify_flutter
+      sha256: a2d5d36a8381331c8d4e0a6b71378fca51bd6d15e38192568a30c0a91133a9af
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.2"
+    version: "0.0.5"
   intl:
     dependency: transitive
     description:
@@ -139,14 +147,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.0"
-  nepali_utils:
-    dependency: transitive
-    description:
-      name: nepali_utils
-      sha256: "76e896b08270c8f0e9365cf2ce9f8f5cd0fcd47b29d3b4baedef3ce88b7126a2"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.3"
   path:
     dependency: transitive
     description:
@@ -179,6 +179,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.1.0"
+  simple_gesture_detector:
+    dependency: transitive
+    description:
+      name: simple_gesture_detector
+      sha256: "86d08f85f1f58583b7b4b941d989f48ea6ce08c1724a1d10954a277c2ec36592"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -216,6 +224,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  table_calendar:
+    dependency: "direct main"
+    description:
+      name: table_calendar
+      sha256: "1e3521a3e6d3fc7f645a58b135ab663d458ab12504f1ea7f9b4b81d47086c478"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.9"
   term_glyph:
     dependency: transitive
     description:
@@ -250,4 +266,4 @@ packages:
     version: "6.2.2"
 sdks:
   dart: ">=2.19.4 <3.0.0"
-  flutter: ">=2.11.0-0.1.pre"
+  flutter: ">=3.0.0"
