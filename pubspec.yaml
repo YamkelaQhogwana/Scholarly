@@ -76,6 +76,14 @@ flutter:
     - assets/images/icons/logout.png
     - assets/images/icons/mode.png
     - assets/images/google logo.png
+    - assets/images/habitspage/addhabit.png
+    - assets/images/habiticons/journal.png
+    - assets/images/habiticons/water.png
+    - assets/images/habiticons/walk.png
+    - assets/images/habiticons/revision.png
+    - assets/images/habiticons/sleep.png
+    - assets/images/habiticons/parents.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

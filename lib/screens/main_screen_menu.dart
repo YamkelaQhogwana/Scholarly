@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
+import 'habits.dart';
 
 void main() {
   runApp(MyApp());
@@ -134,9 +135,10 @@ class MenuPage extends StatelessWidget {
                             iconImagePath: 'images/icons/goals.png',
                             title: 'Habits/Goals',
                             onTap: () {
-                              // Handle Habits/Goals menu item click
-                              print('Habits/Goals Clicked');
-                              // Perform navigation or any other actions
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => HabitsPage()),
+                              );
                             },
                           ),
                           MenuItem(

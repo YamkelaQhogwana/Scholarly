@@ -128,7 +128,7 @@ class Login extends StatelessWidget {
                 ),
                 child: ElevatedButton(
                   onPressed: () {
-// Handle login button press
+                   print("Login");
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF383B53),
@@ -151,7 +151,7 @@ class Login extends StatelessWidget {
               Center(
                 child: GestureDetector(
                   onTap: () {
-// Handle "Forgot password?" text tap
+                  print("Password button");
                   },
                   child: const Text(
                     'Forgot Password?',
@@ -211,7 +211,7 @@ class Login extends StatelessWidget {
                   ),
                   child: InkWell(
                     onTap: () {
-// Handle Google Account button press
+                print("Google account");
                     },
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10.0),

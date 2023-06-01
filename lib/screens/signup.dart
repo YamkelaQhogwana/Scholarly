@@ -269,7 +269,7 @@ class SignUpPage extends StatelessWidget {
                     ),
                     child: InkWell(
                       onTap: () {
-                        // Handle Google Account button press
+                        print("Google account");
                       },
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10.0),
