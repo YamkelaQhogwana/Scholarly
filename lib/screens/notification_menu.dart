@@ -3,28 +3,24 @@ import 'package:scholarly/constants/colors.dart';
 import 'package:scholarly/screens/home.dart';
 import 'package:scholarly/screens/calendar.dart';
 import 'package:scholarly/screens/classes.dart';
-import 'package:scholarly/screens/info.dart'; // Import InfoPage class
+import 'package:scholarly/screens/info.dart';
 
-void main() {
-  runApp(EditProfileApp());
-}
+class NotificationsMenu extends StatefulWidget {
+  const NotificationsMenu({Key? key}) : super(key: key);
 
-class EditProfileApp extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Edit Profile',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        fontFamily: 'Poppins',
-      ),
-      home: EditProfilePage(),
-    );
-  }
+  _NotificationsMenuState createState() => _NotificationsMenuState();
 }
 
-class EditProfilePage extends StatelessWidget {
+class _NotificationsMenuState extends State<NotificationsMenu> {
+  bool pauseAll = true; // Variable to track the state of the toggle switch
+
+  int dailyHabitReminderValue =
+      0; // Variable to track the selected radio button
+  int taskNotificationsValue = 0; // Variable to track the selected radio button
+  int streakNotificationsValue =
+      0; // Variable to track the selected radio button
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,8 +39,7 @@ class EditProfilePage extends StatelessWidget {
                     IconButton(
                       icon: Icon(Icons.arrow_back),
                       onPressed: () {
-                        // Placeholder code for the back button
-                        print('Back button pressed');
+                        Navigator.pop(context);
                       },
                     ),
                     Expanded(
@@ -81,17 +76,18 @@ class EditProfilePage extends StatelessWidget {
                   ),
                 ),
                 trailing: Switch(
-                  value: true, // Replace with your toggle value
+                  value: pauseAll,
                   onChanged: (bool value) {
-                    // Placeholder code for toggle onChanged
-                    print('Pause All toggle changed: $value');
+                    setState(() {
+                      pauseAll = value;
+                    });
                   },
                 ),
               ),
               ListTile(
                 contentPadding: EdgeInsets.all(0),
                 title: Text(
-                  'Daily Habbit Reminder',
+                  'Daily Habit Reminder',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16,
@@ -103,19 +99,21 @@ class EditProfilePage extends StatelessWidget {
                     RadioListTile(
                       title: Text('Off'),
                       value: 0,
-                      groupValue: 0, // Replace with your group value
+                      groupValue: dailyHabitReminderValue,
                       onChanged: (value) {
-                        // Placeholder code for radio onChanged
-                        print('Daily Habbit Reminder radio changed: $value');
+                        setState(() {
+                          dailyHabitReminderValue = value as int;
+                        });
                       },
                     ),
                     RadioListTile(
                       title: Text('On'),
                       value: 1,
-                      groupValue: 0, // Replace with your group value
+                      groupValue: dailyHabitReminderValue,
                       onChanged: (value) {
-                        // Placeholder code for radio onChanged
-                        print('Daily Habbit Reminder radio changed: $value');
+                        setState(() {
+                          dailyHabitReminderValue = value as int;
+                        });
                       },
                     ),
                   ],
@@ -136,19 +134,21 @@ class EditProfilePage extends StatelessWidget {
                     RadioListTile(
                       title: Text('Off'),
                       value: 0,
-                      groupValue: 0, // Replace with your group value
+                      groupValue: taskNotificationsValue,
                       onChanged: (value) {
-                        // Placeholder code for radio onChanged
-                        print('Task Notifications radio changed: $value');
+                        setState(() {
+                          taskNotificationsValue = value as int;
+                        });
                       },
                     ),
                     RadioListTile(
                       title: Text('On'),
                       value: 1,
-                      groupValue: 0, // Replace with your group value
+                      groupValue: taskNotificationsValue,
                       onChanged: (value) {
-                        // Placeholder code for radio onChanged
-                        print('Task Notifications radio changed: $value');
+                        setState(() {
+                          taskNotificationsValue = value as int;
+                        });
                       },
                     ),
                   ],
@@ -169,19 +169,21 @@ class EditProfilePage extends StatelessWidget {
                     RadioListTile(
                       title: Text('Off'),
                       value: 0,
-                      groupValue: 0, // Replace with your group value
+                      groupValue: streakNotificationsValue,
                       onChanged: (value) {
-                        // Placeholder code for radio onChanged
-                        print('Streak Notifications radio changed: $value');
+                        setState(() {
+                          streakNotificationsValue = value as int;
+                        });
                       },
                     ),
                     RadioListTile(
                       title: Text('On'),
                       value: 1,
-                      groupValue: 0, // Replace with your group value
+                      groupValue: streakNotificationsValue,
                       onChanged: (value) {
-                        // Placeholder code for radio onChanged
-                        print('Streak Notifications radio changed: $value');
+                        setState(() {
+                          streakNotificationsValue = value as int;
+                        });
                       },
                     ),
                   ],
@@ -193,13 +195,11 @@ class EditProfilePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Placeholder code for the floating button
           print('Floating button pressed');
         },
         child: Icon(Icons.add),
         shape: RoundedRectangleBorder(
-          borderRadius:
-              BorderRadius.circular(8), // Adjust the border radius as desired
+          borderRadius: BorderRadius.circular(8),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

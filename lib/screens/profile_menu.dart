@@ -1,30 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:scholarly/constants/colors.dart';
+import 'package:scholarly/screens/edit_profile_menu.dart';
 import 'package:scholarly/screens/home.dart';
 import 'package:scholarly/screens/calendar.dart';
 import 'package:scholarly/screens/classes.dart';
 import 'package:scholarly/screens/info.dart'; // Import InfoPage class
+import 'main_screen_menu.dart';
+import 'edit_profile_menu.dart';
 
-void main() {
-  runApp(EditProfileApp());
-}
+class ProfileMenu extends StatelessWidget {
+  const ProfileMenu({Key? key}) : super(key: key);
 
-class EditProfileApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Edit Profile',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        fontFamily: 'Poppins',
-      ),
-      home: EditProfilePage(),
-    );
-  }
-}
-
-class EditProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,6 +18,7 @@ class EditProfilePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            SizedBox(height: 8), // Added spacing here
             Container(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: Row(
@@ -44,12 +31,16 @@ class EditProfilePage extends StatelessWidget {
                       color: Colors.black,
                     ),
                     onPressed: () {
-                      // Add your navigation logic here
+                      Navigator.pop(context);
                     },
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      // Add your edit logic here
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EditProfileMenu()),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.white,
@@ -70,6 +61,7 @@ class EditProfilePage extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(height: 16), // Added spacing here
             Container(
               margin: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
               child: Row(
@@ -113,9 +105,11 @@ class EditProfilePage extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(height: 16), // Added spacing here
             Container(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
                     padding: EdgeInsets.only(bottom: 8),
@@ -126,24 +120,31 @@ class EditProfilePage extends StatelessWidget {
                           'Full Name',
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 11,
+                            fontSize: 12,
                           ),
                         ),
-                        TextField(
-                          decoration: InputDecoration(
-                            hintText: 'Jane Doe',
-                            hintStyle: TextStyle(
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.95,
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color: Colors.grey,
+                                width: 1.0,
+                              ),
+                            ),
+                          ),
+                          child: Text(
+                            'Jane Doe',
+                            style: TextStyle(
                               color: Colors.grey,
                               fontSize: 12,
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey),
                             ),
                           ),
                         ),
                       ],
                     ),
                   ),
+                  SizedBox(height: 16), // Added spacing here
                   Padding(
                     padding: EdgeInsets.only(bottom: 8),
                     child: Column(
@@ -153,24 +154,31 @@ class EditProfilePage extends StatelessWidget {
                           'Email',
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 11,
+                            fontSize: 12,
                           ),
                         ),
-                        TextField(
-                          decoration: InputDecoration(
-                            hintText: 'janedoe@university.co.za',
-                            hintStyle: TextStyle(
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.95,
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color: Colors.grey,
+                                width: 1.0,
+                              ),
+                            ),
+                          ),
+                          child: Text(
+                            'janedoe@university.co.za',
+                            style: TextStyle(
                               color: Colors.grey,
                               fontSize: 12,
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey),
                             ),
                           ),
                         ),
                       ],
                     ),
                   ),
+                  SizedBox(height: 16), // Added spacing here
                   Padding(
                     padding: EdgeInsets.only(bottom: 8),
                     child: Column(
@@ -180,18 +188,24 @@ class EditProfilePage extends StatelessWidget {
                           'Institution',
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 11,
+                            fontSize: 12,
                           ),
                         ),
-                        TextField(
-                          decoration: InputDecoration(
-                            hintText: 'Eduvos',
-                            hintStyle: TextStyle(
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.95,
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color: Colors.grey,
+                                width: 1.0,
+                              ),
+                            ),
+                          ),
+                          child: Text(
+                            'Eduvos',
+                            style: TextStyle(
                               color: Colors.grey,
                               fontSize: 12,
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey),
                             ),
                           ),
                         ),
@@ -199,6 +213,7 @@ class EditProfilePage extends StatelessWidget {
                     ),
                   ),
                   // Add other text fields here...
+                  SizedBox(height: 16), // Added spacing here
                   Padding(
                     padding: EdgeInsets.only(bottom: 8),
                     child: Column(
@@ -208,24 +223,31 @@ class EditProfilePage extends StatelessWidget {
                           'Campus',
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 11,
+                            fontSize: 12,
                           ),
                         ),
-                        TextField(
-                          decoration: InputDecoration(
-                            hintText: 'Bedfordview',
-                            hintStyle: TextStyle(
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.95,
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color: Colors.grey,
+                                width: 1.0,
+                              ),
+                            ),
+                          ),
+                          child: Text(
+                            'Bedfordview',
+                            style: TextStyle(
                               color: Colors.grey,
                               fontSize: 12,
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey),
                             ),
                           ),
                         ),
                       ],
                     ),
                   ),
+                  SizedBox(height: 16), // Added spacing here
                   Padding(
                     padding: EdgeInsets.only(bottom: 8),
                     child: Column(
@@ -235,24 +257,31 @@ class EditProfilePage extends StatelessWidget {
                           'Academic Year',
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 11,
+                            fontSize: 12,
                           ),
                         ),
-                        TextField(
-                          decoration: InputDecoration(
-                            hintText: 'Year 3',
-                            hintStyle: TextStyle(
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.95,
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color: Colors.grey,
+                                width: 1.0,
+                              ),
+                            ),
+                          ),
+                          child: Text(
+                            'Year 3',
+                            style: TextStyle(
                               color: Colors.grey,
                               fontSize: 12,
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey),
                             ),
                           ),
                         ),
                       ],
                     ),
                   ),
+                  SizedBox(height: 16), // Added spacing here
                   Padding(
                     padding: EdgeInsets.only(bottom: 8),
                     child: Column(
@@ -262,18 +291,24 @@ class EditProfilePage extends StatelessWidget {
                           'Major/Course',
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 11,
+                            fontSize: 12,
                           ),
                         ),
-                        TextField(
-                          decoration: InputDecoration(
-                            hintText: 'Software Engineering',
-                            hintStyle: TextStyle(
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.95,
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color: Colors.grey,
+                                width: 1.0,
+                              ),
+                            ),
+                          ),
+                          child: Text(
+                            'Software Engineering',
+                            style: TextStyle(
                               color: Colors.grey,
                               fontSize: 12,
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey),
                             ),
                           ),
                         ),

@@ -5,26 +5,9 @@ import 'package:scholarly/screens/calendar.dart';
 import 'package:scholarly/screens/info.dart';
 import 'package:scholarly/screens/classes.dart';
 
-void main() {
-  runApp(EditProfileApp());
-}
+class EditProfileMenu extends StatelessWidget {
+  const EditProfileMenu({Key? key}) : super(key: key);
 
-class EditProfileApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Edit Profile',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        fontFamily: 'Poppins',
-      ),
-      home: EditProfilePage(),
-    );
-  }
-}
-
-class EditProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,8 +26,7 @@ class EditProfilePage extends StatelessWidget {
                   children: [
                     TextButton(
                       onPressed: () {
-                        // Placeholder code for the back button
-                        print('Back button pressed');
+                        Navigator.pop(context);
                       },
                       child: Text(
                         '<',
