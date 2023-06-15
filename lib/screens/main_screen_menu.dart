@@ -1,15 +1,27 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
-import 'habits.dart';
-import 'package:iconify_flutter/iconify_flutter.dart';
 import 'profile_menu.dart';
 import 'notification_menu.dart';
+import 'addhabits.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:scholarly/screens/constants.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: FirebaseOptions(
+      apiKey: Constants.apiKey,
+      appId: Constants.appId,
+      messagingSenderId: Constants.messagingSenderId,
+      projectId: Constants.projectId,
+    ),
+  );
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -157,7 +169,7 @@ class _MenuPageState extends State<MenuPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => HabitsPage(),
+                                  builder: (context) => AddHabits(),
                                 ),
                               );
                             },

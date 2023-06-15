@@ -1,14 +1,83 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:scholarly/constants/colors.dart';
 import 'package:scholarly/screens/calendar.dart';
 import 'package:scholarly/screens/classes.dart';
-import 'package:scholarly/screens/info.dart';
 import 'package:scholarly/screens/home.dart';
 import 'package:scholarly/screens/habits.dart';
+import 'package:scholarly/screens/info.dart';
+import 'dart:math';
 
-class AddHabits extends StatelessWidget {
+class AddHabits extends StatefulWidget {
   const AddHabits({Key? key}) : super(key: key);
+
+  @override
+  _AddHabitsState createState() => _AddHabitsState();
+}
+
+class _AddHabitsState extends State<AddHabits> {
+  final TextEditingController habitNameController = TextEditingController();
+  final TextEditingController numberOfDaysController = TextEditingController();
+
+  void _showAddHabitDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Add Habit'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: habitNameController,
+                decoration: InputDecoration(labelText: 'Habit Name'),
+              ),
+              SizedBox(height: 12.0),
+              TextField(
+                controller: numberOfDaysController,
+                decoration: InputDecoration(labelText: 'Number of Days'),
+                keyboardType: TextInputType.number,
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // Get the entered values from the controllers
+                final String habitName = habitNameController.text.trim();
+                final int numberOfDays =
+                    int.tryParse(numberOfDaysController.text) ?? 0;
+
+                // Create a new habit with the entered data
+                final Habit newHabit = Habit(
+                  userID: '1', // Replace with the actual user ID
+                  name: habitName,
+                  days: numberOfDays,
+                  isCompleted: false,
+                );
+
+                // Insert the new habit into the database
+                FirebaseFirestore.instance
+                    .collection('habits')
+                    .add(newHabit.toMap());
+
+                // Close the dialog
+                Navigator.of(context).pop();
+              },
+              child: Text('Add'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +144,7 @@ class AddHabits extends StatelessWidget {
                           child: Align(
                             alignment: Alignment.center,
                             child: Text(
-                              'Add your desired habits and goals:',
+                              'View, Edit and Update Your Habits',
                               style: TextStyle(
                                 fontFamily: 'Poppins',
                                 fontSize: 16.0,
@@ -90,202 +159,54 @@ class AddHabits extends StatelessWidget {
                 ),
               ),
             ),
-
-            Padding(
-              padding: const EdgeInsets.only(bottom: 50.0),
-              child: Column(
-                children: [
-                  Row(
+            SizedBox(height: 12.0),
+            Container(
+              width: 150,
+              height: 150,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.grey,
+                  width: 1.0,
+                  style: BorderStyle.solid,
+                ),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: InkWell(
+                onTap: _showAddHabitDialog, // Show the add habit dialog
+                child: Center(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      BoxWidget(
-                        color: AppColors.kBrownLight,
-                        text: 'Call Parents',
-                        imagePath: 'assets/images/habiticons/parents.png',subText: 'Everyday',
+                      Icon(
+                        Icons.add,
+                        size: 30.0,
+                        color: Colors.grey,
+                      ),
+                      SizedBox(height: 4.0),
+                      Text(
+                        'Add Habit',
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          color: Colors.grey,
+                        ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 12.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CheckboxWidget(label: 'M', color: AppColors.kBrownDark,),
-                      CheckboxWidget(label: 'T', color: AppColors.kBrownDark,),
-                      CheckboxWidget(label: 'W', color: AppColors.kBrownDark,),
-                      CheckboxWidget(label: 'T', color: AppColors.kBrownDark,),
-                      CheckboxWidget(label: 'F', color: AppColors.kBrownDark,),
-                      CheckboxWidget(label: 'S', color: AppColors.kBrownDark,),
-                      CheckboxWidget(label: 'S', color: AppColors.kBrownDark,),
-                    ],
-                  ),
-                ],
+                ),
               ),
             ),
-
             Padding(
-              padding: const EdgeInsets.only(bottom: 50.0),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      BoxWidget(
-                        color: AppColors.kGreenLight,
-                        text: 'Revision',
-                        imagePath: 'assets/images/habiticons/revision.png', subText: 'Everyday',
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 12.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CheckboxWidget(label: 'M', color: AppColors.kGreenDark,),
-                      CheckboxWidget(label: 'T', color: AppColors.kGreenDark,),
-                      CheckboxWidget(label: 'W', color: AppColors.kGreenDark,),
-                      CheckboxWidget(label: 'T', color: AppColors.kGreenDark,),
-                      CheckboxWidget(label: 'F', color: AppColors.kGreenDark,),
-                      CheckboxWidget(label: 'S', color: AppColors.kGreenDark,),
-                      CheckboxWidget(label: 'S', color: AppColors.kGreenDark,),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.only(bottom: 50.0),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      BoxWidget(
-                        color: AppColors.kBlueLight,
-                        text: 'Drink Water',
-                        imagePath: 'assets/images/habiticons/water.png', subText: 'Everyday',
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 12.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CheckboxWidget(label: 'M', color: AppColors.kBlueDark,),
-                      CheckboxWidget(label: 'T', color: AppColors.kBlueDark,),
-                      CheckboxWidget(label: 'W', color: AppColors.kBlueDark,),
-                      CheckboxWidget(label: 'T', color: AppColors.kBlueDark,),
-                      CheckboxWidget(label: 'F', color: AppColors.kBlueDark,),
-                      CheckboxWidget(label: 'S', color: AppColors.kBlueDark,),
-                      CheckboxWidget(label: 'S', color: AppColors.kBlueDark,),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.only(bottom: 50.0),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      BoxWidget(
-                        color: AppColors.kOrangeLight,
-                        text: 'Go for Walk',
-                        imagePath: 'assets/images/habiticons/walk.png', subText: 'Everyday',
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 12.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CheckboxWidget(label: 'M', color: AppColors.kOrangeDark,),
-                      CheckboxWidget(label: 'T', color: AppColors.kOrangeDark,),
-                      CheckboxWidget(label: 'W', color: AppColors.kOrangeDark,),
-                      CheckboxWidget(label: 'T', color: AppColors.kOrangeDark,),
-                      CheckboxWidget(label: 'F', color: AppColors.kOrangeDark,),
-                      CheckboxWidget(label: 'S', color: AppColors.kOrangeDark,),
-                      CheckboxWidget(label: 'S', color: AppColors.kOrangeDark,),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.only(bottom: 50.0),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      BoxWidget(
-                        color: AppColors.kPinkLight,
-                        text: 'Daily Journal',
-                        imagePath: 'assets/images/habiticons/journal.png', subText: 'Everyday',
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 12.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CheckboxWidget(label: 'M', color: AppColors.kPinkDark,),
-                      CheckboxWidget(label: 'T', color: AppColors.kPinkDark,),
-                      CheckboxWidget(label: 'W', color: AppColors.kPinkDark,),
-                      CheckboxWidget(label: 'T', color: AppColors.kPinkDark,),
-                      CheckboxWidget(label: 'F', color: AppColors.kPinkDark,),
-                      CheckboxWidget(label: 'S', color: AppColors.kPinkDark,),
-                      CheckboxWidget(label: 'S', color: AppColors.kPinkDark,),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16.0),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      BoxWidget(
-                        color: AppColors.kPurpleLight,
-                        text: 'Sleep Early',
-                        imagePath: 'assets/images/habiticons/sleep.png',subText: 'Everyday',
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 12.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CheckboxWidget(label: 'M', color: AppColors.kPurpleDark,),
-                      CheckboxWidget(label: 'T', color: AppColors.kPurpleDark,),
-                      CheckboxWidget(label: 'W', color: AppColors.kPurpleDark,),
-                      CheckboxWidget(label: 'T', color: AppColors.kPurpleDark,),
-                      CheckboxWidget(label: 'F', color: AppColors.kPurpleDark,),
-                      CheckboxWidget(label: 'S', color: AppColors.kPurpleDark,),
-                      CheckboxWidget(label: 'S', color: AppColors.kPurpleDark,),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(30.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Placeholder code for save button
-                        print('Save Habits and Goals pressed');
-                      }, style: ButtonStyle(
-                      minimumSize: MaterialStateProperty.all(Size(300, 45)), // Adjust the size as per your requirement
-                    ),
-                      child: Text('Save Habits and Goals'),
-                    ),
-                  ),
-                ],
+              padding: const EdgeInsets.all(30.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  // Placeholder code for save button
+                  print('Save Habits and Goals pressed');
+                },
+                style: ButtonStyle(
+                  minimumSize: MaterialStateProperty.all(
+                      Size(300, 45)), // Adjust the size as per your requirement
+                ),
+                child: Text('Save Habits and Goals'),
               ),
             ),
           ],
@@ -386,7 +307,8 @@ class BoxWidget extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 30.0), // Adjust the top padding as needed
+              padding: EdgeInsets.only(
+                  top: 30.0), // Adjust the top padding as needed
               child: Align(
                 alignment: Alignment.center,
                 child: Column(
@@ -420,12 +342,31 @@ class BoxWidget extends StatelessWidget {
   }
 }
 
+class Habit {
+  final String userID;
+  final String name;
+  final int days;
+  final bool isCompleted;
 
+  Habit({
+    required this.userID,
+    required this.name,
+    required this.days,
+    required this.isCompleted,
+  });
 
+  Map<String, dynamic> toMap() {
+    return {
+      'userID': userID,
+      'name': name,
+      'days': days,
+      'idDone': isCompleted,
+    };
+  }
+}
 
 @override
 _CheckboxWidgetState createState() => _CheckboxWidgetState();
-
 
 class CheckboxWidget extends StatefulWidget {
   final String label;
