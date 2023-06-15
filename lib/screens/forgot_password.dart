@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:scholarly/screens/onboarding.dart';
-import 'auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
@@ -34,8 +30,8 @@ class ForgotPassword extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: 10),
-                Text(
+                const SizedBox(height: 10),
+                const Text(
                   "Please enter your e-mail to receive your password reset link:",
                   style: TextStyle(
                     fontFamily: 'Poppins',
@@ -43,15 +39,15 @@ class ForgotPassword extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                SizedBox(height: 10.0),
-                Container(
+                const SizedBox(height: 10.0),
+                SizedBox(
                   width: 330.0,
                   height: 40.0,
                   child: TextField(
                     controller: _emailController,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Color(0xFFF4F7F9),
+                      fillColor: const Color(0xFFF4F7F9),
                       hintText: 'example@university.co.za',
                       hintStyle: const TextStyle(
                         color: Colors.grey,
@@ -59,7 +55,7 @@ class ForgotPassword extends StatelessWidget {
                         fontSize: 12.0,
                         fontWeight: FontWeight.normal,
                       ),
-                      contentPadding: EdgeInsets.symmetric(
+                      contentPadding: const EdgeInsets.symmetric(
                         vertical: 10.0,
                         horizontal: 15.0,
                       ),
@@ -68,26 +64,26 @@ class ForgotPassword extends StatelessWidget {
                         borderSide: BorderSide.none,
                       ),
                     ),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black,
                       fontFamily: 'Poppins',
                       fontSize: 12.0,
                     ),
                   ),
                 ),
-                SizedBox(height: 28.0),
-                Container(
+                const SizedBox(height: 28.0),
+                SizedBox(
                   width: 330.0,
                   height: 50.0,
                   child: ElevatedButton(
                     onPressed: _resetPassword,
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFF383B53),
+                      primary: const Color(0xFF383B53),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Submit',
                       style: TextStyle(
                         fontFamily: 'Poppins',
@@ -98,12 +94,12 @@ class ForgotPassword extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text(
+                  child: const Text(
                     'Cancel',
                     style: TextStyle(
                       fontFamily: 'Poppins',

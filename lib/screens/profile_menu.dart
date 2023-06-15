@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:scholarly/constants/colors.dart';
 import 'package:scholarly/screens/edit_profile_menu.dart';
 import 'package:scholarly/screens/home.dart';
 import 'package:scholarly/screens/calendar.dart';
 import 'package:scholarly/screens/classes.dart';
 import 'package:scholarly/screens/info.dart'; // Import InfoPage class
-import 'main_screen_menu.dart';
-import 'edit_profile_menu.dart';
 
 class ProfileMenu extends StatelessWidget {
   const ProfileMenu({Key? key}) : super(key: key);
@@ -18,14 +15,14 @@ class ProfileMenu extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 8), // Added spacing here
+            const SizedBox(height: 8), // Added spacing here
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.arrow_back,
                       size: 20,
                       color: Colors.black,
@@ -39,7 +36,7 @@ class ProfileMenu extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => EditProfileMenu()),
+                            builder: (context) => const EditProfileMenu()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -49,7 +46,7 @@ class ProfileMenu extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Edit',
                       style: TextStyle(
                         color: Colors.blue,
@@ -61,15 +58,15 @@ class ProfileMenu extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 16), // Added spacing here
+            const SizedBox(height: 16), // Added spacing here
             Container(
-              margin: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+              margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
               child: Row(
                 children: [
                   Container(
                     width: 60,
                     height: 60,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         image:
@@ -78,8 +75,8 @@ class ProfileMenu extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(width: 16),
-                  Expanded(
+                  const SizedBox(width: 16),
+                  const Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -105,18 +102,18 @@ class ProfileMenu extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 16), // Added spacing here
+            const SizedBox(height: 16), // Added spacing here
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.only(bottom: 8),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Full Name',
                           style: TextStyle(
                             color: Colors.black,
@@ -125,7 +122,7 @@ class ProfileMenu extends StatelessWidget {
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width * 0.95,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             border: Border(
                               bottom: BorderSide(
                                 color: Colors.grey,
@@ -133,7 +130,7 @@ class ProfileMenu extends StatelessWidget {
                               ),
                             ),
                           ),
-                          child: Text(
+                          child: const Text(
                             'Jane Doe',
                             style: TextStyle(
                               color: Colors.grey,
@@ -144,13 +141,13 @@ class ProfileMenu extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(height: 16), // Added spacing here
+                  const SizedBox(height: 16), // Added spacing here
                   Padding(
-                    padding: EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.only(bottom: 8),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Email',
                           style: TextStyle(
                             color: Colors.black,
@@ -159,7 +156,7 @@ class ProfileMenu extends StatelessWidget {
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width * 0.95,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             border: Border(
                               bottom: BorderSide(
                                 color: Colors.grey,
@@ -167,7 +164,7 @@ class ProfileMenu extends StatelessWidget {
                               ),
                             ),
                           ),
-                          child: Text(
+                          child: const Text(
                             'janedoe@university.co.za',
                             style: TextStyle(
                               color: Colors.grey,
@@ -178,13 +175,13 @@ class ProfileMenu extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(height: 16), // Added spacing here
+                  const SizedBox(height: 16), // Added spacing here
                   Padding(
-                    padding: EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.only(bottom: 8),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Institution',
                           style: TextStyle(
                             color: Colors.black,
@@ -193,7 +190,7 @@ class ProfileMenu extends StatelessWidget {
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width * 0.95,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             border: Border(
                               bottom: BorderSide(
                                 color: Colors.grey,
@@ -201,7 +198,7 @@ class ProfileMenu extends StatelessWidget {
                               ),
                             ),
                           ),
-                          child: Text(
+                          child: const Text(
                             'Eduvos',
                             style: TextStyle(
                               color: Colors.grey,
@@ -213,13 +210,13 @@ class ProfileMenu extends StatelessWidget {
                     ),
                   ),
                   // Add other text fields here...
-                  SizedBox(height: 16), // Added spacing here
+                  const SizedBox(height: 16), // Added spacing here
                   Padding(
-                    padding: EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.only(bottom: 8),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Campus',
                           style: TextStyle(
                             color: Colors.black,
@@ -228,7 +225,7 @@ class ProfileMenu extends StatelessWidget {
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width * 0.95,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             border: Border(
                               bottom: BorderSide(
                                 color: Colors.grey,
@@ -236,7 +233,7 @@ class ProfileMenu extends StatelessWidget {
                               ),
                             ),
                           ),
-                          child: Text(
+                          child: const Text(
                             'Bedfordview',
                             style: TextStyle(
                               color: Colors.grey,
@@ -247,13 +244,13 @@ class ProfileMenu extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(height: 16), // Added spacing here
+                  const SizedBox(height: 16), // Added spacing here
                   Padding(
-                    padding: EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.only(bottom: 8),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Academic Year',
                           style: TextStyle(
                             color: Colors.black,
@@ -262,7 +259,7 @@ class ProfileMenu extends StatelessWidget {
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width * 0.95,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             border: Border(
                               bottom: BorderSide(
                                 color: Colors.grey,
@@ -270,7 +267,7 @@ class ProfileMenu extends StatelessWidget {
                               ),
                             ),
                           ),
-                          child: Text(
+                          child: const Text(
                             'Year 3',
                             style: TextStyle(
                               color: Colors.grey,
@@ -281,13 +278,13 @@ class ProfileMenu extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(height: 16), // Added spacing here
+                  const SizedBox(height: 16), // Added spacing here
                   Padding(
-                    padding: EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.only(bottom: 8),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Major/Course',
                           style: TextStyle(
                             color: Colors.black,
@@ -296,7 +293,7 @@ class ProfileMenu extends StatelessWidget {
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width * 0.95,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             border: Border(
                               bottom: BorderSide(
                                 color: Colors.grey,
@@ -304,7 +301,7 @@ class ProfileMenu extends StatelessWidget {
                               ),
                             ),
                           ),
-                          child: Text(
+                          child: const Text(
                             'Software Engineering',
                             style: TextStyle(
                               color: Colors.grey,
@@ -326,39 +323,39 @@ class ProfileMenu extends StatelessWidget {
           // Placeholder code for the floating button
           print('Floating button pressed');
         },
-        child: Icon(Icons.add),
         shape: RoundedRectangleBorder(
           borderRadius:
               BorderRadius.circular(8), // Adjust the border radius as desired
         ),
+        child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        child: Container(
+        child: SizedBox(
           height: kBottomNavigationBarHeight,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               IconButton(
-                icon: Icon(Icons.home),
+                icon: const Icon(Icons.home),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
+                    MaterialPageRoute(builder: (context) => const HomePage()),
                   );
                 },
               ),
               IconButton(
-                icon: Icon(Icons.calendar_month),
+                icon: const Icon(Icons.calendar_month),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CalendarPage()),
+                    MaterialPageRoute(builder: (context) => const CalendarPage()),
                   );
                 },
               ),
               IconButton(
-                icon: Icon(Icons.school),
+                icon: const Icon(Icons.school),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -367,11 +364,11 @@ class ProfileMenu extends StatelessWidget {
                 },
               ),
               IconButton(
-                icon: Icon(Icons.newspaper),
+                icon: const Icon(Icons.newspaper),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => InfoPage()),
+                    MaterialPageRoute(builder: (context) => const InfoPage()),
                   );
                 },
               ),

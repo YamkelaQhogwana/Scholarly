@@ -19,7 +19,7 @@ class AddHabits extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(0.0),
-              child: Container(
+              child: SizedBox(
                 width: double.infinity,
                 height: 200.0,
                 child: Column(
@@ -34,11 +34,11 @@ class AddHabits extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => HabitsPage(),
+                                  builder: (context) => const HabitsPage(),
                                 ),
                               );
                             },
-                            child: Container(
+                            child: SizedBox(
                               width: 24,
                               height: 24,
                               child: SvgPicture.string(
@@ -54,8 +54,8 @@ class AddHabits extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(width: 8.0),
-                        Padding(
+                        const SizedBox(width: 8.0),
+                        const Padding(
                           padding: EdgeInsets.only(top: 50),
                           child: Align(
                             alignment: Alignment.center,
@@ -69,8 +69,8 @@ class AddHabits extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(width: 8.0),
-                        Padding(
+                        const SizedBox(width: 8.0),
+                        const Padding(
                           padding: EdgeInsets.only(top: 120),
                           child: Align(
                             alignment: Alignment.center,
@@ -91,8 +91,8 @@ class AddHabits extends StatelessWidget {
               ),
             ),
 
-            Padding(
-              padding: const EdgeInsets.only(bottom: 50.0),
+            const Padding(
+              padding: EdgeInsets.only(bottom: 50.0),
               child: Column(
                 children: [
                   Row(
@@ -122,8 +122,8 @@ class AddHabits extends StatelessWidget {
               ),
             ),
 
-            Padding(
-              padding: const EdgeInsets.only(bottom: 50.0),
+            const Padding(
+              padding: EdgeInsets.only(bottom: 50.0),
               child: Column(
                 children: [
                   Row(
@@ -153,8 +153,8 @@ class AddHabits extends StatelessWidget {
               ),
             ),
 
-            Padding(
-              padding: const EdgeInsets.only(bottom: 50.0),
+            const Padding(
+              padding: EdgeInsets.only(bottom: 50.0),
               child: Column(
                 children: [
                   Row(
@@ -184,8 +184,8 @@ class AddHabits extends StatelessWidget {
               ),
             ),
 
-            Padding(
-              padding: const EdgeInsets.only(bottom: 50.0),
+            const Padding(
+              padding: EdgeInsets.only(bottom: 50.0),
               child: Column(
                 children: [
                   Row(
@@ -215,8 +215,8 @@ class AddHabits extends StatelessWidget {
               ),
             ),
 
-            Padding(
-              padding: const EdgeInsets.only(bottom: 50.0),
+            const Padding(
+              padding: EdgeInsets.only(bottom: 50.0),
               child: Column(
                 children: [
                   Row(
@@ -250,7 +250,7 @@ class AddHabits extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 16.0),
               child: Column(
                 children: [
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       BoxWidget(
@@ -260,8 +260,8 @@ class AddHabits extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 12.0),
-                  Row(
+                  const SizedBox(height: 12.0),
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CheckboxWidget(label: 'M', color: AppColors.kPurpleDark,),
@@ -280,9 +280,9 @@ class AddHabits extends StatelessWidget {
                         // Placeholder code for save button
                         print('Save Habits and Goals pressed');
                       }, style: ButtonStyle(
-                      minimumSize: MaterialStateProperty.all(Size(300, 45)), // Adjust the size as per your requirement
+                      minimumSize: MaterialStateProperty.all(const Size(300, 45)), // Adjust the size as per your requirement
                     ),
-                      child: Text('Save Habits and Goals'),
+                      child: const Text('Save Habits and Goals'),
                     ),
                   ),
                 ],
@@ -296,8 +296,8 @@ class AddHabits extends StatelessWidget {
           // Placeholder code for add button
           print('Add button pressed');
         },
-        child: Icon(Icons.add),
         backgroundColor: AppColors.kPrimary400,
+        child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
@@ -305,28 +305,28 @@ class AddHabits extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             IconButton(
-              icon: Icon(Icons.home),
+              icon: const Icon(Icons.home),
               color: AppColors.kPrimary400,
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
+                  MaterialPageRoute(builder: (context) => const HomePage()),
                 );
               },
             ),
             IconButton(
-              icon: Icon(Icons.calendar_month),
+              icon: const Icon(Icons.calendar_month),
               color: AppColors.kMainText,
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CalendarPage()),
+                  MaterialPageRoute(builder: (context) => const CalendarPage()),
                 );
               },
             ),
-            SizedBox(width: 56),
+            const SizedBox(width: 56),
             IconButton(
-              icon: Icon(Icons.school),
+              icon: const Icon(Icons.school),
               color: AppColors.kMainText,
               onPressed: () {
                 Navigator.push(
@@ -336,12 +336,12 @@ class AddHabits extends StatelessWidget {
               },
             ),
             IconButton(
-              icon: Icon(Icons.newspaper),
+              icon: const Icon(Icons.newspaper),
               color: AppColors.kMainText,
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => InfoPage()),
+                  MaterialPageRoute(builder: (context) => const InfoPage()),
                 );
               },
             ),
@@ -386,7 +386,7 @@ class BoxWidget extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 30.0), // Adjust the top padding as needed
+              padding: const EdgeInsets.only(top: 30.0), // Adjust the top padding as needed
               child: Align(
                 alignment: Alignment.center,
                 child: Column(
@@ -394,16 +394,16 @@ class BoxWidget extends StatelessWidget {
                   children: [
                     Text(
                       text,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.black,
                         fontSize: 14.0,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    SizedBox(height: 4.0),
+                    const SizedBox(height: 4.0),
                     Text(
                       subText,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.black54,
                         fontSize: 12.0,
                         fontWeight: FontWeight.w500,

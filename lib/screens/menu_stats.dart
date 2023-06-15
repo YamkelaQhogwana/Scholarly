@@ -5,7 +5,6 @@ import 'package:scholarly/screens/calendar.dart';
 import 'package:scholarly/screens/classes.dart';
 import 'package:scholarly/screens/home.dart';
 import 'package:scholarly/screens/info.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 class MenuStatistics extends StatelessWidget {
   const MenuStatistics({Key? key});
@@ -59,7 +58,7 @@ class MenuStatistics extends StatelessWidget {
               children: [
                 for (HabitTracker habitTracker in DummyStatsData.habitTrackers)
                   Container(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: _buildStatBlock(
                       habitTracker.name,
                       habitTracker.streak.toString(),

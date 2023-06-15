@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'login.dart';
 
 class AddClasses extends StatelessWidget {
   Function(
@@ -32,9 +29,9 @@ class AddClasses extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
+                const SizedBox(height: 10),
+                const Padding(
+                  padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
                   child: Center(
                     child: Text(
                       "Add your modules",
@@ -47,9 +44,9 @@ class AddClasses extends StatelessWidget {
                   ),
                 ),
 
-                SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                const SizedBox(height: 10),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
                   child: Text(
                     "Module name:",
                     style: TextStyle(
@@ -60,15 +57,15 @@ class AddClasses extends StatelessWidget {
                   ),
                 ),
 
-                SizedBox(height: 10.0),
-                Container(
+                const SizedBox(height: 10.0),
+                SizedBox(
                   width: 330.0,
                   height: 40.0,
                   child: TextField(
                     controller: moduleNameController,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Color(0xFFF4F7F9),
+                      fillColor: const Color(0xFFF4F7F9),
                       hintText: 'Enter your module name here',
                       hintStyle: const TextStyle(
                         color: Colors.grey,
@@ -76,7 +73,7 @@ class AddClasses extends StatelessWidget {
                         fontSize: 12.0,
                         fontWeight: FontWeight.normal,
                       ),
-                      contentPadding: EdgeInsets.symmetric(
+                      contentPadding: const EdgeInsets.symmetric(
                         vertical: 10.0,
                         horizontal: 15.0,
                       ),
@@ -85,16 +82,16 @@ class AddClasses extends StatelessWidget {
                         borderSide: BorderSide.none,
                       ),
                     ),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black,
                       fontFamily: 'Poppins',
                       fontSize: 12.0,
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                const SizedBox(height: 10),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
                   child: Text(
                     "Module code:",
                     style: TextStyle(
@@ -105,15 +102,15 @@ class AddClasses extends StatelessWidget {
                   ),
                 ),
 
-                SizedBox(height: 10.0),
-                Container(
+                const SizedBox(height: 10.0),
+                SizedBox(
                   width: 330.0,
                   height: 40.0,
                   child: TextField(
                     controller: moduleCodeController,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Color(0xFFF4F7F9),
+                      fillColor: const Color(0xFFF4F7F9),
                       hintText: 'Enter your module code here',
                       hintStyle: const TextStyle(
                         color: Colors.grey,
@@ -121,7 +118,7 @@ class AddClasses extends StatelessWidget {
                         fontSize: 12.0,
                         fontWeight: FontWeight.normal,
                       ),
-                      contentPadding: EdgeInsets.symmetric(
+                      contentPadding: const EdgeInsets.symmetric(
                         vertical: 10.0,
                         horizontal: 15.0,
                       ),
@@ -130,16 +127,16 @@ class AddClasses extends StatelessWidget {
                         borderSide: BorderSide.none,
                       ),
                     ),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black,
                       fontFamily: 'Poppins',
                       fontSize: 12.0,
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                const SizedBox(height: 10),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
                   child: Text(
                     "Module grade:",
                     style: TextStyle(
@@ -150,15 +147,15 @@ class AddClasses extends StatelessWidget {
                   ),
                 ),
 
-                SizedBox(height: 10.0),
-                Container(
+                const SizedBox(height: 10.0),
+                SizedBox(
                   width: 330.0,
                   height: 40.0,
                   child: TextField(
                     controller: moduleGradeController,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Color(0xFFF4F7F9),
+                      fillColor: const Color(0xFFF4F7F9),
                       hintText: 'Enter your module grade here',
                       hintStyle: const TextStyle(
                         color: Colors.grey,
@@ -166,7 +163,7 @@ class AddClasses extends StatelessWidget {
                         fontSize: 12.0,
                         fontWeight: FontWeight.normal,
                       ),
-                      contentPadding: EdgeInsets.symmetric(
+                      contentPadding: const EdgeInsets.symmetric(
                         vertical: 10.0,
                         horizontal: 15.0,
                       ),
@@ -175,16 +172,16 @@ class AddClasses extends StatelessWidget {
                         borderSide: BorderSide.none,
                       ),
                     ),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black,
                       fontFamily: 'Poppins',
                       fontSize: 12.0,
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
+                const SizedBox(height: 10),
+                const Padding(
+                  padding: EdgeInsets.only(left: 20.0),
                   child: Text(
                     "Module name:",
                     style: TextStyle(
@@ -195,15 +192,15 @@ class AddClasses extends StatelessWidget {
                   ),
                 ),
 
-                SizedBox(height: 10.0),
-                Container(
+                const SizedBox(height: 10.0),
+                SizedBox(
                   width: 330.0,
                   height: 40.0,
                   child: TextField(
                     controller: moduleLecturerController,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Color(0xFFF4F7F9),
+                      fillColor: const Color(0xFFF4F7F9),
                       hintText: 'Enter your module lecturer name here',
                       hintStyle: const TextStyle(
                         color: Colors.grey,
@@ -211,7 +208,7 @@ class AddClasses extends StatelessWidget {
                         fontSize: 12.0,
                         fontWeight: FontWeight.normal,
                       ),
-                      contentPadding: EdgeInsets.symmetric(
+                      contentPadding: const EdgeInsets.symmetric(
                         vertical: 10.0,
                         horizontal: 15.0,
                       ),
@@ -220,16 +217,16 @@ class AddClasses extends StatelessWidget {
                         borderSide: BorderSide.none,
                       ),
                     ),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black,
                       fontFamily: 'Poppins',
                       fontSize: 12.0,
                     ),
                   ),
                 ),
-                SizedBox(height: 28.0),
+                const SizedBox(height: 28.0),
                 Center(
-                  child: Container(
+                  child: SizedBox(
                     width: 330.0,
                     height: 50.0,
                     child: ElevatedButton(
@@ -252,7 +249,7 @@ class AddClasses extends StatelessWidget {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF383B53),
+                        backgroundColor: const Color(0xFF383B53),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
@@ -269,13 +266,13 @@ class AddClasses extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 Center(
                   child: TextButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text(
+                    child: const Text(
                       'Done',
                       style: TextStyle(
                         fontFamily: 'Poppins',

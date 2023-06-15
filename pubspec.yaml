@@ -36,10 +36,9 @@ dependencies:
   table_calendar: ^3.0.1-nullsafety.0
   syncfusion_flutter_charts: ^19.3.54
   cupertino_icons: ^1.0.2
-  firebase_core: ^2.13.1
+  firebase_core: ^2.14.0
   firebase_auth: ^4.6.2
   cloud_firestore: ^4.8.0
-  table_calendar: ^3.0.9
   google_sign_in: ^6.1.4
   provider: ^5.0.0
 

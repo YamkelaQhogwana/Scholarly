@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'habits.dart';
-import 'package:iconify_flutter/iconify_flutter.dart';
 import 'profile_menu.dart';
 import 'notification_menu.dart';
 
@@ -133,7 +132,7 @@ class _MenuPageState extends State<MenuPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ProfileMenu(),
+                                  builder: (context) => const ProfileMenu(),
                                 ),
                               );
                             },
@@ -145,7 +144,7 @@ class _MenuPageState extends State<MenuPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => NotificationsMenu(),
+                                  builder: (context) => const NotificationsMenu(),
                                 ),
                               );
                             },
@@ -157,7 +156,7 @@ class _MenuPageState extends State<MenuPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => HabitsPage(),
+                                  builder: (context) => const HabitsPage(),
                                 ),
                               );
                             },
@@ -191,8 +190,8 @@ class _MenuPageState extends State<MenuPage> {
                           ),
                           Row(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 16.0),
+                              const Padding(
+                                padding: EdgeInsets.only(left: 16.0),
                                 child: Icon(Icons.dark_mode),
                               ),
                               const SizedBox(width: 8.0),
