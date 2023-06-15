@@ -88,7 +88,7 @@ class _AddHabitsState extends State<AddHabits> {
           children: [
             Padding(
               padding: const EdgeInsets.all(0.0),
-              child: Container(
+              child: SizedBox(
                 width: double.infinity,
                 height: 200.0,
                 child: Column(
@@ -103,11 +103,11 @@ class _AddHabitsState extends State<AddHabits> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => HabitsPage(),
+                                  builder: (context) => const HabitsPage(),
                                 ),
                               );
                             },
-                            child: Container(
+                            child: SizedBox(
                               width: 24,
                               height: 24,
                               child: SvgPicture.string(
@@ -123,8 +123,8 @@ class _AddHabitsState extends State<AddHabits> {
                             ),
                           ),
                         ),
-                        SizedBox(width: 8.0),
-                        Padding(
+                        const SizedBox(width: 8.0),
+                        const Padding(
                           padding: EdgeInsets.only(top: 50),
                           child: Align(
                             alignment: Alignment.center,
@@ -138,8 +138,8 @@ class _AddHabitsState extends State<AddHabits> {
                             ),
                           ),
                         ),
-                        SizedBox(width: 8.0),
-                        Padding(
+                        const SizedBox(width: 8.0),
+                        const Padding(
                           padding: EdgeInsets.only(top: 120),
                           child: Align(
                             alignment: Alignment.center,
@@ -159,6 +159,7 @@ class _AddHabitsState extends State<AddHabits> {
                 ),
               ),
             ),
+<<<<<<< HEAD
             SizedBox(height: 12.0),
             Container(
               width: 150,
@@ -175,6 +176,14 @@ class _AddHabitsState extends State<AddHabits> {
                 onTap: _showAddHabitDialog, // Show the add habit dialog
                 child: Center(
                   child: Column(
+=======
+
+            const Padding(
+              padding: EdgeInsets.only(bottom: 50.0),
+              child: Column(
+                children: [
+                  Row(
+>>>>>>> 3ab41df0c9df9fcc5f4348ceba16a217258479e5
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
@@ -195,6 +204,7 @@ class _AddHabitsState extends State<AddHabits> {
                 ),
               ),
             ),
+<<<<<<< HEAD
             Padding(
               padding: const EdgeInsets.all(30.0),
               child: ElevatedButton(
@@ -207,6 +217,173 @@ class _AddHabitsState extends State<AddHabits> {
                       Size(300, 45)), // Adjust the size as per your requirement
                 ),
                 child: Text('Save Habits and Goals'),
+=======
+
+            const Padding(
+              padding: EdgeInsets.only(bottom: 50.0),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      BoxWidget(
+                        color: AppColors.kGreenLight,
+                        text: 'Revision',
+                        imagePath: 'assets/images/habiticons/revision.png', subText: 'Everyday',
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 12.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CheckboxWidget(label: 'M', color: AppColors.kGreenDark,),
+                      CheckboxWidget(label: 'T', color: AppColors.kGreenDark,),
+                      CheckboxWidget(label: 'W', color: AppColors.kGreenDark,),
+                      CheckboxWidget(label: 'T', color: AppColors.kGreenDark,),
+                      CheckboxWidget(label: 'F', color: AppColors.kGreenDark,),
+                      CheckboxWidget(label: 'S', color: AppColors.kGreenDark,),
+                      CheckboxWidget(label: 'S', color: AppColors.kGreenDark,),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            const Padding(
+              padding: EdgeInsets.only(bottom: 50.0),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      BoxWidget(
+                        color: AppColors.kBlueLight,
+                        text: 'Drink Water',
+                        imagePath: 'assets/images/habiticons/water.png', subText: 'Everyday',
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 12.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CheckboxWidget(label: 'M', color: AppColors.kBlueDark,),
+                      CheckboxWidget(label: 'T', color: AppColors.kBlueDark,),
+                      CheckboxWidget(label: 'W', color: AppColors.kBlueDark,),
+                      CheckboxWidget(label: 'T', color: AppColors.kBlueDark,),
+                      CheckboxWidget(label: 'F', color: AppColors.kBlueDark,),
+                      CheckboxWidget(label: 'S', color: AppColors.kBlueDark,),
+                      CheckboxWidget(label: 'S', color: AppColors.kBlueDark,),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            const Padding(
+              padding: EdgeInsets.only(bottom: 50.0),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      BoxWidget(
+                        color: AppColors.kOrangeLight,
+                        text: 'Go for Walk',
+                        imagePath: 'assets/images/habiticons/walk.png', subText: 'Everyday',
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 12.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CheckboxWidget(label: 'M', color: AppColors.kOrangeDark,),
+                      CheckboxWidget(label: 'T', color: AppColors.kOrangeDark,),
+                      CheckboxWidget(label: 'W', color: AppColors.kOrangeDark,),
+                      CheckboxWidget(label: 'T', color: AppColors.kOrangeDark,),
+                      CheckboxWidget(label: 'F', color: AppColors.kOrangeDark,),
+                      CheckboxWidget(label: 'S', color: AppColors.kOrangeDark,),
+                      CheckboxWidget(label: 'S', color: AppColors.kOrangeDark,),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            const Padding(
+              padding: EdgeInsets.only(bottom: 50.0),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      BoxWidget(
+                        color: AppColors.kPinkLight,
+                        text: 'Daily Journal',
+                        imagePath: 'assets/images/habiticons/journal.png', subText: 'Everyday',
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 12.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CheckboxWidget(label: 'M', color: AppColors.kPinkDark,),
+                      CheckboxWidget(label: 'T', color: AppColors.kPinkDark,),
+                      CheckboxWidget(label: 'W', color: AppColors.kPinkDark,),
+                      CheckboxWidget(label: 'T', color: AppColors.kPinkDark,),
+                      CheckboxWidget(label: 'F', color: AppColors.kPinkDark,),
+                      CheckboxWidget(label: 'S', color: AppColors.kPinkDark,),
+                      CheckboxWidget(label: 'S', color: AppColors.kPinkDark,),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16.0),
+              child: Column(
+                children: [
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      BoxWidget(
+                        color: AppColors.kPurpleLight,
+                        text: 'Sleep Early',
+                        imagePath: 'assets/images/habiticons/sleep.png',subText: 'Everyday',
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12.0),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CheckboxWidget(label: 'M', color: AppColors.kPurpleDark,),
+                      CheckboxWidget(label: 'T', color: AppColors.kPurpleDark,),
+                      CheckboxWidget(label: 'W', color: AppColors.kPurpleDark,),
+                      CheckboxWidget(label: 'T', color: AppColors.kPurpleDark,),
+                      CheckboxWidget(label: 'F', color: AppColors.kPurpleDark,),
+                      CheckboxWidget(label: 'S', color: AppColors.kPurpleDark,),
+                      CheckboxWidget(label: 'S', color: AppColors.kPurpleDark,),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(30.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Placeholder code for save button
+                        print('Save Habits and Goals pressed');
+                      }, style: ButtonStyle(
+                      minimumSize: MaterialStateProperty.all(const Size(300, 45)), // Adjust the size as per your requirement
+                    ),
+                      child: const Text('Save Habits and Goals'),
+                    ),
+                  ),
+                ],
+>>>>>>> 3ab41df0c9df9fcc5f4348ceba16a217258479e5
               ),
             ),
           ],
@@ -217,8 +394,8 @@ class _AddHabitsState extends State<AddHabits> {
           // Placeholder code for add button
           print('Add button pressed');
         },
-        child: Icon(Icons.add),
         backgroundColor: AppColors.kPrimary400,
+        child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
@@ -226,28 +403,28 @@ class _AddHabitsState extends State<AddHabits> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             IconButton(
-              icon: Icon(Icons.home),
+              icon: const Icon(Icons.home),
               color: AppColors.kPrimary400,
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
+                  MaterialPageRoute(builder: (context) => const HomePage()),
                 );
               },
             ),
             IconButton(
-              icon: Icon(Icons.calendar_month),
+              icon: const Icon(Icons.calendar_month),
               color: AppColors.kMainText,
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CalendarPage()),
+                  MaterialPageRoute(builder: (context) => const CalendarPage()),
                 );
               },
             ),
-            SizedBox(width: 56),
+            const SizedBox(width: 56),
             IconButton(
-              icon: Icon(Icons.school),
+              icon: const Icon(Icons.school),
               color: AppColors.kMainText,
               onPressed: () {
                 Navigator.push(
@@ -257,12 +434,12 @@ class _AddHabitsState extends State<AddHabits> {
               },
             ),
             IconButton(
-              icon: Icon(Icons.newspaper),
+              icon: const Icon(Icons.newspaper),
               color: AppColors.kMainText,
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => InfoPage()),
+                  MaterialPageRoute(builder: (context) => const InfoPage()),
                 );
               },
             ),
@@ -307,8 +484,12 @@ class BoxWidget extends StatelessWidget {
               ),
             ),
             Padding(
+<<<<<<< HEAD
               padding: EdgeInsets.only(
                   top: 30.0), // Adjust the top padding as needed
+=======
+              padding: const EdgeInsets.only(top: 30.0), // Adjust the top padding as needed
+>>>>>>> 3ab41df0c9df9fcc5f4348ceba16a217258479e5
               child: Align(
                 alignment: Alignment.center,
                 child: Column(
@@ -316,16 +497,16 @@ class BoxWidget extends StatelessWidget {
                   children: [
                     Text(
                       text,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.black,
                         fontSize: 14.0,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    SizedBox(height: 4.0),
+                    const SizedBox(height: 4.0),
                     Text(
                       subText,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.black54,
                         fontSize: 12.0,
                         fontWeight: FontWeight.w500,
