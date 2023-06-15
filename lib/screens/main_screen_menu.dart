@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
+import 'habits.dart';
+import 'package:iconify_flutter/iconify_flutter.dart';
+import 'profile_menu.dart';
+import 'notification_menu.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,7 +21,14 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MenuPage extends StatelessWidget {
+class MenuPage extends StatefulWidget {
+  @override
+  _MenuPageState createState() => _MenuPageState();
+}
+
+class _MenuPageState extends State<MenuPage> {
+  bool isDarkMode = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,11 +37,14 @@ class MenuPage extends StatelessWidget {
         child: Stack(
           children: [
             Container(
-              color: Colors.white,
-              child: const Center(
+              color: isDarkMode ? Colors.black : Colors.white,
+              child: Center(
                 child: Text(
                   'Main Content',
-                  style: TextStyle(fontSize: 24.0),
+                  style: TextStyle(
+                    fontSize: 24.0,
+                    color: isDarkMode ? Colors.white : Colors.black,
+                  ),
                 ),
               ),
             ),
@@ -113,34 +127,43 @@ class MenuPage extends StatelessWidget {
                       child: Column(
                         children: [
                           MenuItem(
-                            iconImagePath: 'images/icons/profile.png',
+                            iconData: Icons.person,
                             title: 'Profile',
                             onTap: () {
-                              // Handle Profile menu item click
-                              print('Profile Clicked');
-                              // Perform navigation or any other actions
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ProfileMenu(),
+                                ),
+                              );
                             },
                           ),
                           MenuItem(
-                            iconImagePath: 'images/icons/notifications.png',
+                            iconData: Icons.notifications,
                             title: 'Notifications',
                             onTap: () {
-                              // Handle Notifications menu item click
-                              print('Notifications Clicked');
-                              // Perform navigation or any other actions
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => NotificationsMenu(),
+                                ),
+                              );
                             },
                           ),
                           MenuItem(
-                            iconImagePath: 'images/icons/goals.png',
+                            iconData: Icons.check_box,
                             title: 'Habits/Goals',
                             onTap: () {
-                              // Handle Habits/Goals menu item click
-                              print('Habits/Goals Clicked');
-                              // Perform navigation or any other actions
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HabitsPage(),
+                                ),
+                              );
                             },
                           ),
                           MenuItem(
-                            iconImagePath: 'images/icons/statistics.png',
+                            iconData: Icons.insert_chart,
                             title: 'Statistics',
                             onTap: () {
                               // Handle Statistics menu item click
@@ -149,7 +172,7 @@ class MenuPage extends StatelessWidget {
                             },
                           ),
                           MenuItem(
-                            iconImagePath: 'images/icons/feedback.png',
+                            iconData: Icons.feedback,
                             title: 'Feedback',
                             onTap: () {
                               // Handle Feedback menu item click
@@ -158,7 +181,7 @@ class MenuPage extends StatelessWidget {
                             },
                           ),
                           MenuItem(
-                            iconImagePath: 'images/icons/logout.png',
+                            iconData: Icons.logout,
                             title: 'Logout',
                             onTap: () {
                               // Handle Logout menu item click
@@ -170,11 +193,7 @@ class MenuPage extends StatelessWidget {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(left: 16.0),
-                                child: Image.asset(
-                                  'images/icons/mode.png',
-                                  width: 24.0,
-                                  height: 24.0,
-                                ),
+                                child: Icon(Icons.dark_mode),
                               ),
                               const SizedBox(width: 8.0),
                               const Text(
@@ -183,8 +202,12 @@ class MenuPage extends StatelessWidget {
                               ),
                               const SizedBox(width: 8.0),
                               Switch(
-                                value: true,
-                                onChanged: (bool value) {},
+                                value: isDarkMode,
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    isDarkMode = value;
+                                  });
+                                },
                               ),
                             ],
                           ),
@@ -214,12 +237,12 @@ class MenuPage extends StatelessWidget {
 }
 
 class MenuItem extends StatelessWidget {
-  final String iconImagePath;
+  final IconData iconData;
   final String title;
   final VoidCallback? onTap;
 
   const MenuItem({
-    required this.iconImagePath,
+    required this.iconData,
     required this.title,
     this.onTap,
   });
@@ -232,10 +255,9 @@ class MenuItem extends StatelessWidget {
         padding: const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 8.0),
         child: Row(
           children: [
-            Image.asset(
-              iconImagePath,
-              width: 24.0,
-              height: 24.0,
+            Icon(
+              iconData,
+              size: 24.0,
             ),
             const SizedBox(width: 16.0),
             Text(

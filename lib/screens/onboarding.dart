@@ -30,17 +30,20 @@ class _OnboardingPageState extends State<OnboardingPage> {
               children: const [
                 OnboardingScreen(
                   title: 'Get Your S@%# Together',
-                  description: 'An all-in-one tool to help you stay organised and on top of your academic and personal life.',
+                  description:
+                      'An all-in-one tool to help you stay organised and on top of your academic and personal life.',
                   image: AssetImage('assets/images/onboarding-img1.png'),
                 ),
                 OnboardingScreen(
                   title: 'Never Miss a Deadline',
-                  description: 'Keep track of all your assignments, exams, and other important deadlines in one place, so you never miss a due date again.',
+                  description:
+                      'Keep track of all your assignments, exams, and other important deadlines in one place, so you never miss a due date again.',
                   image: AssetImage('assets/images/onboarding-img2.png'),
                 ),
                 OnboardingScreen(
                   title: 'Maximise Your Productivity',
-                  description: 'From setting daily goals to maintaining your mental health, our tools will help you make the most of your time and stay motivated.',
+                  description:
+                      'From setting daily goals to maintaining your mental health, our tools will help you make the most of your time and stay motivated.',
                   image: AssetImage('assets/images/onboarding-img3.png'),
                 ),
               ],
@@ -56,7 +59,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: ElevatedButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(AppColors.kPrimary400),
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(AppColors.kPrimary400),
               ),
               onPressed: () {
                 Navigator.push(
@@ -83,7 +87,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
           height: 8,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: _currentPage == i ? AppColors.kPrimary400 : AppColors.kDarkGray,
+            color:
+                _currentPage == i ? AppColors.kPrimary400 : AppColors.kDarkGray,
           ),
         ),
       );
@@ -120,12 +125,16 @@ class OnboardingScreen extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.kPrimary400),
+                style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.kPrimary400),
               ),
               const SizedBox(height: 12),
               Text(
                 description,
-                style: const TextStyle(fontSize: 16 , color: AppColors.kMainText),
+                style:
+                    const TextStyle(fontSize: 16, color: AppColors.kMainText),
                 textAlign: TextAlign.left,
               ),
             ],

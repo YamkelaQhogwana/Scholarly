@@ -36,10 +36,22 @@ dependencies:
   table_calendar: ^3.0.1-nullsafety.0
   syncfusion_flutter_charts: ^19.3.54
   cupertino_icons: ^1.0.2
+  firebase_core: ^2.13.1
+  firebase_auth: ^4.6.2
+  cloud_firestore: ^4.8.0
+  table_calendar: ^3.0.9
+  google_sign_in: ^6.1.4
+  provider: ^5.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
   flutter_lints: ^2.0.0
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -54,6 +66,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/avatars/black-wn-av.png
+    - assets/images/icons/change-avi.png
     - assets/images/onboarding-img1.png
     - assets/images/onboarding-img2.png
     - assets/images/onboarding-img3.png
@@ -65,6 +78,15 @@ flutter:
     - assets/images/icons/feedback.png
     - assets/images/icons/logout.png
     - assets/images/icons/mode.png
+    - assets/images/google logo.png
+    - assets/images/habitspage/addhabit.png
+    - assets/images/habiticons/journal.png
+    - assets/images/habiticons/water.png
+    - assets/images/habiticons/walk.png
+    - assets/images/habiticons/revision.png
+    - assets/images/habiticons/sleep.png
+    - assets/images/habiticons/parents.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
