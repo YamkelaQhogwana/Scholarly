@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:scholarly/constants/colors.dart';
 import 'package:scholarly/screens/home.dart';
 import 'package:scholarly/screens/calendar.dart';
 import 'package:scholarly/screens/info.dart';
@@ -20,7 +19,7 @@ class EditProfileMenu extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -28,7 +27,7 @@ class EditProfileMenu extends StatelessWidget {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: Text(
+                      child: const Text(
                         '<',
                         style: TextStyle(
                           color: Colors.black,
@@ -42,7 +41,7 @@ class EditProfileMenu extends StatelessWidget {
                         // Placeholder code for the save button
                         print('Save button pressed');
                       },
-                      child: Text(
+                      child: const Text(
                         'Save',
                         style: TextStyle(
                           color: Colors.blue,
@@ -55,7 +54,7 @@ class EditProfileMenu extends StatelessWidget {
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -64,7 +63,7 @@ class EditProfileMenu extends StatelessWidget {
                       height: 120,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8.0),
-                        image: DecorationImage(
+                        image: const DecorationImage(
                           image: AssetImage(
                               'assets/images/avatars/black-wn-av.png'),
                           fit: BoxFit.cover,
@@ -85,8 +84,8 @@ class EditProfileMenu extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(height: 8),
-                    Column(
+                    const SizedBox(height: 8),
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -111,8 +110,8 @@ class EditProfileMenu extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 8),
-                    Column(
+                    const SizedBox(height: 8),
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -137,8 +136,8 @@ class EditProfileMenu extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 8),
-                    Column(
+                    const SizedBox(height: 8),
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -163,8 +162,8 @@ class EditProfileMenu extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 8),
-                    Column(
+                    const SizedBox(height: 8),
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -189,8 +188,8 @@ class EditProfileMenu extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 8),
-                    Column(
+                    const SizedBox(height: 8),
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -215,8 +214,8 @@ class EditProfileMenu extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 8),
-                    Column(
+                    const SizedBox(height: 8),
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -253,39 +252,39 @@ class EditProfileMenu extends StatelessWidget {
           // Placeholder code for the floating button
           print('Floating button pressed');
         },
-        child: Icon(Icons.add),
         shape: RoundedRectangleBorder(
           borderRadius:
               BorderRadius.circular(8), // Adjust the border radius as desired
         ),
+        child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        child: Container(
+        child: SizedBox(
           height: kBottomNavigationBarHeight,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               IconButton(
-                icon: Icon(Icons.home),
+                icon: const Icon(Icons.home),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
+                    MaterialPageRoute(builder: (context) => const HomePage()),
                   );
                 },
               ),
               IconButton(
-                icon: Icon(Icons.calendar_month),
+                icon: const Icon(Icons.calendar_month),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CalendarPage()),
+                    MaterialPageRoute(builder: (context) => const CalendarPage()),
                   );
                 },
               ),
               IconButton(
-                icon: Icon(Icons.school),
+                icon: const Icon(Icons.school),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -294,11 +293,11 @@ class EditProfileMenu extends StatelessWidget {
                 },
               ),
               IconButton(
-                icon: Icon(Icons.newspaper),
+                icon: const Icon(Icons.newspaper),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => InfoPage()),
+                    MaterialPageRoute(builder: (context) => const InfoPage()),
                   );
                 },
               ),

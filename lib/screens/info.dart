@@ -13,7 +13,7 @@ class InfoPage extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Container(
         alignment: Alignment.center,
-        child: Text("Information Center Page"),
+        child: const Text("Information Center Page"),
       ),
     floatingActionButton: Stack(
         children: [
@@ -32,7 +32,7 @@ class InfoPage extends StatelessWidget {
                 // Placeholder code for add button
                 print('Add button pressed');
               },
-              icon: Icon(Icons.add, color: Colors.white), // Set the icon color
+              icon: const Icon(Icons.add, color: Colors.white), // Set the icon color
             ),
           ),
         ),
@@ -44,28 +44,28 @@ class InfoPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           IconButton(
-            icon: Icon(Icons.home),
+            icon: const Icon(Icons.home),
             color: AppColors.kMainText,
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => HomePage()),
+                MaterialPageRoute(builder: (context) => const HomePage()),
               );
             },
           ),
           IconButton(
-            icon: Icon(Icons.calendar_month),
+            icon: const Icon(Icons.calendar_month),
             color: AppColors.kMainText,
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => CalendarPage()),
+                MaterialPageRoute(builder: (context) => const CalendarPage()),
               );
             },
           ),
-          SizedBox(width: 56), // Empty space for the float button
+          const SizedBox(width: 56), // Empty space for the float button
           IconButton(
-            icon: Icon(Icons.school),
+            icon: const Icon(Icons.school),
             color: AppColors.kMainText,
             onPressed: () {
               Navigator.push(
@@ -75,12 +75,12 @@ class InfoPage extends StatelessWidget {
             },
           ),
           IconButton(
-            icon: Icon(Icons.newspaper),
+            icon: const Icon(Icons.newspaper),
             color: AppColors.kPrimary400,
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => InfoPage()),
+                MaterialPageRoute(builder: (context) => const InfoPage()),
               );
             },
           ),

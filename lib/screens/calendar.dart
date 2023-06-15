@@ -11,7 +11,6 @@ import 'package:scholarly/modules/events.dart' as EventsModule;
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
-import 'package:iconify_flutter/icons/ci.dart';
 import 'package:iconify_flutter/icons/octicon.dart';
 import 'package:iconify_flutter/icons/bi.dart';
 import 'package:iconify_flutter/icons/material_symbols.dart';

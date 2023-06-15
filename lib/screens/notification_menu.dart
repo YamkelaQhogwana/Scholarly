@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:scholarly/constants/colors.dart';
 import 'package:scholarly/screens/home.dart';
 import 'package:scholarly/screens/calendar.dart';
 import 'package:scholarly/screens/classes.dart';
@@ -28,7 +27,7 @@ class _NotificationsMenuState extends State<NotificationsMenu> {
         child: Container(
           constraints:
               BoxConstraints(minHeight: MediaQuery.of(context).size.height),
-          padding: EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -37,12 +36,12 @@ class _NotificationsMenuState extends State<NotificationsMenu> {
                 child: Row(
                   children: [
                     IconButton(
-                      icon: Icon(Icons.arrow_back),
+                      icon: const Icon(Icons.arrow_back),
                       onPressed: () {
                         Navigator.pop(context);
                       },
                     ),
-                    Expanded(
+                    const Expanded(
                       child: Text(
                         'Notifications',
                         textAlign: TextAlign.center,
@@ -56,18 +55,18 @@ class _NotificationsMenuState extends State<NotificationsMenu> {
                   ],
                 ),
               ),
-              SizedBox(height: 16),
-              Text(
+              const SizedBox(height: 16),
+              const Text(
                 'Turn on/off the following notifications and reminders',
                 style: TextStyle(
                   color: Colors.grey,
                   fontSize: 16,
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ListTile(
-                contentPadding: EdgeInsets.all(0),
-                leading: Text(
+                contentPadding: const EdgeInsets.all(0),
+                leading: const Text(
                   'Pause All',
                   style: TextStyle(
                     color: Colors.black,
@@ -85,8 +84,8 @@ class _NotificationsMenuState extends State<NotificationsMenu> {
                 ),
               ),
               ListTile(
-                contentPadding: EdgeInsets.all(0),
-                title: Text(
+                contentPadding: const EdgeInsets.all(0),
+                title: const Text(
                   'Daily Habit Reminder',
                   style: TextStyle(
                     color: Colors.black,
@@ -97,7 +96,7 @@ class _NotificationsMenuState extends State<NotificationsMenu> {
                 subtitle: Column(
                   children: [
                     RadioListTile(
-                      title: Text('Off'),
+                      title: const Text('Off'),
                       value: 0,
                       groupValue: dailyHabitReminderValue,
                       onChanged: (value) {
@@ -107,7 +106,7 @@ class _NotificationsMenuState extends State<NotificationsMenu> {
                       },
                     ),
                     RadioListTile(
-                      title: Text('On'),
+                      title: const Text('On'),
                       value: 1,
                       groupValue: dailyHabitReminderValue,
                       onChanged: (value) {
@@ -120,8 +119,8 @@ class _NotificationsMenuState extends State<NotificationsMenu> {
                 ),
               ),
               ListTile(
-                contentPadding: EdgeInsets.all(0),
-                title: Text(
+                contentPadding: const EdgeInsets.all(0),
+                title: const Text(
                   'Task Notifications',
                   style: TextStyle(
                     color: Colors.black,
@@ -132,7 +131,7 @@ class _NotificationsMenuState extends State<NotificationsMenu> {
                 subtitle: Column(
                   children: [
                     RadioListTile(
-                      title: Text('Off'),
+                      title: const Text('Off'),
                       value: 0,
                       groupValue: taskNotificationsValue,
                       onChanged: (value) {
@@ -142,7 +141,7 @@ class _NotificationsMenuState extends State<NotificationsMenu> {
                       },
                     ),
                     RadioListTile(
-                      title: Text('On'),
+                      title: const Text('On'),
                       value: 1,
                       groupValue: taskNotificationsValue,
                       onChanged: (value) {
@@ -155,8 +154,8 @@ class _NotificationsMenuState extends State<NotificationsMenu> {
                 ),
               ),
               ListTile(
-                contentPadding: EdgeInsets.all(0),
-                title: Text(
+                contentPadding: const EdgeInsets.all(0),
+                title: const Text(
                   'Streak Notifications',
                   style: TextStyle(
                     color: Colors.black,
@@ -167,7 +166,7 @@ class _NotificationsMenuState extends State<NotificationsMenu> {
                 subtitle: Column(
                   children: [
                     RadioListTile(
-                      title: Text('Off'),
+                      title: const Text('Off'),
                       value: 0,
                       groupValue: streakNotificationsValue,
                       onChanged: (value) {
@@ -177,7 +176,7 @@ class _NotificationsMenuState extends State<NotificationsMenu> {
                       },
                     ),
                     RadioListTile(
-                      title: Text('On'),
+                      title: const Text('On'),
                       value: 1,
                       groupValue: streakNotificationsValue,
                       onChanged: (value) {
@@ -197,38 +196,38 @@ class _NotificationsMenuState extends State<NotificationsMenu> {
         onPressed: () {
           print('Floating button pressed');
         },
-        child: Icon(Icons.add),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
+        child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        child: Container(
+        child: SizedBox(
           height: kBottomNavigationBarHeight,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               IconButton(
-                icon: Icon(Icons.home),
+                icon: const Icon(Icons.home),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
+                    MaterialPageRoute(builder: (context) => const HomePage()),
                   );
                 },
               ),
               IconButton(
-                icon: Icon(Icons.calendar_month),
+                icon: const Icon(Icons.calendar_month),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CalendarPage()),
+                    MaterialPageRoute(builder: (context) => const CalendarPage()),
                   );
                 },
               ),
               IconButton(
-                icon: Icon(Icons.school),
+                icon: const Icon(Icons.school),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -237,11 +236,11 @@ class _NotificationsMenuState extends State<NotificationsMenu> {
                 },
               ),
               IconButton(
-                icon: Icon(Icons.newspaper),
+                icon: const Icon(Icons.newspaper),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => InfoPage()),
+                    MaterialPageRoute(builder: (context) => const InfoPage()),
                   );
                 },
               ),

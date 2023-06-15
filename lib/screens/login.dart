@@ -16,14 +16,14 @@ class LoginStatusWidget extends StatelessWidget {
           final user = snapshot.data;
           if (user == null) {
             // User is not logged in
-            return Login();
+            return const Login();
           } else {
             // User is logged in
-            return OnboardingPage();
+            return const OnboardingPage();
           }
         } else {
           // Connection state is still loading
-          return Scaffold(
+          return const Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
             ),
@@ -35,7 +35,7 @@ class LoginStatusWidget extends StatelessWidget {
 }
 
 class Login extends StatefulWidget {
-  Login({Key? key}) : super(key: key);
+  const Login({Key? key}) : super(key: key);
 
   @override
   _LoginState createState() => _LoginState();
@@ -69,7 +69,7 @@ class _LoginState extends State<Login> {
 
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => OnboardingPage()),
+            MaterialPageRoute(builder: (context) => const OnboardingPage()),
           );
         } else {
           setState(() {
@@ -104,7 +104,7 @@ class _LoginState extends State<Login> {
 
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => OnboardingPage()),
+          MaterialPageRoute(builder: (context) => const OnboardingPage()),
         );
       } else {
         // Google sign-in failed, handle the error
@@ -139,16 +139,16 @@ class _LoginState extends State<Login> {
                 ),
                 if (_errorMessage.isNotEmpty)
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 31.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 31.0),
                     child: Text(
                       _errorMessage,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.red,
                         fontSize: 14.0,
                       ),
                     ),
                   ),
-                SizedBox(height: 28.0),
+                const SizedBox(height: 28.0),
                 const Padding(
                   padding: EdgeInsets.only(left: 31.0),
                   child: Text(
@@ -160,9 +160,9 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                 ),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 Container(
-                  margin: EdgeInsets.only(left: 31.0),
+                  margin: const EdgeInsets.only(left: 31.0),
                   width: 330.0,
                   height: 40.0,
                   child: TextFormField(
@@ -175,7 +175,7 @@ class _LoginState extends State<Login> {
                     },
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Color(0xFFF4F7F9),
+                      fillColor: const Color(0xFFF4F7F9),
                       hintText: 'example@university.co.za',
                       hintStyle: const TextStyle(
                         color: Colors.grey,
@@ -184,16 +184,16 @@ class _LoginState extends State<Login> {
                         fontWeight: FontWeight.normal,
                       ),
                       contentPadding:
-                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+                      const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0),
                         borderSide: BorderSide.none,
                       ),
                     ),
-                    style: TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.black),
                   ),
                 ),
-                SizedBox(height: 28.0),
+                const SizedBox(height: 28.0),
                 const Padding(
                   padding: EdgeInsets.only(left: 31.0),
                   child: Text(
@@ -205,9 +205,9 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                 ),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 Container(
-                  margin: EdgeInsets.only(left: 31.0),
+                  margin: const EdgeInsets.only(left: 31.0),
                   width: 330.0,
                   height: 40.0,
                   child: TextFormField(
@@ -221,7 +221,7 @@ class _LoginState extends State<Login> {
                     },
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Color(0xFFF4F7F9),
+                      fillColor: const Color(0xFFF4F7F9),
                       hintText: '••••••••••••',
                       hintStyle: const TextStyle(
                         color: Colors.grey,
@@ -230,18 +230,18 @@ class _LoginState extends State<Login> {
                         fontWeight: FontWeight.normal,
                       ),
                       contentPadding:
-                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+                      const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0),
                         borderSide: BorderSide.none,
                       ),
                     ),
-                    style: TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.black),
                   ),
                 ),
-                SizedBox(height: 28.0),
+                const SizedBox(height: 28.0),
                 Container(
-                  margin: EdgeInsets.only(left: 39.0),
+                  margin: const EdgeInsets.only(left: 39.0),
                   width: 330.0,
                   height: 50.0,
                   decoration: BoxDecoration(
@@ -250,14 +250,14 @@ class _LoginState extends State<Login> {
                       BoxShadow(
                         color: Colors.black.withOpacity(0.2),
                         blurRadius: 4.0,
-                        offset: Offset(0, 5),
+                        offset: const Offset(0, 5),
                       ),
                     ],
                   ),
                   child: ElevatedButton(
                     onPressed: handleSubmit,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF383B53),
+                      backgroundColor: const Color(0xFF383B53),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
@@ -273,7 +273,7 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 Center(
                   child: GestureDetector(
                     onTap: () {
@@ -295,19 +295,19 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Expanded(
                         child: Container(
                           height: 1.5,
-                          color: Color.fromRGBO(195, 197, 198, 1),
+                          color: const Color.fromRGBO(195, 197, 198, 1),
                         ),
                       ),
-                      SizedBox(width: 15.0),
+                      const SizedBox(width: 15.0),
                       const Text(
                         'or',
                         style: TextStyle(
@@ -317,17 +317,17 @@ class _LoginState extends State<Login> {
                           color: Color.fromRGBO(141, 143, 157, 1),
                         ),
                       ),
-                      SizedBox(width: 15.0),
+                      const SizedBox(width: 15.0),
                       Expanded(
                         child: Container(
                           height: 1.5,
-                          color: Color.fromRGBO(195, 197, 198, 1),
+                          color: const Color.fromRGBO(195, 197, 198, 1),
                         ),
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
                 Align(
                   alignment: Alignment.center,
                   child: Container(
@@ -337,14 +337,14 @@ class _LoginState extends State<Login> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(5.0),
                       border: Border.all(
-                        color: Color(0xFF121212),
+                        color: const Color(0xFF121212),
                         width: 1.0,
                       ),
                     ),
                     child: InkWell(
                       onTap: _signInWithGoogle,
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Row(
                           children: [
                             Image.asset(
@@ -352,7 +352,7 @@ class _LoginState extends State<Login> {
                               width: 20.0,
                               height: 20.0,
                             ),
-                            SizedBox(width: 10.0),
+                            const SizedBox(width: 10.0),
                             const Padding(
                               padding: EdgeInsets.only(
                                 left: 11.0,
@@ -373,9 +373,9 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
                 Padding(
-                  padding: EdgeInsets.only(left: 18.0, top: 150.0),
+                  padding: const EdgeInsets.only(left: 18.0, top: 150.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

@@ -19,16 +19,16 @@ class _ClassesPageState extends State<ClassesPage> {
   late String userName = '';
   late List<Map<String, dynamic>> modules;
   late List<Color> containerColors = [
-    Color(0xFFEAF5E6), // First color
-    Color(0xFFEDE4F9), // Second color
-    Color(0xFFFCECEB), // Third color
+    const Color(0xFFEAF5E6), // First color
+    const Color(0xFFEDE4F9), // Second color
+    const Color(0xFFFCECEB), // Third color
   ];
   final Map<Color, Color> colorMappings = {
-    Color(0xFFEAF5E6): Color(0xFF87C782),
+    const Color(0xFFEAF5E6): const Color(0xFF87C782),
     // First container color maps to first text/icon color
-    Color(0xFFEDE4F9): Color(0xFF8F76C9),
+    const Color(0xFFEDE4F9): const Color(0xFF8F76C9),
     // Second container color maps to second text/icon color
-    Color(0xFFFCECEB): Color(0xFFE66A64),
+    const Color(0xFFFCECEB): const Color(0xFFE66A64),
     // Third container color maps to third text/icon color
   };
 
@@ -74,7 +74,7 @@ class _ClassesPageState extends State<ClassesPage> {
     try {
       User? user = FirebaseAuth.instance.currentUser;
       if (user != null) {
-        String? userEmail = user?.email;
+        String? userEmail = user.email;
         QuerySnapshot snapshot = await FirebaseFirestore.instance
             .collection('users')
             .where('email', isEqualTo: userEmail)
@@ -138,7 +138,7 @@ class _ClassesPageState extends State<ClassesPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
+            SizedBox(
               height: MediaQuery
                   .of(context)
                   .size
@@ -151,7 +151,7 @@ class _ClassesPageState extends State<ClassesPage> {
                       child: Column(
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(top: 65, left: 25),
+                            padding: const EdgeInsets.only(top: 65, left: 25),
                             child: Row(
                               children: [
                                 Image.asset(
@@ -159,33 +159,33 @@ class _ClassesPageState extends State<ClassesPage> {
                                   width: 55,
                                   height: 55,
                                 ),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       userName,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontWeight: FontWeight.w700,
                                         fontSize: 25,
                                         color: Color(0xFF1D1D1D),
                                       ),
                                     ),
-                                    SizedBox(height: 3),
+                                    const SizedBox(height: 3),
                                     FutureBuilder<List<Map<String, dynamic>>>(
                                       future: fetchModuleData(),
                                       builder: (context, snapshot) {
                                         if (snapshot.connectionState ==
                                             ConnectionState.waiting) {
-                                          return CircularProgressIndicator();
+                                          return const CircularProgressIndicator();
                                         } else if (snapshot.hasData) {
                                           int moduleCount = snapshot.data!
                                               .length;
                                           return Text(
                                             'You have $moduleCount module${moduleCount !=
                                                 1 ? 's' : ''} this block',
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontFamily: 'Montserrat',
                                               fontWeight: FontWeight.w500,
                                               fontSize: 12,
@@ -193,7 +193,7 @@ class _ClassesPageState extends State<ClassesPage> {
                                             ),
                                           );
                                         } else {
-                                          return Text(
+                                          return const Text(
                                             'Error loading module data',
                                             style: TextStyle(
                                               fontFamily: 'Montserrat',
@@ -218,7 +218,7 @@ class _ClassesPageState extends State<ClassesPage> {
                                     );
                                   },
                                   child: Padding(
-                                    padding: EdgeInsets.only(left: 60.0),
+                                    padding: const EdgeInsets.only(left: 60.0),
                                     child: SvgPicture.string(
                                       '''
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -237,7 +237,7 @@ class _ClassesPageState extends State<ClassesPage> {
                           Expanded(
                             child: SingleChildScrollView(
                               child: Padding(
-                                padding: EdgeInsets.only(
+                                padding: const EdgeInsets.only(
                                     top: 30, left: 25, right: 25, bottom: 30),
                                 child: FutureBuilder<
                                     List<Map<String, dynamic>>>(
@@ -245,14 +245,14 @@ class _ClassesPageState extends State<ClassesPage> {
                                   builder: (context, snapshot) {
                                     if (snapshot.connectionState ==
                                         ConnectionState.waiting) {
-                                      return CircularProgressIndicator();
+                                      return const CircularProgressIndicator();
                                     } else if (snapshot.hasData) {
                                       List<Map<String, dynamic>> moduleData =
                                       snapshot.data!;
                                       if (moduleData.isNotEmpty) {
                                         return ListView.builder(
                                           shrinkWrap: true,
-                                          physics: NeverScrollableScrollPhysics(),
+                                          physics: const NeverScrollableScrollPhysics(),
                                           itemCount: moduleData.length,
                                           itemBuilder: (context, index) {
                                             String moduleName =
@@ -276,7 +276,7 @@ class _ClassesPageState extends State<ClassesPage> {
                                                 colorMappings[containerColor] ??
                                                     Colors.black;
                                             return Padding(
-                                              padding: EdgeInsets.only(
+                                              padding: const EdgeInsets.only(
                                                   bottom: 20),
                                               child: Container(
                                                 width: 350,
@@ -293,7 +293,7 @@ class _ClassesPageState extends State<ClassesPage> {
                                                       crossAxisAlignment: CrossAxisAlignment
                                                           .start,
                                                       children: [
-                                                        SizedBox(height: 20),
+                                                        const SizedBox(height: 20),
                                                         Padding(
                                                           padding: const EdgeInsets
                                                               .symmetric(
@@ -309,14 +309,14 @@ class _ClassesPageState extends State<ClassesPage> {
                                                             ),
                                                           ),
                                                         ),
-                                                        SizedBox(height: 3),
+                                                        const SizedBox(height: 3),
                                                         Padding(
                                                           padding: const EdgeInsets
                                                               .symmetric(
                                                               horizontal: 20),
                                                           child: Text(
                                                             moduleName,
-                                                            style: TextStyle(
+                                                            style: const TextStyle(
                                                               fontFamily: 'Montserrat',
                                                               fontWeight: FontWeight
                                                                   .w700,
@@ -326,7 +326,7 @@ class _ClassesPageState extends State<ClassesPage> {
                                                             ),
                                                           ),
                                                         ),
-                                                        SizedBox(height: 10),
+                                                        const SizedBox(height: 10),
                                                         Padding(
                                                           padding: const EdgeInsets
                                                               .symmetric(
@@ -342,14 +342,14 @@ class _ClassesPageState extends State<ClassesPage> {
                                                             ),
                                                           ),
                                                         ),
-                                                        SizedBox(height: 3),
+                                                        const SizedBox(height: 3),
                                                         Padding(
                                                           padding: const EdgeInsets
                                                               .symmetric(
                                                               horizontal: 20),
                                                           child: Text(
                                                             moduleCode,
-                                                            style: TextStyle(
+                                                            style: const TextStyle(
                                                               fontFamily: 'Montserrat',
                                                               fontWeight: FontWeight
                                                                   .w700,
@@ -359,7 +359,7 @@ class _ClassesPageState extends State<ClassesPage> {
                                                             ),
                                                           ),
                                                         ),
-                                                        SizedBox(height: 10),
+                                                        const SizedBox(height: 10),
                                                         Padding(
                                                           padding: const EdgeInsets
                                                               .only(left: 20),
@@ -382,11 +382,11 @@ class _ClassesPageState extends State<ClassesPage> {
                                                                     height: 12,
                                                                     color: textIconColor,
                                                                   ),
-                                                                  SizedBox(
+                                                                  const SizedBox(
                                                                       height: 5),
                                                                   Text(
                                                                     moduleGrade,
-                                                                    style: TextStyle(
+                                                                    style: const TextStyle(
                                                                       fontFamily: 'Montserrat',
                                                                       fontWeight: FontWeight
                                                                           .w700,
@@ -397,14 +397,14 @@ class _ClassesPageState extends State<ClassesPage> {
                                                                   ),
                                                                 ],
                                                               ),
-                                                              SizedBox(
+                                                              const SizedBox(
                                                                   width: 20),
                                                               Column(
                                                                 crossAxisAlignment: CrossAxisAlignment
                                                                     .start,
                                                                 children: [
                                                                   Padding(
-                                                                    padding: EdgeInsets
+                                                                    padding: const EdgeInsets
                                                                         .only(
                                                                         left: 50),
                                                                     child: SvgPicture
@@ -419,7 +419,7 @@ class _ClassesPageState extends State<ClassesPage> {
                                                                       height: 12,
                                                                     ),
                                                                   ),
-                                                                  SizedBox(
+                                                                  const SizedBox(
                                                                       height: 5),
                                                                   Padding(
                                                                     padding: const EdgeInsets
@@ -427,7 +427,7 @@ class _ClassesPageState extends State<ClassesPage> {
                                                                         left: 50),
                                                                     child: Text(
                                                                       moduleLecturer,
-                                                                      style: TextStyle(
+                                                                      style: const TextStyle(
                                                                         fontFamily: 'Montserrat',
                                                                         fontWeight: FontWeight
                                                                             .w700,
@@ -457,7 +457,7 @@ class _ClassesPageState extends State<ClassesPage> {
                                                             context: context,
                                                             builder: (context) {
                                                               return AlertDialog(
-                                                                title: Text(
+                                                                title: const Text(
                                                                   'Delete Module',
                                                                   style: TextStyle(
                                                                     fontFamily: 'Montserrat',
@@ -466,7 +466,7 @@ class _ClassesPageState extends State<ClassesPage> {
                                                                     color: Colors.black,
                                                                   ),
                                                                 ),
-                                                                content: Text(
+                                                                content: const Text(
                                                                   'Are you sure you want to delete this module?',
                                                                   style: TextStyle(
                                                                     fontFamily: 'Montserrat',
@@ -477,7 +477,7 @@ class _ClassesPageState extends State<ClassesPage> {
                                                                 ),
                                                                 actions: [
                                                                   TextButton(
-                                                                    child: Text(
+                                                                    child: const Text(
                                                                       'Cancel',
                                                                       style: TextStyle(
                                                                         fontFamily: 'Montserrat',
@@ -491,7 +491,7 @@ class _ClassesPageState extends State<ClassesPage> {
                                                                     },
                                                                   ),
                                                                   TextButton(
-                                                                    child: Text(
+                                                                    child: const Text(
                                                                       'Delete',
                                                                       style: TextStyle(
                                                                         fontFamily: 'Montserrat',
@@ -536,7 +536,7 @@ class _ClassesPageState extends State<ClassesPage> {
                                           },
                                         );
                                       } else {
-                                        return Center(
+                                        return const Center(
                                           child: Text(
                                             'No modules found',
                                             style: TextStyle(
@@ -549,7 +549,7 @@ class _ClassesPageState extends State<ClassesPage> {
                                         );
                                       }
                                     } else {
-                                      return Text(
+                                      return const Text(
                                         'Error loading module data',
                                         style: TextStyle(
                                           fontFamily: 'Montserrat',
@@ -589,11 +589,11 @@ class _ClassesPageState extends State<ClassesPage> {
                                   child: Container(
                                     width: 56,
                                     height: 56,
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       color: Colors.white,
                                       shape: BoxShape.circle,
                                     ),
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.add,
                                       color: Colors.black,
                                     ),
@@ -633,7 +633,7 @@ class _ClassesPageState extends State<ClassesPage> {
                   // Placeholder code for add button
                   print('Add button pressed');
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.add,
                   color: Colors.white, // Set the icon color
                 ),
@@ -648,28 +648,28 @@ class _ClassesPageState extends State<ClassesPage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             IconButton(
-              icon: Icon(Icons.home),
+              icon: const Icon(Icons.home),
               color: AppColors.kMainText,
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
+                  MaterialPageRoute(builder: (context) => const HomePage()),
                 );
               },
             ),
             IconButton(
-              icon: Icon(Icons.calendar_month),
+              icon: const Icon(Icons.calendar_month),
               color: AppColors.kMainText,
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CalendarPage()),
+                  MaterialPageRoute(builder: (context) => const CalendarPage()),
                 );
               },
             ),
-            SizedBox(width: 56), // Empty space for the float button
+            const SizedBox(width: 56), // Empty space for the float button
             IconButton(
-              icon: Icon(Icons.school),
+              icon: const Icon(Icons.school),
               color: AppColors.kPrimary400,
               onPressed: () {
                 Navigator.push(
@@ -679,12 +679,12 @@ class _ClassesPageState extends State<ClassesPage> {
               },
             ),
             IconButton(
-              icon: Icon(Icons.newspaper),
+              icon: const Icon(Icons.newspaper),
               color: AppColors.kMainText,
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => InfoPage()),
+                  MaterialPageRoute(builder: (context) => const InfoPage()),
                 );
               },
             ),

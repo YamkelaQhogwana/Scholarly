@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
+import 'habits.dart';
+import 'package:iconify_flutter/iconify_flutter.dart';
 import 'profile_menu.dart';
 import 'notification_menu.dart';
 import 'addhabits.dart';
@@ -45,7 +47,7 @@ class _MenuPageState extends State<MenuPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: DefaultTextStyle(
-        style: TextStyle(fontFamily: 'Poppins'),
+        style: const TextStyle(fontFamily: 'Poppins'),
         child: Stack(
           children: [
             Container(
@@ -62,7 +64,7 @@ class _MenuPageState extends State<MenuPage> {
             ),
             Align(
               alignment: Alignment.centerLeft,
-              child: Container(
+              child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.25,
                 height: MediaQuery.of(context).size.height,
                 child: BackdropFilter(
@@ -78,7 +80,7 @@ class _MenuPageState extends State<MenuPage> {
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.75,
                 height: MediaQuery.of(context).size.height,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.white,
                   boxShadow: [
                     BoxShadow(
@@ -95,17 +97,17 @@ class _MenuPageState extends State<MenuPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(height: 64.0),
+                    const SizedBox(height: 64.0),
                     Container(
                       width: double.infinity,
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
                             width: 120.0,
                             height: 120.0,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                             ),
                             child: ClipOval(
@@ -115,16 +117,16 @@ class _MenuPageState extends State<MenuPage> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 16.0),
-                          Text(
+                          const SizedBox(height: 16.0),
+                          const Text(
                             'Jane Doe',
                             style: TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 8.0),
-                          Text(
+                          const SizedBox(height: 8.0),
+                          const Text(
                             'Third Year',
                             style: TextStyle(
                               fontSize: 16.0,
@@ -134,7 +136,7 @@ class _MenuPageState extends State<MenuPage> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 32.0),
+                    const SizedBox(height: 32.0),
                     Expanded(
                       child: Column(
                         children: [
@@ -145,7 +147,7 @@ class _MenuPageState extends State<MenuPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ProfileMenu(),
+                                  builder: (context) => const ProfileMenu(),
                                 ),
                               );
                             },
@@ -157,7 +159,7 @@ class _MenuPageState extends State<MenuPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => NotificationsMenu(),
+                                  builder: (context) => const NotificationsMenu(),
                                 ),
                               );
                             },
@@ -169,7 +171,7 @@ class _MenuPageState extends State<MenuPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => AddHabits(),
+                                  builder: (context) => HabitsPage(),
                                 ),
                               );
                             },
@@ -203,16 +205,16 @@ class _MenuPageState extends State<MenuPage> {
                           ),
                           Row(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 16.0),
+                              const Padding(
+                                padding: EdgeInsets.only(left: 16.0),
                                 child: Icon(Icons.dark_mode),
                               ),
-                              SizedBox(width: 8.0),
-                              Text(
+                              const SizedBox(width: 8.0),
+                              const Text(
                                 'Dark Mode',
                                 style: TextStyle(fontSize: 16.0),
                               ),
-                              SizedBox(width: 8.0),
+                              const SizedBox(width: 8.0),
                               Switch(
                                 value: isDarkMode,
                                 onChanged: (bool value) {
@@ -223,9 +225,9 @@ class _MenuPageState extends State<MenuPage> {
                               ),
                             ],
                           ),
-                          Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 16.0),
+                          const Spacer(),
+                          const Padding(
+                            padding: EdgeInsets.only(bottom: 16.0),
                             child: Text(
                               'Scholarly v.1.0.0',
                               style: TextStyle(
@@ -271,10 +273,10 @@ class MenuItem extends StatelessWidget {
               iconData,
               size: 24.0,
             ),
-            SizedBox(width: 16.0),
+            const SizedBox(width: 16.0),
             Text(
               title,
-              style: TextStyle(fontSize: 16.0),
+              style: const TextStyle(fontSize: 16.0),
             ),
           ],
         ),

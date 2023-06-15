@@ -21,7 +21,7 @@ class HabitsPage extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(0.0),
-              child: Container(
+              child: SizedBox(
                 width: double.infinity,
                 height: 200.0,
                 child: Column(
@@ -38,7 +38,7 @@ class HabitsPage extends StatelessWidget {
                                 MaterialPageRoute(builder: (context) => MenuPage()),
                               );
                             },
-                            child: Container(
+                            child: SizedBox(
                               width: 24,
                               height: 24,
                               child: SvgPicture.string(
@@ -54,8 +54,8 @@ class HabitsPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(width: 8.0),
-                        Padding(
+                        const SizedBox(width: 8.0),
+                        const Padding(
                           padding: EdgeInsets.only(top: 43),
                           child: Align(
                             alignment: Alignment.center,
@@ -71,7 +71,7 @@ class HabitsPage extends StatelessWidget {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 110, left: 60),
-                          child: Container(
+                          child: SizedBox(
                             width: 50.0, // Adjust the width as needed
                             height: 50.0, // Adjust the height as needed
                             child: Stack(
@@ -88,11 +88,11 @@ class HabitsPage extends StatelessWidget {
                                     onTap: () {
                                       Navigator.push(
                                         context,
-                                        MaterialPageRoute(builder: (context) => AddHabits()),
+                                        MaterialPageRoute(builder: (context) => const AddHabits()),
                                       );
                                     },
                                     child: ColorFiltered(
-                                      colorFilter: ColorFilter.mode(
+                                      colorFilter: const ColorFilter.mode(
                                         Color(0xFF8D8F9D), // Set the desired color here
                                         BlendMode.srcIn,
                                       ),
@@ -112,7 +112,7 @@ class HabitsPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.only(right: 232.0,top: 10), // Set the desired padding
                       child: Text(
                         'Add New Habit',
@@ -135,8 +135,8 @@ class HabitsPage extends StatelessWidget {
           // Placeholder code for add button
           print('Add button pressed');
         },
-        child: Icon(Icons.add),
         backgroundColor: AppColors.kPrimary400,
+        child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
@@ -144,28 +144,28 @@ class HabitsPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             IconButton(
-              icon: Icon(Icons.home),
+              icon: const Icon(Icons.home),
               color: AppColors.kPrimary400,
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
+                  MaterialPageRoute(builder: (context) => const HomePage()),
                 );
               },
             ),
             IconButton(
-              icon: Icon(Icons.calendar_month),
+              icon: const Icon(Icons.calendar_month),
               color: AppColors.kMainText,
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CalendarPage()),
+                  MaterialPageRoute(builder: (context) => const CalendarPage()),
                 );
               },
             ),
-            SizedBox(width: 56),
+            const SizedBox(width: 56),
             IconButton(
-              icon: Icon(Icons.school),
+              icon: const Icon(Icons.school),
               color: AppColors.kMainText,
               onPressed: () {
                 Navigator.push(
@@ -175,12 +175,12 @@ class HabitsPage extends StatelessWidget {
               },
             ),
             IconButton(
-              icon: Icon(Icons.newspaper),
+              icon: const Icon(Icons.newspaper),
               color: AppColors.kMainText,
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => InfoPage()),
+                  MaterialPageRoute(builder: (context) => const InfoPage()),
                 );
               },
             ),
