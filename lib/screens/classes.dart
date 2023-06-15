@@ -16,7 +16,7 @@ class ClassesPage extends StatelessWidget {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 height: MediaQuery
                     .of(context)
                     .size
@@ -29,7 +29,7 @@ class ClassesPage extends StatelessWidget {
                         child: Column(
                           children: [
                             Padding(
-                              padding: EdgeInsets.only(top: 65, left: 25),
+                              padding: const EdgeInsets.only(top: 65, left: 25),
                               child: Row(
                                 children: [
                                   Image.asset(
@@ -37,10 +37,10 @@ class ClassesPage extends StatelessWidget {
                                     width: 55,
                                     height: 55,
                                   ),
-                                  SizedBox(width: 10),
-                                  Column(
+                                  const SizedBox(width: 10),
+                                  const Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: const [
+                                    children: [
                                       Text(
                                         'Jane Doe',
                                         style: TextStyle(
@@ -67,7 +67,7 @@ class ClassesPage extends StatelessWidget {
                                       print('Menu button clicked');
                                     },
                                     child: Padding(
-                                      padding: EdgeInsets.only(left: 80.0),
+                                      padding: const EdgeInsets.only(left: 80.0),
                                       // Adjust the right padding as needed
                                       child: SvgPicture.string(
                                         '''
@@ -86,7 +86,7 @@ class ClassesPage extends StatelessWidget {
                             ),
                             Expanded(
                               child: Padding(
-                                padding: EdgeInsets.only(
+                                padding: const EdgeInsets.only(
                                     top: 20, left: 25, right: 25),
                                 child: ListView(
                                   children: [
@@ -94,16 +94,16 @@ class ClassesPage extends StatelessWidget {
                                       width: 350,
                                       height: 170,
                                       decoration: BoxDecoration(
-                                        color: Color(0xFFEAF5E6),
+                                        color: const Color(0xFFEAF5E6),
                                         borderRadius: BorderRadius.circular(5),
                                       ),
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment
                                             .start,
                                         children: [
-                                          SizedBox(height: 20),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
+                                          const SizedBox(height: 20),
+                                          const Padding(
+                                            padding: EdgeInsets.symmetric(
                                                 horizontal: 20),
                                             child: Text(
                                               'Module Name',
@@ -115,9 +115,9 @@ class ClassesPage extends StatelessWidget {
                                               ),
                                             ),
                                           ),
-                                          SizedBox(height: 3),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
+                                          const SizedBox(height: 3),
+                                          const Padding(
+                                            padding: EdgeInsets.symmetric(
                                                 horizontal: 20),
                                             child: Text(
                                               'Web Development and e-Commerce',
@@ -129,9 +129,9 @@ class ClassesPage extends StatelessWidget {
                                               ),
                                             ),
                                           ),
-                                          SizedBox(height: 10),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
+                                          const SizedBox(height: 10),
+                                          const Padding(
+                                            padding: EdgeInsets.symmetric(
                                                 horizontal: 20),
                                             child: Text(
                                               'Module Code',
@@ -143,9 +143,9 @@ class ClassesPage extends StatelessWidget {
                                               ),
                                             ),
                                           ),
-                                          SizedBox(height: 3),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
+                                          const SizedBox(height: 3),
+                                          const Padding(
+                                            padding: EdgeInsets.symmetric(
                                                 horizontal: 20),
                                             child: Text(
                                               'ITECA3 - B12',
@@ -157,7 +157,7 @@ class ClassesPage extends StatelessWidget {
                                               ),
                                             ),
                                           ),
-                                          SizedBox(height: 10),
+                                          const SizedBox(height: 10),
                                           Padding(
                                             padding: const EdgeInsets.only(left: 20),
                                             child: Row(
@@ -174,11 +174,11 @@ class ClassesPage extends StatelessWidget {
   ''',
                                                       width: 12,
                                                       height: 12,
-                                                      color: Color(0xFF87C782),
+                                                      color: const Color(0xFF87C782),
                                                     ),
 
-                                                    SizedBox(height: 5),
-                                                    Text(
+                                                    const SizedBox(height: 5),
+                                                    const Text(
                                                       '75%',
                                                       style: TextStyle(
                                                         fontFamily: 'Montserrat',
@@ -194,21 +194,21 @@ class ClassesPage extends StatelessWidget {
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Padding(
-                                                      padding: EdgeInsets.only(left:65),
+                                                      padding: const EdgeInsets.only(left:65),
                                                       child: SvgPicture.string(
                                                         '''
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
     <path fill="#E66A64" d="M8 8a3 3 0 1 0 0-6a3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0a2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1s1-4 6-4s6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664h10Z"/>
   </svg>
   ''',
-                                                        color: Color(0xFF87C782),
+                                                        color: const Color(0xFF87C782),
                                                         width: 12,
                                                         height: 12,
                                                       ),
                                                     ),
-                                                      SizedBox(height: 5),
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(left: 65),
+                                                      const SizedBox(height: 5),
+                                                    const Padding(
+                                                      padding: EdgeInsets.only(left: 65),
                                                       child: Text(
                                                         'Mr. Idowu Aruleba',
                                                         style: TextStyle(
@@ -229,20 +229,20 @@ class ClassesPage extends StatelessWidget {
                                       ),
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.only(top: 20),
+                                      padding: const EdgeInsets.only(top: 20),
                                       child: Container(
                                         width: 350,
                                         height: 170,
                                         decoration: BoxDecoration(
-                                          color: Color(0xFFEDE4F9),
+                                          color: const Color(0xFFEDE4F9),
                                           borderRadius: BorderRadius.circular(5),
                                         ),
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            SizedBox(height: 20),
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                                            const SizedBox(height: 20),
+                                            const Padding(
+                                              padding: EdgeInsets.symmetric(horizontal: 20),
                                               child: Text(
                                                 'Module Name',
                                                 style: TextStyle(
@@ -253,9 +253,9 @@ class ClassesPage extends StatelessWidget {
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(height: 3),
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                                            const SizedBox(height: 3),
+                                            const Padding(
+                                              padding: EdgeInsets.symmetric(horizontal: 20),
                                               child: Text(
                                                 'Mobile Application and Web Services',
                                                 style: TextStyle(
@@ -266,9 +266,9 @@ class ClassesPage extends StatelessWidget {
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(height: 10),
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                                            const SizedBox(height: 10),
+                                            const Padding(
+                                              padding: EdgeInsets.symmetric(horizontal: 20),
                                               child: Text(
                                                 'Module Code',
                                                 style: TextStyle(
@@ -279,9 +279,9 @@ class ClassesPage extends StatelessWidget {
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(height: 3),
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                                            const SizedBox(height: 3),
+                                            const Padding(
+                                              padding: EdgeInsets.symmetric(horizontal: 20),
                                               child: Text(
                                                 'ITMDA3 - B12',
                                                 style: TextStyle(
@@ -292,7 +292,7 @@ class ClassesPage extends StatelessWidget {
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(height: 10),
+                                            const SizedBox(height: 10),
                                             Padding(
                                               padding: const EdgeInsets.only(left: 20),
                                               child: Row(
@@ -309,11 +309,11 @@ class ClassesPage extends StatelessWidget {
   ''',
                                                         width: 12,
                                                         height: 12,
-                                                        color: Color(0xFF8F76C9),
+                                                        color: const Color(0xFF8F76C9),
                                                       ),
 
-                                                      SizedBox(height: 5),
-                                                      Text(
+                                                      const SizedBox(height: 5),
+                                                      const Text(
                                                         '75%',
                                                         style: TextStyle(
                                                           fontFamily: 'Montserrat',
@@ -324,12 +324,12 @@ class ClassesPage extends StatelessWidget {
                                                       ),
                                                     ],
                                                   ),
-                                                  SizedBox(width: 20),
+                                                  const SizedBox(width: 20),
                                                   Column(
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
                                                       Padding(
-                                                        padding: EdgeInsets.only(left: 50),
+                                                        padding: const EdgeInsets.only(left: 50),
                                                         child: SvgPicture.string(
                                                           '''
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
@@ -341,9 +341,9 @@ class ClassesPage extends StatelessWidget {
                                                         ),
                                                       ),
 
-                                                      SizedBox(height: 5),
-                                                      Padding(
-                                                        padding: const EdgeInsets.only(left: 50),
+                                                      const SizedBox(height: 5),
+                                                      const Padding(
+                                                        padding: EdgeInsets.only(left: 50),
                                                         child: Text(
                                                           'Mr. Ian Masaga',
                                                           style: TextStyle(
@@ -365,20 +365,20 @@ class ClassesPage extends StatelessWidget {
                                     ),
 
                                     Padding(
-                                      padding: EdgeInsets.only(top: 20),
+                                      padding: const EdgeInsets.only(top: 20),
                                       child: Container(
                                         width: 350,
                                         height: 170,
                                         decoration: BoxDecoration(
-                                          color: Color(0xFFFCECEB),
+                                          color: const Color(0xFFFCECEB),
                                           borderRadius: BorderRadius.circular(5),
                                         ),
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            SizedBox(height: 20),
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                                            const SizedBox(height: 20),
+                                            const Padding(
+                                              padding: EdgeInsets.symmetric(horizontal: 20),
                                               child: Text(
                                                 'Module Name',
                                                 style: TextStyle(
@@ -389,9 +389,9 @@ class ClassesPage extends StatelessWidget {
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(height: 3),
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                                            const SizedBox(height: 3),
+                                            const Padding(
+                                              padding: EdgeInsets.symmetric(horizontal: 20),
                                               child: Text(
                                                 'Industry 4.0',
                                                 style: TextStyle(
@@ -402,9 +402,9 @@ class ClassesPage extends StatelessWidget {
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(height: 10),
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                                            const SizedBox(height: 10),
+                                            const Padding(
+                                              padding: EdgeInsets.symmetric(horizontal: 20),
                                               child: Text(
                                                 'Module Code',
                                                 style: TextStyle(
@@ -415,9 +415,9 @@ class ClassesPage extends StatelessWidget {
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(height: 3),
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                                            const SizedBox(height: 3),
+                                            const Padding(
+                                              padding: EdgeInsets.symmetric(horizontal: 20),
                                               child: Text(
                                                 'ITIRA3 - B22',
                                                 style: TextStyle(
@@ -428,7 +428,7 @@ class ClassesPage extends StatelessWidget {
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(height: 10),
+                                            const SizedBox(height: 10),
                                             Padding(
                                               padding: const EdgeInsets.only(left: 20),
                                               child: Row(
@@ -446,8 +446,8 @@ class ClassesPage extends StatelessWidget {
                                                         width: 12,
                                                         height: 12,
                                                       ),
-                                                      SizedBox(height: 5),
-                                                      Text(
+                                                      const SizedBox(height: 5),
+                                                      const Text(
                                                         '92%',
                                                         style: TextStyle(
                                                           fontFamily: 'Montserrat',
@@ -458,13 +458,13 @@ class ClassesPage extends StatelessWidget {
                                                       ),
                                                     ],
                                                   ),
-                                                  SizedBox(width: 20),
+                                                  const SizedBox(width: 20),
 
                                               Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   Padding(
-                                                    padding: EdgeInsets.only(left:50),
+                                                    padding: const EdgeInsets.only(left:50),
                                                     child: SvgPicture.string(
                                                       '''
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
@@ -475,9 +475,9 @@ class ClassesPage extends StatelessWidget {
                                                       height: 12,
                                                     ),
                                                   ),
-                                                  SizedBox(height: 5),
-                                                  Padding(
-                                                    padding: const EdgeInsets.only(left: 50),
+                                                  const SizedBox(height: 5),
+                                                  const Padding(
+                                                    padding: EdgeInsets.only(left: 50),
                                                     child: Text(
                                                       'Mr. Bongumusa Mkungo',
                                                       style: TextStyle(
@@ -506,7 +506,7 @@ class ClassesPage extends StatelessWidget {
                                         Positioned(
 
                                           child: Padding(
-                                            padding: EdgeInsets.only(top: 22, bottom: 90),
+                                            padding: const EdgeInsets.only(top: 22, bottom: 90),
                                             child: Image.asset(
                                               'assets/images/classespage/bottom.png',
                                               width: 365,
@@ -526,7 +526,7 @@ class ClassesPage extends StatelessWidget {
                                                   '''<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19 12.998h-6v6h-2v-6H5v-2h6v-6h2v6h6z"/></svg>''',
                                                   width: 50,
                                                   height: 50,
-                                                  color: Color(0xFF8D8F9D),
+                                                  color: const Color(0xFF8D8F9D),
                                                 ),
                                               ),
                                             ),
@@ -574,7 +574,7 @@ class ClassesPage extends StatelessWidget {
                     // Placeholder code for add button
                     print('Add button pressed');
                   },
-                  icon: Icon(Icons.add, color: Colors.white), // Set the icon color
+                  icon: const Icon(Icons.add, color: Colors.white), // Set the icon color
                 ),
               ),
             ),
@@ -586,28 +586,28 @@ class ClassesPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               IconButton(
-                icon: Icon(Icons.home),
+                icon: const Icon(Icons.home),
                 color: AppColors.kMainText,
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
+                    MaterialPageRoute(builder: (context) => const HomePage()),
                   );
                 },
               ),
               IconButton(
-                icon: Icon(Icons.calendar_month),
+                icon: const Icon(Icons.calendar_month),
                 color: AppColors.kMainText,
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CalendarPage()),
+                    MaterialPageRoute(builder: (context) => const CalendarPage()),
                   );
                 },
               ),
-              SizedBox(width: 56), // Empty space for the float button
+              const SizedBox(width: 56), // Empty space for the float button
               IconButton(
-                icon: Icon(Icons.school),
+                icon: const Icon(Icons.school),
                 color: AppColors.kPrimary400,
                 onPressed: () {
                   Navigator.push(
@@ -617,12 +617,12 @@ class ClassesPage extends StatelessWidget {
                 },
               ),
               IconButton(
-                icon: Icon(Icons.newspaper),
+                icon: const Icon(Icons.newspaper),
                 color: AppColors.kMainText,
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => InfoPage()),
+                    MaterialPageRoute(builder: (context) => const InfoPage()),
                   );
                 },
               ),

@@ -10,7 +10,6 @@ import 'package:scholarly/screens/info.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
-import 'package:iconify_flutter/icons/ci.dart';
 import 'package:iconify_flutter/icons/octicon.dart';
 import 'package:iconify_flutter/icons/bi.dart';
 import 'package:iconify_flutter/icons/material_symbols.dart';
@@ -31,18 +30,15 @@ class _CalendarPageState extends State<CalendarPage> {
 
   DateTime _currentMonth = DateTime.now();
   List<Event> events = getDummyEvents();
-  PageController _pageController = PageController(initialPage: DateTime.now().month - 1);
+  final PageController _pageController = PageController(initialPage: DateTime.now().month - 1);
 
   final Set<DateTime> _selectedDays = LinkedHashSet<DateTime>(
       equals: isSameDay,
       hashCode: getHashCode,
   );
 
-  CalendarFormat _calendarFormat = CalendarFormat.month;
-  DateTime _focusedDay = DateTime.now();
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     setState(() {
-      _focusedDay = focusedDay;
       if (_selectedDays.contains(selectedDay)) {
         _selectedDays.remove(selectedDay);
       } else {
@@ -241,102 +237,100 @@ class _CalendarPageState extends State<CalendarPage> {
                                 final duration = endTime.difference(startTime);
 
                                 return AlertDialog(
-                                  content: Container(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: [
-                                            IconButton(
-                                              onPressed: () {
-                                                // Edit button action
-                                              },
-                                              icon: const Iconify(MaterialSymbols.edit_square_outline_rounded, size: 20, color: AppColors.kDarkGray),
-                                            ),
-                                          ],
-                                        ),
-                                        const Text(
-                                          'Task Title',
-                                          style: TextStyle(fontWeight: FontWeight.w400, fontSize: 13, color: AppColors.kDarkGray),
-                                        ),
-                                        Text(
-                                          event.title,
-                                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                                        ),
-                                        const SizedBox(height: 5),
-                                        Text(
-                                          '${DateFormat('hh:mm a').format(startTime)} - ${DateFormat('hh:mm a').format(endTime)} '
-                                          '(${duration.inHours}h ${duration.inMinutes.remainder(60)}m)',
-                                          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 13, color: AppColors.kDarkGray),
-                                        ),
-                                        const SizedBox(height: 16),
-                                        Row(
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              children: [
-                                                const Text(
-                                                  'Venue',
-                                                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 13, color: AppColors.kDarkGray),
-                                                ),
-                                                Text(
-                                                  event.venue,
-                                                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(width: 25),
-                                            Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              children: [
-                                                const Text(
-                                                  'Participants',
-                                                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 13, color: AppColors.kDarkGray),
-                                                ),
-                                                Text(
-                                                  _formatParticipants(event.participants),
-                                                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                         
-                                         ElevatedButton(
-                                          onPressed: () {
-                                            // Task complete action
-                                          },
-                                          child: const Text('Task Complete'),
-                                          style: ButtonStyle(
-                                            backgroundColor: MaterialStateProperty.all<Color>(AppColors.kPrimary400), // Set background color
-                                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                              RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(0), // Set zero border radius
-                                              ),
-                                            ),
-                                            minimumSize: MaterialStateProperty.all<Size>(
-                                              const Size(double.infinity, 0), // Take full width of dialog
-                                            ),
-                                          ),
-                                        ),
-                                        Align(
-                                          alignment: Alignment.center,
-                                          child: TextButton(
+                                  content: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          IconButton(
                                             onPressed: () {
-                                              Navigator.of(context).pop();
+                                              // Edit button action
                                             },
-                                            child: const Text(
-                                              'Cancel',
-                                              style: TextStyle(color: AppColors.kDarkGray),
+                                            icon: const Iconify(MaterialSymbols.edit_square_outline_rounded, size: 20, color: AppColors.kDarkGray),
+                                          ),
+                                        ],
+                                      ),
+                                      const Text(
+                                        'Task Title',
+                                        style: TextStyle(fontWeight: FontWeight.w400, fontSize: 13, color: AppColors.kDarkGray),
+                                      ),
+                                      Text(
+                                        event.title,
+                                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        '${DateFormat('hh:mm a').format(startTime)} - ${DateFormat('hh:mm a').format(endTime)} '
+                                        '(${duration.inHours}h ${duration.inMinutes.remainder(60)}m)',
+                                        style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 13, color: AppColors.kDarkGray),
+                                      ),
+                                      const SizedBox(height: 16),
+                                      Row(
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: [
+                                              const Text(
+                                                'Venue',
+                                                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 13, color: AppColors.kDarkGray),
+                                              ),
+                                              Text(
+                                                event.venue,
+                                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(width: 25),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: [
+                                              const Text(
+                                                'Participants',
+                                                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 13, color: AppColors.kDarkGray),
+                                              ),
+                                              Text(
+                                                _formatParticipants(event.participants),
+                                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                       
+                                       ElevatedButton(
+                                        onPressed: () {
+                                          // Task complete action
+                                        },
+                                        style: ButtonStyle(
+                                          backgroundColor: MaterialStateProperty.all<Color>(AppColors.kPrimary400), // Set background color
+                                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(0), // Set zero border radius
                                             ),
                                           ),
+                                          minimumSize: MaterialStateProperty.all<Size>(
+                                            const Size(double.infinity, 0), // Take full width of dialog
+                                          ),
                                         ),
-                                      ],
-                                    ),
+                                        child: const Text('Task Complete'),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.center,
+                                        child: TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text(
+                                            'Cancel',
+                                            style: TextStyle(color: AppColors.kDarkGray),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 );
                               },
@@ -471,7 +465,7 @@ class _CalendarPageState extends State<CalendarPage> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const ClassesPage()),
+                MaterialPageRoute(builder: (context) => ClassesPage()),
               );
             },
           ),

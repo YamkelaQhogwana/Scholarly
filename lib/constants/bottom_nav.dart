@@ -32,7 +32,7 @@ class CustomBottomNav extends StatelessWidget implements PreferredSizeWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) =>  CalendarPage()),
+                MaterialPageRoute(builder: (context) =>  const CalendarPage()),
               );
             },
           ),
@@ -43,7 +43,7 @@ class CustomBottomNav extends StatelessWidget implements PreferredSizeWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const ClassesPage()),
+                MaterialPageRoute(builder: (context) => ClassesPage()),
               );
             },
           ),
@@ -64,5 +64,5 @@ class CustomBottomNav extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

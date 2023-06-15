@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       title: 'Scholarly',
 
       theme: ThemeData(fontFamily: 'Poppins', ),
-      home: OnboardingPage(),
+      home: const OnboardingPage(),
     );
   }
 }
