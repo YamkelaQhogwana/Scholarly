@@ -21,10 +21,16 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
   TextEditingController();
+  bool _isSigningUp = false;
   final TextEditingController _fullNameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   String _errorMessage = '';
-
+  bool isValidEmail(String email) {
+    final RegExp emailRegex = RegExp(
+      r'^[\w-]+(\.[\w-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$',
+    );
+    return emailRegex.hasMatch(email);
+  }
 
   Future<void> _signInWithGoogle() async {
     try {
@@ -49,7 +55,7 @@ class _SignUpPageState extends State<SignUpPage> {
         // Navigate to the onboarding page
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const OnboardingPage()),
+          MaterialPageRoute(builder: (context) => OnboardingPage()),
         );
       } else {
         // Google sign-in failed, handle the error
@@ -72,11 +78,19 @@ class _SignUpPageState extends State<SignUpPage> {
       });
       return;
     }
-
+    if (!isValidEmail(email)) {
+      setState(() {
+        _errorMessage = 'Invalid email address.';
+      });
+      return;
+    }
     if (!_formKey.currentState!.validate()) {
       return;
     }
-
+    setState(() {
+      _isSigningUp = true; // Start the loading indicator
+      _errorMessage = ''; // Clear any previous error message
+    });
     try {
       await _auth.registerWithEmailAndPassword(email, password, displayName);
 
@@ -89,7 +103,7 @@ class _SignUpPageState extends State<SignUpPage> {
       // Registration successful, navigate to the onboarding page
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const Login()),
+        MaterialPageRoute(builder: (context) => Login()),
       );
     } on RegistrationException catch (e) {
       setState(() {
@@ -100,9 +114,12 @@ class _SignUpPageState extends State<SignUpPage> {
       setState(() {
         _errorMessage = 'Registration failed. Please try again later.';
       });
+    } finally {
+      setState(() {
+        _isSigningUp = false; // Stop the loading indicator
+      });
     }
   }
-
   String _getErrorMessage(RegistrationException exception) {
     if (exception.exception is FirebaseAuthException) {
       final FirebaseAuthException firebaseException =
@@ -112,16 +129,25 @@ class _SignUpPageState extends State<SignUpPage> {
           return 'Email already exists. Please use a different email address.';
         case 'weak-password':
           return 'Weak password. Please choose a stronger password.';
+        case 'invalid-email':
+          return 'The email address is invalid.';
         default:
-          return firebaseException.message ??
-              'Registration failed. Please try again later.';
+          return 'Registration failed. Please try again later.';
+      }
+    } else if (exception.exception is FirebaseException) {
+      final FirebaseException firebaseException =
+      exception.exception as FirebaseException;
+      if (firebaseException.code == 'email-already-in-use') {
+        return 'Email already exists. Please use a different email address.';
+      } else if (firebaseException.code == 'invalid-email') {
+        return 'The email address is invalid.';
+      } else {
+        return 'Registration failed. Please try again later.';
       }
     } else {
-      return exception.message ?? 'Registration failed. Please try again later.';
+      return 'Registration failed. Please try again later.';
     }
   }
-
-
 
 
 
@@ -131,13 +157,13 @@ class _SignUpPageState extends State<SignUpPage> {
       body: SingleChildScrollView(
         child: Center(
           child: Container(
-            padding: const EdgeInsets.only(top: 70.0),
+            padding: EdgeInsets.only(top: 70.0),
             child: Form(
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.only(left: 30.0),
                     child: Text(
                       "Welcome 👋🏼\nsign up to continue",
@@ -148,20 +174,20 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16.0),
+                  SizedBox(height: 16.0),
                   if (_errorMessage.isNotEmpty)
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                      padding: EdgeInsets.symmetric(horizontal: 30.0),
                       child: Text(
                         _errorMessage,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.red,
                           fontSize: 14.0,
                         ),
                       ),
                     ),
-                  const SizedBox(height: 28.0),
-                  const Padding(
+                  SizedBox(height: 28.0),
+                  Padding(
                     padding: EdgeInsets.only(left: 30.0),
                     child: Text(
                       "Full Name",
@@ -172,11 +198,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10.0),
+                  SizedBox(height: 10.0),
                   Container(
-                    margin: const EdgeInsets.only(left: 30.0),
+                    margin: EdgeInsets.only(left: 30.0),
                     width: 330.0,
-                    height: 40.0,
+                   // height: 40.0,
                     child: TextFormField(
                       controller: _fullNameController,
                       validator: (value) {
@@ -187,7 +213,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       },
                       decoration: InputDecoration(
                         filled: true,
-                        fillColor: const Color(0xFFF4F7F9),
+                        fillColor: Color(0xFFF4F7F9),
                         hintText: 'Jane Doe',
                         hintStyle: const TextStyle(
                           color: Colors.grey,
@@ -195,30 +221,20 @@ class _SignUpPageState extends State<SignUpPage> {
                           fontSize: 12.0,
                           fontWeight: FontWeight.normal,
                         ),
-                        contentPadding: const EdgeInsets.symmetric(
+                        contentPadding: EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 15.0),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
                           borderSide: BorderSide.none,
                         ),
                       ),
-                      style: const TextStyle(color: Colors.black),
+                      style: TextStyle(fontFamily:'Poppins', fontSize: 14, color: Colors.black),
                     ),
                   ),
-                  const SizedBox(height: 10.0),
-                  if (_formKey.currentState?.validate() ?? false)
-                    const Padding(
-                      padding: EdgeInsets.only(left: 30.0, top: 4.0),
-                      child: Text(
-                        'Please enter your name',
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 12.0,
-                        ),
-                      ),
-                    ),
 
-                  const SizedBox(height: 28.0),
+
+
+                  SizedBox(height: 28.0),
                   const Padding(
                     padding: EdgeInsets.only(left: 30.0),
                     child: Text(
@@ -230,11 +246,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10.0),
+                  SizedBox(height: 10.0),
                   Container(
-                    margin: const EdgeInsets.only(left: 30.0),
+                    margin: EdgeInsets.only(left: 30.0),
                     width: 330.0,
-                    height: 40.0,
+                    //height: 40.0,
                     child: TextFormField(
                       controller: _emailController,
                       validator: (value) {
@@ -245,7 +261,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       },
                       decoration: InputDecoration(
                         filled: true,
-                        fillColor: const Color(0xFFF4F7F9),
+                        fillColor: Color(0xFFF4F7F9),
                         hintText: 'example@university.co.za',
                         hintStyle: const TextStyle(
                           color: Colors.grey,
@@ -253,18 +269,18 @@ class _SignUpPageState extends State<SignUpPage> {
                           fontSize: 12.0,
                           fontWeight: FontWeight.normal,
                         ),
-                        contentPadding: const EdgeInsets.symmetric(
+                        contentPadding: EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 15.0),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
                           borderSide: BorderSide.none,
                         ),
                       ),
-                      style: const TextStyle(color: Colors.black),
+                      style: TextStyle(fontFamily: 'Poppins', fontSize:14,color: Colors.black),
                     ),
                   ),
 
-                  const SizedBox(height: 28.0),
+                  SizedBox(height: 28.0),
                   const Padding(
                     padding: EdgeInsets.only(left: 30.0),
                     child: Text(
@@ -276,11 +292,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10.0),
+                  SizedBox(height: 10.0),
                   Container(
-                    margin: const EdgeInsets.only(left: 30.0),
+                    margin: EdgeInsets.only(left: 30.0),
                     width: 330.0,
-                    height: 40.0,
+                  //  height: 40.0,
                     child: TextFormField(
                       controller: _passwordController,
                       obscureText: true,
@@ -292,7 +308,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       },
                       decoration: InputDecoration(
                         filled: true,
-                        fillColor: const Color(0xFFF4F7F9),
+                        fillColor: Color(0xFFF4F7F9),
                         hintText: '••••••••••••',
                         hintStyle: const TextStyle(
                           color: Colors.grey,
@@ -300,17 +316,17 @@ class _SignUpPageState extends State<SignUpPage> {
                           fontSize: 12.0,
                           fontWeight: FontWeight.normal,
                         ),
-                        contentPadding: const EdgeInsets.symmetric(
+                        contentPadding: EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 15.0),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
                           borderSide: BorderSide.none,
                         ),
                       ),
-                      style: const TextStyle(color: Colors.black),
+                      style: TextStyle(color: Colors.black),
                     ),
                   ),
-                  const SizedBox(height: 28.0),
+                  SizedBox(height: 28.0),
                   const Padding(
                     padding: EdgeInsets.only(left: 30.0),
                     child: Text(
@@ -322,11 +338,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10.0),
+                  SizedBox(height: 10.0),
                   Container(
-                    margin: const EdgeInsets.only(left: 30.0),
+                    margin: EdgeInsets.only(left: 30.0),
                     width: 330.0,
-                    height: 40.0,
+                   // height: 40.0,
                     child: TextFormField(
                       controller: _confirmPasswordController,
                       obscureText: true,
@@ -338,7 +354,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       },
                       decoration: InputDecoration(
                         filled: true,
-                        fillColor: const Color(0xFFF4F7F9),
+                        fillColor: Color(0xFFF4F7F9),
                         hintText: '••••••••••••',
                         hintStyle: const TextStyle(
                           color: Colors.grey,
@@ -346,20 +362,20 @@ class _SignUpPageState extends State<SignUpPage> {
                           fontSize: 12.0,
                           fontWeight: FontWeight.normal,
                         ),
-                        contentPadding: const EdgeInsets.symmetric(
+                        contentPadding: EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 15.0),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
                           borderSide: BorderSide.none,
                         ),
                       ),
-                      style: const TextStyle(color: Colors.black),
+                      style: TextStyle(color: Colors.black),
                     ),
                   ),
 
-                  const SizedBox(height: 28.0),
+                  SizedBox(height: 28.0),
                   Container(
-                    margin: const EdgeInsets.only(left: 39.0),
+                    margin: EdgeInsets.only(left: 39.0),
                     width: 330.0,
                     height: 50.0,
                     decoration: BoxDecoration(
@@ -368,44 +384,66 @@ class _SignUpPageState extends State<SignUpPage> {
                         BoxShadow(
                           color: Colors.black.withOpacity(0.2),
                           blurRadius: 4.0,
-                          offset: const Offset(0, 5),
+                          offset: Offset(0, 5),
                         ),
                       ],
                     ),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF383B53),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                      onPressed: _registerWithEmailAndPassword,
-                      child: const Text(
-                        'Sign Up',
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                    child: Material(
+                      color: Color(0xFF383B53), // Set the background color explicitly
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: InkWell(
+                        onTap: _isSigningUp ? null : _registerWithEmailAndPassword,
+                        child: Container(
+                          width: double.infinity,
+                          height: 50.0,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              if (_isSigningUp)
+                                Positioned.fill(
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Container(
+                                      width: 24.0,
+                                      height: 24.0,
+                                      child: CircularProgressIndicator(
+                                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              if (!_isSigningUp)
+                                Center(
+                                  child: Text(
+                                    'Sign Up',
+                                    style: TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-
-                  const SizedBox(height: 16.0),
+                    SizedBox(height: 16.0),
                   Container(
                     padding:
-                    const EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
+                    EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Expanded(
                           child: Container(
                             height: 1.5,
-                            color: const Color.fromRGBO(195, 197, 198, 1),
+                            color: Color.fromRGBO(195, 197, 198, 1),
                           ),
                         ),
-                        const SizedBox(width: 15.0),
+                        SizedBox(width: 15.0),
                         const Text(
                           'or sign up with',
                           style: TextStyle(
@@ -415,18 +453,18 @@ class _SignUpPageState extends State<SignUpPage> {
                             color: Color.fromRGBO(141, 143, 157, 1),
                           ),
                         ),
-                        const SizedBox(width: 15.0),
+                        SizedBox(width: 15.0),
                         Expanded(
                           child: Container(
                             height: 1.5,
-                            color: const Color.fromRGBO(195, 197, 198, 1),
+                            color: Color.fromRGBO(195, 197, 198, 1),
                           ),
                         ),
                       ],
                     ),
                   ),
 
-                  const SizedBox(height: 15.0),
+                  SizedBox(height: 15.0),
                   Align(
                     alignment: Alignment.center,
                     child: Container(
@@ -435,12 +473,12 @@ class _SignUpPageState extends State<SignUpPage> {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(5.0),
-                        border: Border.all(color: const Color(0xFF121212), width: 1.0),
+                        border: Border.all(color: Color(0xFF121212), width: 1.0),
                       ),
                       child: InkWell(
                         onTap: _signInWithGoogle, // Add this method
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          padding: EdgeInsets.symmetric(horizontal: 10.0),
                           child: Row(
                             children: [
                               Image.asset(
@@ -448,7 +486,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 width: 20.0,
                                 height: 20.0,
                               ),
-                              const SizedBox(width: 10.0),
+                              SizedBox(width: 10.0),
                               const Padding(
                                 padding: EdgeInsets.only(left: 11.0),
                                 child: Text(
@@ -467,9 +505,9 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 25.0),
+                  SizedBox(height: 25.0),
                   Padding(
-                    padding: const EdgeInsets.only(left: 18.0, top: 38.0),
+                    padding: EdgeInsets.only(left: 18.0, top: 38.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -488,11 +526,11 @@ class _SignUpPageState extends State<SignUpPage> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => const Login()),
+                              MaterialPageRoute(builder: (context) => Login()),
                             );
                           },
                           child: const Text(
-                            'Log In',
+                            'Login',
                             style: TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 14.0,
