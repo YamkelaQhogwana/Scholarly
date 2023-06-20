@@ -1,32 +1,175 @@
 import 'package:flutter/material.dart';
 import 'package:scholarly/constants/colors.dart';
-import 'package:scholarly/constants/custom_appbar_main.dart';
-
 import 'package:scholarly/screens/calendar.dart';
 import 'package:scholarly/screens/classes.dart';
 import 'package:scholarly/screens/info.dart';
-import 'package:iconify_flutter/icons/bx.dart';
-import 'package:iconify_flutter/icons/gridicons.dart';
-import 'package:iconify_flutter/icons/majesticons.dart';
-import 'package:iconify_flutter/icons/material_symbols.dart';
-import 'package:iconify_flutter/iconify_flutter.dart';
-import 'package:iconify_flutter/icons/mdi.dart';
-import 'package:scholarly/screens/menu/habits.dart';
-import 'package:scholarly/screens/menu/notification_menu.dart';
-import 'package:scholarly/screens/menu/profile_menu.dart';
-import 'package:scholarly/screens/menu/statistics.dart';
+import 'package:scholarly/screens/feedback_form.dart';
+import 'package:scholarly/modules/events.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:scholarly/screens/habits_tab.dart';
+import 'package:scholarly/screens/tasks_tab.dart';
+import 'package:scholarly/screens/habits_tab.dart';
+import 'package:scholarly/screens/tasks_form.dart';
+import 'package:scholarly/screens/main_screen_menu.dart';
+import 'package:scholarly/constants/custom_appbar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class HomePage extends StatelessWidget {
+class Task {
+  final String title;
+  final DateTime date;
+
+  Task({required this.title, required this.date});
+}
+
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
+  CalendarFormat _calendarFormat = CalendarFormat.week;
+  late Map<DateTime, List<Task>> _tasks;
+  late List<Task> _selectedTasks;
+
+  late TabController? _tabController;
+  int _currentPageIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+    _tasks = {};
+    _selectedTasks = [];
+    _retrieveTasksFromFirestore();
+  }
+
+  @override
+  void dispose() {
+    _tabController?.dispose();
+    super.dispose();
+  }
+
+  void _changePage(int index) {
+    setState(() {
+      _currentPageIndex = index;
+    });
+  }
+
+  Future<void> _retrieveTasksFromFirestore() async {
+    try {
+      final snapshot =
+          await FirebaseFirestore.instance.collection('tasks').get();
+      final List<Task> tasks = [];
+
+      snapshot.docs.forEach((doc) {
+        final title = doc.data()['title'] as String;
+        final dateTimestamp = doc.data()['date'] as Timestamp?;
+
+        // Perform null check for dateTimestamp
+        final date = dateTimestamp != null ? dateTimestamp.toDate() : null;
+
+        if (date != null) {
+          tasks.add(Task(title: title, date: date));
+        }
+      });
+
+      _tasks = _groupTasksByDate(tasks);
+      setState(() {});
+    } catch (e) {
+      // Handle any errors that occur during task retrieval
+      print('Error retrieving tasks: $e');
+    }
+  }
+
+  DateTime _focusedDay = DateTime.now();
+  DateTime _selectedDay = DateTime.now();
+  Map<DateTime, List<Task>> _groupTasksByDate(List<Task> tasks) {
+    final Map<DateTime, List<Task>> groupedTasks = {};
+    for (final task in tasks) {
+      final date = DateTime(task.date.year, task.date.month, task.date.day);
+      if (groupedTasks.containsKey(date)) {
+        groupedTasks[date]!.add(task);
+      } else {
+        groupedTasks[date] = [task];
+      }
+    }
+    return groupedTasks;
+  }
+
+  List<Task> _getTasksForDate(DateTime date) {
+    return _tasks[date] ?? [];
+  }
+
+  void _onDaySelected(DateTime selectedDate, DateTime focusedDate) {
+    setState(() {
+      _selectedTasks = _getTasksForDate(selectedDate);
+      _selectedDay = selectedDate;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBarMain(),
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
-      body: Container(
-        alignment: Alignment.center,
-        child: const Text("Home/Main Page"),
+      appBar: const CustomAppBar(),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TableCalendar<Task>(
+            firstDay: DateTime.utc(2022, 1, 1),
+            lastDay: DateTime.utc(2024, 12, 31),
+            focusedDay: _focusedDay,
+            calendarFormat: _calendarFormat,
+            selectedDayPredicate: (day) {
+              return isSameDay(_selectedDay, day);
+            },
+            onDaySelected: _onDaySelected,
+            eventLoader: (day) {
+              return _tasks[day] ?? [];
+            },
+            onFormatChanged: (format) {
+              setState(() {
+                _calendarFormat = format;
+              });
+            },
+            onPageChanged: (focusedDay) {
+              setState(() {
+                _focusedDay = focusedDay;
+              });
+            },
+            headerStyle: const HeaderStyle(
+              formatButtonVisible: false, // Hide the format button
+              titleTextStyle: TextStyle(fontSize: 20),
+              titleCentered: true,
+              leftChevronIcon: Icon(Icons.chevron_left),
+              rightChevronIcon: Icon(Icons.chevron_right),
+            ),
+          ),
+          SizedBox(height: 16),
+          TabBar(
+            controller: _tabController,
+            labelColor: Colors.black,
+            unselectedLabelColor: Colors.grey,
+            tabs: [
+              Tab(text: 'Tasks'),
+              Tab(text: 'Habits'),
+            ],
+          ),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: <Widget>[
+                TasksPage(selectedDay: _selectedDay),
+                Habits_Page(),
+              ],
+            ),
+          ),
+        ],
       ),
       floatingActionButton: Stack(
         children: [
@@ -42,9 +185,9 @@ class HomePage extends StatelessWidget {
               ),
               child: IconButton(
                 onPressed: () {
-                  // showTaskFormBottomSheet(context);
+                  showTaskFormBottomSheet(context);
                 },
-                icon: const Icon(Icons.add, color: Colors.white),
+                icon: Icon(Icons.add, color: Colors.white),
               ),
             ),
           ),
@@ -56,28 +199,27 @@ class HomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             IconButton(
-              icon: const Icon(Icons.home),
-              color: AppColors.kPrimary400,
+              icon: Icon(Icons.home),
+              color: _currentPageIndex == 0
+                  ? AppColors.kPrimary400
+                  : AppColors.kMainText,
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomePage()),
-                );
+                _changePage(0);
               },
             ),
             IconButton(
-              icon: const Icon(Icons.calendar_month),
+              icon: Icon(Icons.calendar_month),
               color: AppColors.kMainText,
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const CalendarPage()),
+                  MaterialPageRoute(builder: (context) => CalendarPage()),
                 );
               },
             ),
-            const SizedBox(width: 56),
+            SizedBox(width: 56), // Empty space for the float button
             IconButton(
-              icon: const Icon(Icons.school),
+              icon: Icon(Icons.school),
               color: AppColors.kMainText,
               onPressed: () {
                 Navigator.push(
@@ -87,151 +229,18 @@ class HomePage extends StatelessWidget {
               },
             ),
             IconButton(
-              icon: const Icon(Icons.newspaper),
+              icon: Icon(Icons.newspaper),
               color: AppColors.kMainText,
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const InfoPage()),
+                  MaterialPageRoute(builder: (context) => InfoPage()),
                 );
               },
             ),
           ],
         ),
-      ),
-      endDrawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            SizedBox(
-              height: 250.0,
-              child: DrawerHeader(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 120.0,
-                      height: 120.0,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                      ),
-                      child: ClipOval(
-                        child: Image.asset(
-                          'assets/images/avatars/black-wn-av.png',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16.0),
-                    const Text(
-                      'Jane Doe',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8.0),
-                    const Text(
-                      'Third Year',
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            ListTile(
-              leading: const Iconify(MaterialSymbols.person_2_rounded),
-              title: const Text('Profile'),
-              onTap: () {
-                Navigator.push(context,
-                  MaterialPageRoute(
-                    builder: (context) => const ProfileMenu(),
-                  ),
-                );
-                // Add your logic for Inbox onTap
-              },
-            ),
-            ListTile(
-              leading: const Iconify(Mdi.bell_badge),
-              title: const Text('Notifications'),
-              onTap: () {
-                Navigator.push(context,
-                  MaterialPageRoute(
-                    builder: (context) => const NotificationsMenu(),
-                  ),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Iconify(Mdi.clock_check),
-              title: const Text('Habits/Goals'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const HabitsPage(),
-                  ),
-                );
-                // Add your logic for Sent onTap
-              },
-            ),
-            ListTile(
-              leading: const Iconify(Gridicons.stats_down_alt),
-              title: const Text('Statistics'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MenuStatistics(),
-                  ),
-                );
-                // Add your logic for Sent onTap
-              },
-            ),
-            ListTile(
-              leading: const Iconify(Mdi.comment_text),
-              title: const Text('Feedback'),
-              onTap: () {
-                print('Feedback');
-              },
-            ),
-            ListTile(
-              leading: const Iconify(Majesticons.logout),
-              title: const Text('Logout'),
-              onTap: () {
-                print('Logout Clicked');
-              },
-            ),
-            ListTile(
-              leading: const Iconify(Bx.bxs_moon),
-              title: const Text('Dark Mode'),
-              onTap: () {
-                print('DarkMode');
-              },
-            ),
-            const SizedBox(
-              height: 50,
-            ),
-            const Expanded(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Text(
-                  'Scholarly v.1.0.0',
-                  style: TextStyle(
-                    fontSize: 12.0,
-                    color: Colors.grey,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-
       ),
     );
   }
 }
-
