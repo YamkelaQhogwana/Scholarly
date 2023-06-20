@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scholarly/constants/colors.dart';
 import 'package:scholarly/constants/custom_appbar_main.dart';
-import 'package:scholarly/screens/add_task.dart';
+
 import 'package:scholarly/screens/calendar.dart';
 import 'package:scholarly/screens/classes.dart';
 import 'package:scholarly/screens/info.dart';
@@ -103,45 +103,45 @@ class HomePage extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-             SizedBox(
+            SizedBox(
               height: 250.0,
-               child: DrawerHeader(
+              child: DrawerHeader(
                 child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 120.0,
-                              height: 120.0,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                              ),
-                              child: ClipOval(
-                                child: Image.asset(
-                                  'assets/images/avatars/black-wn-av.png',
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 16.0),
-                            const Text(
-                              'Jane Doe',
-                              style: TextStyle(
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 8.0),
-                            const Text(
-                              'Third Year',
-                              style: TextStyle(
-                                fontSize: 16.0,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 120.0,
+                      height: 120.0,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      child: ClipOval(
+                        child: Image.asset(
+                          'assets/images/avatars/black-wn-av.png',
+                          fit: BoxFit.cover,
                         ),
-                         ),
-             ),
+                      ),
+                    ),
+                    const SizedBox(height: 16.0),
+                    const Text(
+                      'Jane Doe',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8.0),
+                    const Text(
+                      'Third Year',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             ListTile(
               leading: const Iconify(MaterialSymbols.person_2_rounded),
               title: const Text('Profile'),
@@ -215,21 +215,21 @@ class HomePage extends StatelessWidget {
             const SizedBox(
               height: 50,
             ),
-             const Expanded(
+            const Expanded(
               child: Align(
                 alignment: Alignment.bottomCenter,
-                  child: Text(
-                    'Scholarly v.1.0.0',
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      color: Colors.grey,
-                    ),
+                child: Text(
+                  'Scholarly v.1.0.0',
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    color: Colors.grey,
                   ),
+                ),
               ),
-             ),
+            ),
           ],
         ),
-        
+
       ),
     );
   }
