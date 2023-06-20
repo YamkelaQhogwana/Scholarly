@@ -691,6 +691,138 @@ class _ClassesPageState extends State<ClassesPage> {
           ],
         ),
       ),
+      endDrawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+             SizedBox(
+              height: 250.0,
+               child: DrawerHeader(
+                child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 120.0,
+                              height: 120.0,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                              ),
+                              child: ClipOval(
+                                child: Image.asset(
+                                  'assets/images/avatars/black-wn-av.png',
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 16.0),
+                            const Text(
+                              'Jane Doe',
+                              style: TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 8.0),
+                            const Text(
+                              'Third Year',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ),
+                         ),
+             ),
+            ListTile(
+              leading: const Iconify(MaterialSymbols.person_2_rounded),
+              title: const Text('Profile'),
+              onTap: () {
+                Navigator.push(context,
+                  MaterialPageRoute(
+                    builder: (context) => const ProfileMenu(),
+                  ),
+                );
+                // Add your logic for Inbox onTap
+              },
+            ),
+            ListTile(
+              leading: const Iconify(Mdi.bell_badge),
+              title: const Text('Notifications'),
+              onTap: () {
+                Navigator.push(context,
+                  MaterialPageRoute(
+                    builder: (context) => const NotificationsMenu(),
+                  ),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Iconify(Mdi.clock_check),
+              title: const Text('Habits/Goals'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HabitsPage(),
+                  ),
+                );
+                // Add your logic for Sent onTap
+              },
+            ),
+            ListTile(
+              leading: const Iconify(Gridicons.stats_down_alt),
+              title: const Text('Statistics'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MenuStatistics(),
+                  ),
+                );
+                // Add your logic for Sent onTap
+              },
+            ),
+            ListTile(
+              leading: const Iconify(Mdi.comment_text),
+              title: const Text('Feedback'),
+              onTap: () {
+                print('Feedback');
+              },
+            ),
+            ListTile(
+              leading: const Iconify(Majesticons.logout),
+              title: const Text('Logout'),
+              onTap: () {
+                print('Logout Clicked');
+              },
+            ),
+            ListTile(
+              leading: const Iconify(Bx.bxs_moon),
+              title: const Text('Dark Mode'),
+              onTap: () {
+                print('DarkMode');
+              },
+            ),
+            const SizedBox(
+              height: 50,
+            ),
+             const Expanded(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                  child: Text(
+                    'Scholarly v.1.0.0',
+                    style: TextStyle(
+                      fontSize: 12.0,
+                      color: Colors.grey,
+                    ),
+                  ),
+              ),
+             ),
+          ],
+        ),
+        
+      ),
     );
   }
 }
