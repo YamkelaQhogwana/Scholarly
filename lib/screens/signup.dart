@@ -50,6 +50,15 @@ class _SignUpPageState extends State<SignUpPage> {
         await _usersCollection.doc(user.uid).set({
           'email': user.email,
           'fname': user.displayName,
+          'pauseNotifications': true,
+          'habitNotifications': 0,
+          'streakNotifications': 0,
+          'taskNotifications': 0,
+          'institution': 'Eduvos',
+          'campus': 'Becfordview',
+          'year': 'Third Year',
+          'course': 'Software Engineering',
+          'icon': 'assets/images/avatar/black-wn-av.png'
         });
 
         // Navigate to the onboarding page
@@ -105,6 +114,15 @@ class _SignUpPageState extends State<SignUpPage> {
       await _usersCollection.add({
         'email': email,
         'fname': fullName,
+        'pauseNotifications': true,
+        'habitNotifications': 0,
+        'streakNotifications': 0,
+        'taskNotifications': 0,
+        'institution': 'Eduvos',
+        'campus': 'Bedfordview',
+        'year': 'Third Year',
+        'course': 'Software Engineering',
+        'icon': 'assets/images/avatar/black-wn-av.png'
       });
 
       // Registration successful, navigate to the onboarding page
