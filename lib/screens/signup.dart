@@ -78,13 +78,13 @@ class _SignUpPageState extends State<SignUpPage> {
       });
       return;
     }
-    if (!isValidEmail(email)) {
+
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }  if (!isValidEmail(email)) {
       setState(() {
         _errorMessage = 'Invalid email address.';
       });
-      return;
-    }
-    if (!_formKey.currentState!.validate()) {
       return;
     }
     setState(() {
