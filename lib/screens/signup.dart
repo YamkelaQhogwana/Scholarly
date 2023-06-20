@@ -77,13 +77,9 @@ class _SignUpPageState extends State<SignUpPage> {
         _errorMessage = 'Passwords do not match.';
       });
       return;
-    }if (!_formKey.currentState!.validate()) {
-      return;
     }
-    if (!isValidEmail(email)) {
-      setState(() {
-        _errorMessage = 'Invalid email address.';
-      });
+
+    if (!_formKey.currentState!.validate()) {
       return;
     }
 
@@ -91,9 +87,19 @@ class _SignUpPageState extends State<SignUpPage> {
       _isSigningUp = true; // Start the loading indicator
       _errorMessage = ''; // Clear any previous error message
     });
-    try {
-      await _auth.registerWithEmailAndPassword(email, password, displayName);
 
+    try {
+      // Check if the email is already in use
+      final existingUser = await _firebaseAuth.fetchSignInMethodsForEmail(email);
+      if (existingUser.isNotEmpty) {
+        setState(() {
+          _errorMessage = 'Email is already in use. Please use a different email address.';
+          _isSigningUp = false; // Stop the loading indicator
+        });
+        return;
+      }
+
+      await _auth.registerWithEmailAndPassword(email, password, displayName);
 
       // Insert user data into Firestore collection
       await _usersCollection.add({
@@ -113,7 +119,7 @@ class _SignUpPageState extends State<SignUpPage> {
     } catch (e) {
       print('Unknown error: $e');
       setState(() {
-        _errorMessage = 'E-mail is already in use.';
+        _errorMessage = 'Registration failed. Please try again later.';
       });
     } finally {
       setState(() {
@@ -121,6 +127,7 @@ class _SignUpPageState extends State<SignUpPage> {
       });
     }
   }
+
   String _getErrorMessage(RegistrationException exception) {
     if (exception.exception is FirebaseAuthException) {
       final FirebaseAuthException firebaseException =
