@@ -77,16 +77,16 @@ class _SignUpPageState extends State<SignUpPage> {
         _errorMessage = 'Passwords do not match.';
       });
       return;
-    }
-
-    if (!_formKey.currentState!.validate()) {
+    }if (!_formKey.currentState!.validate()) {
       return;
-    }  if (!isValidEmail(email)) {
+    }
+    if (!isValidEmail(email)) {
       setState(() {
         _errorMessage = 'Invalid email address.';
       });
       return;
     }
+
     setState(() {
       _isSigningUp = true; // Start the loading indicator
       _errorMessage = ''; // Clear any previous error message
@@ -94,7 +94,7 @@ class _SignUpPageState extends State<SignUpPage> {
     try {
       await _auth.registerWithEmailAndPassword(email, password, displayName);
 
-      // Move this block inside try.
+
       // Insert user data into Firestore collection
       await _usersCollection.add({
         'email': email,
