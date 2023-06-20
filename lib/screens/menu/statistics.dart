@@ -5,6 +5,8 @@ import 'package:scholarly/screens/calendar.dart';
 import 'package:scholarly/screens/classes.dart';
 import 'package:scholarly/screens/home.dart';
 import 'package:scholarly/screens/info.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+
 
 class MenuStatistics extends StatelessWidget {
   const MenuStatistics({Key? key});
@@ -47,9 +49,9 @@ class MenuStatistics extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 25.0),
-            // BarGraphWidget(DummyStatsData.tasksCompletedWeek),
+            BarGraphWidget(DummyStatsData.tasksCompletedWeek),
             const SizedBox(height: 10.0),
-            // BarGraphWidget(DummyStatsData.habitsCompletedWeek),
+            BarGraphWidget(DummyStatsData.habitsCompletedWeek),
             const SizedBox(height: 25.0),
             const Text('Habit Streaks', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
             const SizedBox(height: 10),
@@ -169,7 +171,45 @@ class MenuStatistics extends StatelessWidget {
     );
   }
 }
+class BarGraphWidget extends StatelessWidget {
+  final Map<String, int> data;
 
+  BarGraphWidget(this.data);
+
+  @override
+  Widget build(BuildContext context) {
+    List<DataPoint> chartData = data.entries
+        .map((entry) => DataPoint(entry.value, entry.key))
+        .toList();
+
+    return Container(
+      width: 350,
+      height: 150,
+      decoration: BoxDecoration(
+        color: AppColors.kBlueLight,
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: SfCartesianChart(
+        primaryXAxis: CategoryAxis(),
+        primaryYAxis: NumericAxis(),
+        series: <ChartSeries>[
+          BarSeries<DataPoint, String>(
+            dataSource: chartData,
+            xValueMapper: (DataPoint data, _) => data.y,
+            yValueMapper: (DataPoint data, _) => data.x,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class DataPoint {
+  final String y;
+  final int x;
+
+  DataPoint(this.x, this.y);
+}
 
 
 
