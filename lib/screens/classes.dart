@@ -2,13 +2,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'main_screen_menu.dart';
+import 'package:iconify_flutter/icons/bx.dart';
+import 'package:iconify_flutter/icons/gridicons.dart';
+import 'package:iconify_flutter/icons/majesticons.dart';
+import 'package:iconify_flutter/icons/mdi.dart';
+import 'package:scholarly/constants/custom_appbar_classes.dart';
+import 'package:scholarly/screens/home.dart';
+import 'package:scholarly/screens/menu/habits.dart';
+import 'package:scholarly/screens/menu/notification_menu.dart';
+import 'package:scholarly/screens/menu/profile_menu.dart';
+import 'package:scholarly/screens/menu/statistics.dart';
 import '../constants/colors.dart';
 import 'calendar.dart';
-import 'home.dart';
 import 'info.dart';
 import 'add_classes.dart';
-
+import 'package:iconify_flutter/iconify_flutter.dart';
+import 'package:iconify_flutter/icons/material_symbols.dart';
 
 class ClassesPage extends StatefulWidget {
   @override
@@ -74,7 +83,7 @@ class _ClassesPageState extends State<ClassesPage> {
     try {
       User? user = FirebaseAuth.instance.currentUser;
       if (user != null) {
-        String? userEmail = user.email;
+        String? userEmail = user?.email;
         QuerySnapshot snapshot = await FirebaseFirestore.instance
             .collection('users')
             .where('email', isEqualTo: userEmail)
@@ -135,6 +144,7 @@ class _ClassesPageState extends State<ClassesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const CustomAppBarClasses(),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -150,90 +160,6 @@ class _ClassesPageState extends State<ClassesPage> {
                       padding: const EdgeInsets.only(bottom: 8.0),
                       child: Column(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 65, left: 25),
-                            child: Row(
-                              children: [
-                                Image.asset(
-                                  'assets/images/avatars/black-wn-av.png',
-                                  width: 55,
-                                  height: 55,
-                                ),
-                                const SizedBox(width: 10),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      userName,
-                                      style: const TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 25,
-                                        color: Color(0xFF1D1D1D),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 3),
-                                    FutureBuilder<List<Map<String, dynamic>>>(
-                                      future: fetchModuleData(),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.connectionState ==
-                                            ConnectionState.waiting) {
-                                          return const CircularProgressIndicator();
-                                        } else if (snapshot.hasData) {
-                                          int moduleCount = snapshot.data!
-                                              .length;
-                                          return Text(
-                                            'You have $moduleCount module${moduleCount !=
-                                                1 ? 's' : ''} this block',
-                                            style: const TextStyle(
-                                              fontFamily: 'Montserrat',
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 12,
-                                              color: Color(0xFF8D8F9D),
-                                            ),
-                                          );
-                                        } else {
-                                          return const Text(
-                                            'Error loading module data',
-                                            style: TextStyle(
-                                              fontFamily: 'Montserrat',
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 12,
-                                              color: Color(0xFF8D8F9D),
-                                            ),
-                                          );
-                                        }
-                                      },
-                                    ),
-                                  ],
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    print('Menu button clicked');
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => MyApp(),
-                                      ),
-                                    );
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 60.0),
-                                    child: SvgPicture.string(
-                                      '''
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                      <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 17h8m-8-5h14m-8-5h8"/>
-                                    </svg>
-                                  ''',
-                                      color: Colors.black,
-                                      width: 30,
-                                      height: 30,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
                           Expanded(
                             child: SingleChildScrollView(
                               child: Padding(
@@ -538,7 +464,7 @@ class _ClassesPageState extends State<ClassesPage> {
                                       } else {
                                         return const Center(
                                           child: Text(
-                                            'No modules found',
+                                            'No modules found.',
                                             style: TextStyle(
                                               fontFamily: 'Montserrat',
                                               fontWeight: FontWeight.w500,
