@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 
-class AddClasses extends StatelessWidget {
-  Function(
+class AddClasses extends StatefulWidget {
+  final Function(
       String,
       String,
       String,
@@ -12,12 +12,51 @@ class AddClasses extends StatelessWidget {
       TextEditingController,
       TextEditingController,
       ) onAddModule;
+
+  AddClasses({required this.onAddModule});
+
+  @override
+  _AddClassesState createState() => _AddClassesState();
+}
+
+class _AddClassesState extends State<AddClasses> {
   final TextEditingController moduleNameController = TextEditingController();
   final TextEditingController moduleCodeController = TextEditingController();
   final TextEditingController moduleGradeController = TextEditingController();
   final TextEditingController moduleLecturerController = TextEditingController();
 
-  AddClasses({required this.onAddModule});
+  Future<void>? _addModuleFuture;
+
+  void _addModule() {
+    final moduleName = moduleNameController.text;
+    final moduleCode = moduleCodeController.text;
+    final moduleGrade = moduleGradeController.text;
+    final moduleLecturer = moduleLecturerController.text;
+
+    setState(() {
+      // Simulate a network request after the button is pressed
+      _addModuleFuture = Future.delayed(
+        Duration(seconds: 2),
+            () {
+          // Call the callback function with the module details
+          widget.onAddModule(
+            moduleName,
+            moduleCode,
+            moduleGrade,
+            moduleLecturer,
+            moduleNameController,
+            moduleCodeController,
+            moduleGradeController,
+            moduleLecturerController,
+          );moduleNameController.clear();
+          moduleCodeController.clear();
+          moduleGradeController.clear();
+          moduleLecturerController.clear();
+          _addModuleFuture = null;
+        },
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +118,7 @@ class AddClasses extends StatelessWidget {
                         horizontal: 15.0,
                       ),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
+                        borderRadius: BorderRadius.circular(10.0),
                         borderSide: BorderSide.none,
                       ),
                     ),
@@ -231,38 +270,37 @@ class AddClasses extends StatelessWidget {
                     width: 330.0,
                     height: 50.0,
                     child: ElevatedButton(
-                      onPressed: () {
-                        final moduleName = moduleNameController.text;
-                        final moduleCode = moduleCodeController.text;
-                        final moduleGrade = moduleGradeController.text;
-                        final moduleLecturer = moduleLecturerController.text;
+                      onPressed: _addModule,
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) {
+                            if (states.contains(MaterialState.disabled))
+                              return Color(0xFF383B53); // Use the same color for disabled state
+                            return Color(0xFF383B53); // Use the component's default
+                          },
+                        ),
 
-                        // Call the callback function with the module details
-                        onAddModule(
-                          moduleName,
-                          moduleCode,
-                          moduleGrade,
-                          moduleLecturer,
-                          moduleNameController,
-                          moduleCodeController,
-                          moduleGradeController,
-                          moduleLecturerController,
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF383B53),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
                       ),
-                      child: const Text(
-                        'Add Module',
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                        ),
+                      child: FutureBuilder<void>(
+                        future: _addModuleFuture,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return CircularProgressIndicator(
+                              color: Colors.white,
+                            );
+                          } else {
+                            _addModuleFuture = null;
+                            return Text(
+                              'Add Module',
+                              style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            );
+                          }
+                        },
                       ),
                     ),
                   ),

@@ -1,41 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
 final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-class ForgotPassword extends StatelessWidget {
+class ForgotPassword extends StatefulWidget {
+  @override
+  _ForgotPasswordState createState() => _ForgotPasswordState();
+}
+
+class _ForgotPasswordState extends State<ForgotPassword> {
   final TextEditingController _emailController = TextEditingController();
 
-  void _resetPassword(BuildContext context) async {
+  Future<void>? _resetPasswordFuture;
+
+  void _resetPassword(BuildContext context) {
     final email = _emailController.text;
 
-    try {
-      await _firebaseAuth.sendPasswordResetEmail(email: email);
-
-      // Display the popup dialog
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Success'),
-            content: Text('Password reset email has been sent successfully.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();  // Dismiss the dialog
-                },
-                child: Text('OK'),
+    setState(() {
+      _resetPasswordFuture = _firebaseAuth.sendPasswordResetEmail(email: email)
+          .then((_) {
+        // Display the popup dialog
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text(
+                'Success',
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                ),
               ),
-            ],
-          );
-        },
-      );
-    } catch (e) {
-      print('Error sending password reset email: $e');
-    }
+              content: Text(
+                'Password reset email has been sent successfully.',
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Dismiss the dialog
+                    Navigator.of(context).pop(); // And navigate back
+                  },
+                  child: Text(
+                    'OK',
+                    style: TextStyle(
+                      fontFamily: 'Poppins',
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      }).catchError((e) {
+        print('Error sending password reset email: $e');
+      }).whenComplete(() {
+        setState(() {
+          _resetPasswordFuture = null; // Enable the button again after the Future has completed
+        });
+      });
+    });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -89,31 +115,47 @@ class ForgotPassword extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 28.0),
+                SizedBox(height: 30.0),
+
                 Container(
                   width: 330.0,
                   height: 50.0,
-                ),
-                  ElevatedButton(
-                    onPressed: () => _resetPassword(context),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_resetPasswordFuture == null) {
+                        _resetPassword(context);
+                      }
+                      // If _resetPasswordFuture is not null, the button won't do anything when pressed.
+                    },
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFF383B53),
+                      backgroundColor: Color(0xFF383B53),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                     ),
-                    child: Text(
-                      'Submit',
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
+                    child: FutureBuilder<void>(
+                      future: _resetPasswordFuture,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return CircularProgressIndicator(color: Colors.white);
+                        } else {
+                          return Text(
+                            'Submit',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          );
+                        }
+                      },
                     ),
                   ),
+                ),
 
-                  SizedBox(height: 16.0),
+
+                SizedBox(height: 16.0),
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
