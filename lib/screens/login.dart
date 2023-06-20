@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:scholarly/screens/onboarding.dart';
 import 'package:scholarly/screens/forgot_password.dart';
@@ -50,6 +51,7 @@ class _LoginState extends State<Login> {
   String _errorMessage = '';
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   bool _isLoggingIn = false;
+
   String get userName => _firebaseAuth.currentUser?.displayName ?? '';
 
 
@@ -101,17 +103,31 @@ class _LoginState extends State<Login> {
   Future<void> _signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+      final GoogleSignInAuthentication googleAuth = await googleUser!
+          .authentication;
       final OAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-      final UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
+      final UserCredential userCredential = await _firebaseAuth
+          .signInWithCredential(credential);
       final User? user = userCredential.user;
 
       if (user != null) {
-        // Insert user data into Firestore collection
-        // Your code to insert into the Firestore collection
+        // Check if the user document already exists
+        QuerySnapshot snapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .where('email', isEqualTo: user.email)
+            .limit(1)
+            .get();
+        if (snapshot.docs.isEmpty) {
+          // If the user document does not exist, create a new one
+          await FirebaseFirestore.instance.collection('users').add({
+            'email': user.email,
+            'fname': user.displayName,
+            // add other fields as needed
+          });
+        }
 
         Navigator.pushReplacement(
           context,
@@ -127,7 +143,6 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -138,7 +153,7 @@ class _LoginState extends State<Login> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Padding(
-                  padding: EdgeInsets.only(left: 30.0),
+                  padding: EdgeInsets.only(left: 30.0, top: 30),
                   child: Text(
                     "Hello 👋🏼\nlogin to continue",
                     style: TextStyle(
@@ -150,7 +165,8 @@ class _LoginState extends State<Login> {
                 ),
                 if (_errorMessage.isNotEmpty)
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 31.0, vertical: 8.0),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 31.0, vertical: 8.0),
                     child: Text(
                       _errorMessage,
                       style: TextStyle(
@@ -175,7 +191,6 @@ class _LoginState extends State<Login> {
                 Container(
                   margin: EdgeInsets.only(left: 31.0),
                   width: 330.0,
-                  //height: 40.0,
                   child: TextFormField(
                     controller: _emailController,
                     validator: (value) {
@@ -200,9 +215,11 @@ class _LoginState extends State<Login> {
                         borderRadius: BorderRadius.circular(5.0),
                         borderSide: BorderSide.none,
                       ),
-                      errorStyle: TextStyle(height: 1),  // New line
+                      errorStyle: TextStyle(height: 1), // New line
                     ),
-                    style: TextStyle(fontFamily: 'Poppins', fontSize:14.0,color: Colors.black),
+                    style: TextStyle(fontFamily: 'Poppins',
+                        fontSize: 14.0,
+                        color: Colors.black),
                   ),
                 ),
                 SizedBox(height: 28.0),
@@ -221,7 +238,6 @@ class _LoginState extends State<Login> {
                 Container(
                   margin: EdgeInsets.only(left: 31.0),
                   width: 330.0,
-                 // height: 40.0,
                   child: TextFormField(
                     controller: _passwordController,
                     obscureText: true,
@@ -248,74 +264,78 @@ class _LoginState extends State<Login> {
                         borderSide: BorderSide.none,
                       ),
                     ),
-                    style: TextStyle(fontFamily: 'Poppins',color: Colors.black),
+                    style: TextStyle(
+                        fontFamily: 'Poppins', color: Colors.black),
                   ),
                 ),
                 SizedBox(height: 28.0),
-                Container(
-                  margin: EdgeInsets.only(left: 39.0),
-                  width: 330.0,
-                  height: 50.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        blurRadius: 4.0,
-                        offset: Offset(0, 5),
-                      ),
-                    ],
-                  ),
-                      child: Material(
-    color: Color(0xFF383B53), // Set the background color explicitly
-    borderRadius: BorderRadius.circular(10.0),
-    child: InkWell(
-    onTap: _isLoggingIn ? null : handleSubmit,
-    borderRadius: BorderRadius.circular(10.0),
-    child: Container(
-    width: double.infinity,
-    height: 50.0,
-    alignment: Alignment.center,
-    child: Stack(
-    alignment: Alignment.center,
-    children: [
-    if (_isLoggingIn)
-    Positioned.fill(
-    child: Align(
-      alignment: Alignment.center,
-      child: Container(
-        width: 24.0,
-        height: 24.0,
-        child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-        ),
-      ),
-    ),
-    ),
-    if (!_isLoggingIn)
-    Text(
-    'Login',
-    style: TextStyle(
-    fontFamily: 'Poppins',
-    fontSize: 16.0,
-    fontWeight: FontWeight.w600,
-    color: Colors.white,
-    ),
-    ),
-    ],
-    ),
-    ),
-    ),
-    ),
-                ),
+                Center(
+                  child: Container(
 
-    SizedBox(height: 16.0),
+                    width: 330.0,
+                    height: 50.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 4.0,
+                          offset: Offset(0, 5),
+                        ),
+                      ],
+                    ),
+                    child: Material(
+                      color: Color(0xFF383B53),
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: InkWell(
+                        onTap: _isLoggingIn ? null : handleSubmit,
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: Container(
+                          width: double.infinity,
+                          height: 50.0,
+                          alignment: Alignment.center,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              if (_isLoggingIn)
+                                Positioned.fill(
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Container(
+                                      width: 24.0,
+                                      height: 24.0,
+                                      child: CircularProgressIndicator(
+                                        valueColor: AlwaysStoppedAnimation<
+                                            Color>(Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              if (!_isLoggingIn)
+                                Text(
+                                  'Login',
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 16.0),
                 Center(
                   child: GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ForgotPassword()),
+                        MaterialPageRoute(builder: (context) =>
+                            ForgotPassword()),
                       );
                     },
                     child: const Text(
@@ -333,7 +353,8 @@ class _LoginState extends State<Login> {
                 ),
                 SizedBox(height: 16.0),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 8.0),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 50.0, vertical: 8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -392,7 +413,7 @@ class _LoginState extends State<Login> {
                             const Padding(
                               padding: EdgeInsets.only(
                                 left: 11.0,
-                              ), // Adjust the value as needed
+                              ),
                               child: Text(
                                 'Google Account',
                                 style: TextStyle(
@@ -430,7 +451,8 @@ class _LoginState extends State<Login> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => SignUpPage()),
+                            MaterialPageRoute(
+                                builder: (context) => SignUpPage()),
                           );
                         },
                         child: const Text(
@@ -448,7 +470,6 @@ class _LoginState extends State<Login> {
                     ],
                   ),
                 ),
-
               ],
             ),
           ),

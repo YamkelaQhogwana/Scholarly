@@ -7,7 +7,8 @@ import 'package:scholarly/screens/classes.dart';
 import 'package:scholarly/screens/home.dart';
 import 'package:scholarly/screens/habits.dart';
 import 'package:scholarly/screens/info.dart';
-import 'dart:math';
+import 'package:scholarly/screens/habit_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AddHabits extends StatefulWidget {
   const AddHabits({Key? key}) : super(key: key);
@@ -19,6 +20,9 @@ class AddHabits extends StatefulWidget {
 class _AddHabitsState extends State<AddHabits> {
   final TextEditingController habitNameController = TextEditingController();
   final TextEditingController numberOfDaysController = TextEditingController();
+
+  // Add a variable to store the fetched habits
+  List<Habit> habits = [];
 
   void _showAddHabitDialog() {
     showDialog(
@@ -54,10 +58,11 @@ class _AddHabitsState extends State<AddHabits> {
                 final String habitName = habitNameController.text.trim();
                 final int numberOfDays =
                     int.tryParse(numberOfDaysController.text) ?? 0;
-
+                final user = FirebaseAuth.instance.currentUser;
+                final userEmail = user?.email ?? '';
                 // Create a new habit with the entered data
                 final Habit newHabit = Habit(
-                  userID: '1', // Replace with the actual user ID
+                  userEmail: userEmail, // Replace with the actual user ID
                   name: habitName,
                   days: numberOfDays,
                   isCompleted: false,
@@ -79,6 +84,30 @@ class _AddHabitsState extends State<AddHabits> {
     );
   }
 
+  // Fetch habits for the logged-in user
+  void fetchHabits() async {
+    final user = FirebaseAuth.instance.currentUser;
+    final userEmail = user?.email ?? '';
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection('habits')
+        .where('userEmail', isEqualTo: userEmail)
+        .get();
+
+    final List<Habit> fetchedHabits = querySnapshot.docs
+        .map((doc) => Habit.fromMap(doc.data() as Map<String, dynamic>))
+        .toList() as List<Habit>;
+
+    setState(() {
+      habits = fetchedHabits;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchHabits(); // Fetch habits when the widget is initialized
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,7 +117,7 @@ class _AddHabitsState extends State<AddHabits> {
           children: [
             Padding(
               padding: const EdgeInsets.all(0.0),
-              child: SizedBox(
+              child: Container(
                 width: double.infinity,
                 height: 200.0,
                 child: Column(
@@ -103,11 +132,11 @@ class _AddHabitsState extends State<AddHabits> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const HabitsPage(),
+                                  builder: (context) => HabitsPage(),
                                 ),
                               );
                             },
-                            child: SizedBox(
+                            child: Container(
                               width: 24,
                               height: 24,
                               child: SvgPicture.string(
@@ -123,8 +152,8 @@ class _AddHabitsState extends State<AddHabits> {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 8.0),
-                        const Padding(
+                        SizedBox(width: 8.0),
+                        Padding(
                           padding: EdgeInsets.only(top: 50),
                           child: Align(
                             alignment: Alignment.center,
@@ -138,8 +167,8 @@ class _AddHabitsState extends State<AddHabits> {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 8.0),
-                        const Padding(
+                        SizedBox(width: 8.0),
+                        Padding(
                           padding: EdgeInsets.only(top: 120),
                           child: Align(
                             alignment: Alignment.center,
@@ -159,7 +188,6 @@ class _AddHabitsState extends State<AddHabits> {
                 ),
               ),
             ),
-<<<<<<< HEAD
             SizedBox(height: 12.0),
             Container(
               width: 150,
@@ -176,14 +204,6 @@ class _AddHabitsState extends State<AddHabits> {
                 onTap: _showAddHabitDialog, // Show the add habit dialog
                 child: Center(
                   child: Column(
-=======
-
-            const Padding(
-              padding: EdgeInsets.only(bottom: 50.0),
-              child: Column(
-                children: [
-                  Row(
->>>>>>> 3ab41df0c9df9fcc5f4348ceba16a217258479e5
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
@@ -204,7 +224,13 @@ class _AddHabitsState extends State<AddHabits> {
                 ),
               ),
             ),
-<<<<<<< HEAD
+            Padding(
+              padding: const EdgeInsets.only(bottom: 50.0),
+              child: Column(
+                children:
+                habits.map((habit) => HabitWidget(habit: habit)).toList(),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(30.0),
               child: ElevatedButton(
@@ -217,173 +243,6 @@ class _AddHabitsState extends State<AddHabits> {
                       Size(300, 45)), // Adjust the size as per your requirement
                 ),
                 child: Text('Save Habits and Goals'),
-=======
-
-            const Padding(
-              padding: EdgeInsets.only(bottom: 50.0),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      BoxWidget(
-                        color: AppColors.kGreenLight,
-                        text: 'Revision',
-                        imagePath: 'assets/images/habiticons/revision.png', subText: 'Everyday',
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 12.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CheckboxWidget(label: 'M', color: AppColors.kGreenDark,),
-                      CheckboxWidget(label: 'T', color: AppColors.kGreenDark,),
-                      CheckboxWidget(label: 'W', color: AppColors.kGreenDark,),
-                      CheckboxWidget(label: 'T', color: AppColors.kGreenDark,),
-                      CheckboxWidget(label: 'F', color: AppColors.kGreenDark,),
-                      CheckboxWidget(label: 'S', color: AppColors.kGreenDark,),
-                      CheckboxWidget(label: 'S', color: AppColors.kGreenDark,),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            const Padding(
-              padding: EdgeInsets.only(bottom: 50.0),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      BoxWidget(
-                        color: AppColors.kBlueLight,
-                        text: 'Drink Water',
-                        imagePath: 'assets/images/habiticons/water.png', subText: 'Everyday',
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 12.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CheckboxWidget(label: 'M', color: AppColors.kBlueDark,),
-                      CheckboxWidget(label: 'T', color: AppColors.kBlueDark,),
-                      CheckboxWidget(label: 'W', color: AppColors.kBlueDark,),
-                      CheckboxWidget(label: 'T', color: AppColors.kBlueDark,),
-                      CheckboxWidget(label: 'F', color: AppColors.kBlueDark,),
-                      CheckboxWidget(label: 'S', color: AppColors.kBlueDark,),
-                      CheckboxWidget(label: 'S', color: AppColors.kBlueDark,),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            const Padding(
-              padding: EdgeInsets.only(bottom: 50.0),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      BoxWidget(
-                        color: AppColors.kOrangeLight,
-                        text: 'Go for Walk',
-                        imagePath: 'assets/images/habiticons/walk.png', subText: 'Everyday',
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 12.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CheckboxWidget(label: 'M', color: AppColors.kOrangeDark,),
-                      CheckboxWidget(label: 'T', color: AppColors.kOrangeDark,),
-                      CheckboxWidget(label: 'W', color: AppColors.kOrangeDark,),
-                      CheckboxWidget(label: 'T', color: AppColors.kOrangeDark,),
-                      CheckboxWidget(label: 'F', color: AppColors.kOrangeDark,),
-                      CheckboxWidget(label: 'S', color: AppColors.kOrangeDark,),
-                      CheckboxWidget(label: 'S', color: AppColors.kOrangeDark,),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            const Padding(
-              padding: EdgeInsets.only(bottom: 50.0),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      BoxWidget(
-                        color: AppColors.kPinkLight,
-                        text: 'Daily Journal',
-                        imagePath: 'assets/images/habiticons/journal.png', subText: 'Everyday',
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 12.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CheckboxWidget(label: 'M', color: AppColors.kPinkDark,),
-                      CheckboxWidget(label: 'T', color: AppColors.kPinkDark,),
-                      CheckboxWidget(label: 'W', color: AppColors.kPinkDark,),
-                      CheckboxWidget(label: 'T', color: AppColors.kPinkDark,),
-                      CheckboxWidget(label: 'F', color: AppColors.kPinkDark,),
-                      CheckboxWidget(label: 'S', color: AppColors.kPinkDark,),
-                      CheckboxWidget(label: 'S', color: AppColors.kPinkDark,),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16.0),
-              child: Column(
-                children: [
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      BoxWidget(
-                        color: AppColors.kPurpleLight,
-                        text: 'Sleep Early',
-                        imagePath: 'assets/images/habiticons/sleep.png',subText: 'Everyday',
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12.0),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CheckboxWidget(label: 'M', color: AppColors.kPurpleDark,),
-                      CheckboxWidget(label: 'T', color: AppColors.kPurpleDark,),
-                      CheckboxWidget(label: 'W', color: AppColors.kPurpleDark,),
-                      CheckboxWidget(label: 'T', color: AppColors.kPurpleDark,),
-                      CheckboxWidget(label: 'F', color: AppColors.kPurpleDark,),
-                      CheckboxWidget(label: 'S', color: AppColors.kPurpleDark,),
-                      CheckboxWidget(label: 'S', color: AppColors.kPurpleDark,),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(30.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Placeholder code for save button
-                        print('Save Habits and Goals pressed');
-                      }, style: ButtonStyle(
-                      minimumSize: MaterialStateProperty.all(const Size(300, 45)), // Adjust the size as per your requirement
-                    ),
-                      child: const Text('Save Habits and Goals'),
-                    ),
-                  ),
-                ],
->>>>>>> 3ab41df0c9df9fcc5f4348ceba16a217258479e5
               ),
             ),
           ],
@@ -394,8 +253,8 @@ class _AddHabitsState extends State<AddHabits> {
           // Placeholder code for add button
           print('Add button pressed');
         },
+        child: Icon(Icons.add),
         backgroundColor: AppColors.kPrimary400,
-        child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
@@ -403,28 +262,28 @@ class _AddHabitsState extends State<AddHabits> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             IconButton(
-              icon: const Icon(Icons.home),
+              icon: Icon(Icons.home),
               color: AppColors.kPrimary400,
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const HomePage()),
+                  MaterialPageRoute(builder: (context) => HomePage()),
                 );
               },
             ),
             IconButton(
-              icon: const Icon(Icons.calendar_month),
+              icon: Icon(Icons.calendar_month),
               color: AppColors.kMainText,
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const CalendarPage()),
+                  MaterialPageRoute(builder: (context) => CalendarPage()),
                 );
               },
             ),
-            const SizedBox(width: 56),
+            SizedBox(width: 56),
             IconButton(
-              icon: const Icon(Icons.school),
+              icon: Icon(Icons.school),
               color: AppColors.kMainText,
               onPressed: () {
                 Navigator.push(
@@ -434,12 +293,12 @@ class _AddHabitsState extends State<AddHabits> {
               },
             ),
             IconButton(
-              icon: const Icon(Icons.newspaper),
+              icon: Icon(Icons.newspaper),
               color: AppColors.kMainText,
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const InfoPage()),
+                  MaterialPageRoute(builder: (context) => InfoPage()),
                 );
               },
             ),
@@ -484,12 +343,8 @@ class BoxWidget extends StatelessWidget {
               ),
             ),
             Padding(
-<<<<<<< HEAD
               padding: EdgeInsets.only(
                   top: 30.0), // Adjust the top padding as needed
-=======
-              padding: const EdgeInsets.only(top: 30.0), // Adjust the top padding as needed
->>>>>>> 3ab41df0c9df9fcc5f4348ceba16a217258479e5
               child: Align(
                 alignment: Alignment.center,
                 child: Column(
@@ -497,16 +352,16 @@ class BoxWidget extends StatelessWidget {
                   children: [
                     Text(
                       text,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.black,
                         fontSize: 14.0,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    const SizedBox(height: 4.0),
+                    SizedBox(height: 4.0),
                     Text(
                       subText,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.black54,
                         fontSize: 12.0,
                         fontWeight: FontWeight.w500,
@@ -524,24 +379,33 @@ class BoxWidget extends StatelessWidget {
 }
 
 class Habit {
-  final String userID;
+  final String userEmail;
   final String name;
   final int days;
   final bool isCompleted;
 
   Habit({
-    required this.userID,
+    required this.userEmail,
     required this.name,
     required this.days,
     required this.isCompleted,
   });
 
+  factory Habit.fromMap(Map<String, dynamic> map) {
+    return Habit(
+      userEmail: map['userEmail'],
+      name: map['name'],
+      days: map['days'],
+      isCompleted: map['isCompleted'],
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
-      'userID': userID,
+      'userEmail': userEmail,
       'name': name,
       'days': days,
-      'idDone': isCompleted,
+      'isCompleted': isCompleted,
     };
   }
 }

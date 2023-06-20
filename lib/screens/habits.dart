@@ -5,9 +5,8 @@ import 'package:scholarly/screens/calendar.dart';
 import 'package:scholarly/screens/classes.dart';
 import 'package:scholarly/screens/info.dart';
 import 'package:scholarly/screens/home.dart';
-import 'package:scholarly/screens/addhabits.dart';
+import 'package:scholarly/screens/edithabits.dart';
 import 'main_screen_menu.dart';
-
 
 class HabitsPage extends StatelessWidget {
   const HabitsPage({Key? key}) : super(key: key);
@@ -35,7 +34,8 @@ class HabitsPage extends StatelessWidget {
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => MenuPage()),
+                                MaterialPageRoute(
+                                    builder: (context) => MenuPage()),
                               );
                             },
                             child: SizedBox(
@@ -88,12 +88,15 @@ class HabitsPage extends StatelessWidget {
                                     onTap: () {
                                       Navigator.push(
                                         context,
-                                        MaterialPageRoute(builder: (context) => const AddHabits()),
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                            const AddHabits()),
                                       );
                                     },
                                     child: ColorFiltered(
                                       colorFilter: const ColorFilter.mode(
-                                        Color(0xFF8D8F9D), // Set the desired color here
+                                        Color(
+                                            0xFF8D8F9D), // Set the desired color here
                                         BlendMode.srcIn,
                                       ),
                                       child: SvgPicture.string(
@@ -113,7 +116,8 @@ class HabitsPage extends StatelessWidget {
                       ],
                     ),
                     const Padding(
-                      padding: EdgeInsets.only(right: 232.0,top: 10), // Set the desired padding
+                      padding: EdgeInsets.only(
+                          right: 232.0, top: 10), // Set the desired padding
                       child: Text(
                         'Add New Habit',
                         style: TextStyle(

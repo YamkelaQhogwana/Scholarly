@@ -94,6 +94,7 @@ class _SignUpPageState extends State<SignUpPage> {
     try {
       await _auth.registerWithEmailAndPassword(email, password, displayName);
 
+      // Move this block inside try.
       // Insert user data into Firestore collection
       await _usersCollection.add({
         'email': email,
@@ -112,7 +113,7 @@ class _SignUpPageState extends State<SignUpPage> {
     } catch (e) {
       print('Unknown error: $e');
       setState(() {
-        _errorMessage = 'Registration failed. Please try again later.';
+        _errorMessage = 'E-mail is already in use.';
       });
     } finally {
       setState(() {
@@ -202,7 +203,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   Container(
                     margin: EdgeInsets.only(left: 30.0),
                     width: 330.0,
-                   // height: 40.0,
+                    // height: 40.0,
                     child: TextFormField(
                       controller: _fullNameController,
                       validator: (value) {
@@ -296,7 +297,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   Container(
                     margin: EdgeInsets.only(left: 30.0),
                     width: 330.0,
-                  //  height: 40.0,
+                    //  height: 40.0,
                     child: TextFormField(
                       controller: _passwordController,
                       obscureText: true,
@@ -342,7 +343,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   Container(
                     margin: EdgeInsets.only(left: 30.0),
                     width: 330.0,
-                   // height: 40.0,
+                    // height: 40.0,
                     child: TextFormField(
                       controller: _confirmPasswordController,
                       obscureText: true,
@@ -430,7 +431,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                     ),
                   ),
-                    SizedBox(height: 16.0),
+                  SizedBox(height: 16.0),
                   Container(
                     padding:
                     EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
