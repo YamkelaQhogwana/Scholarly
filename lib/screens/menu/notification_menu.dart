@@ -3,6 +3,9 @@ import 'package:scholarly/screens/home.dart';
 import 'package:scholarly/screens/calendar.dart';
 import 'package:scholarly/screens/classes.dart';
 import 'package:scholarly/screens/info.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class NotificationsMenu extends StatefulWidget {
   const NotificationsMenu({Key? key}) : super(key: key);
@@ -11,14 +14,137 @@ class NotificationsMenu extends StatefulWidget {
   _NotificationsMenuState createState() => _NotificationsMenuState();
 }
 
-class _NotificationsMenuState extends State<NotificationsMenu> {
-  bool pauseAll = true; // Variable to track the state of the toggle switch
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
-  int dailyHabitReminderValue =
-      0; // Variable to track the selected radio button
-  int taskNotificationsValue = 0; // Variable to track the selected radio button
-  int streakNotificationsValue =
-      0; // Variable to track the selected radio button
+class _NotificationsMenuState extends State<NotificationsMenu> {
+  bool pauseAll = true;
+  int habitNotificationsValue = 0;
+  int taskNotificationsValue = 0;
+  int streakNotificationsValue = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchNotificationSettings();
+    initializeNotifications();
+  }
+
+  Future<void> fetchNotificationSettings() async {
+    final user = FirebaseAuth.instance.currentUser;
+    final userEmail = user?.email ?? '';
+
+    if (user != null) {
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: userEmail)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        Map<String, dynamic> userData = querySnapshot.docs[0].data();
+
+        setState(() {
+          pauseAll = userData['pauseNotifications'] ?? false;
+          habitNotificationsValue = userData['habitNotifications'] ?? 0;
+          taskNotificationsValue = userData['taskNotifications'] ?? 0;
+          streakNotificationsValue = userData['streakNotifications'] ?? 0;
+        });
+      }
+    }
+  }
+
+  Future<void> updateNotificationSettings() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      String userEmail = user.email ?? '';
+
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: userEmail)
+          .get();
+
+      List<QueryDocumentSnapshot> documents = querySnapshot.docs;
+      for (var doc in documents) {
+        String documentId = doc.id;
+
+        Map<String, dynamic> updatedData = {
+          'pauseNotifications': pauseAll,
+          'habitNotifications': habitNotificationsValue,
+          'taskNotifications': taskNotificationsValue,
+          'streakNotifications': streakNotificationsValue,
+        };
+
+        if (pauseAll) {
+          updatedData['habitNotifications'] = 0;
+          updatedData['taskNotifications'] = 0;
+          updatedData['streakNotifications'] = 0;
+
+          setState(() {
+            habitNotificationsValue = 0;
+            taskNotificationsValue = 0;
+            streakNotificationsValue = 0;
+          });
+        }
+
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(documentId)
+            .update(updatedData);
+      }
+    }
+  }
+
+  void initializeNotifications() {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('app_icon');
+    const InitializationSettings initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  Future<void> sendNotification(String title, String body) async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      'channel_id',
+      'channel_name',
+      importance: Importance.max,
+      priority: Priority.high,
+      playSound: true,
+    );
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      title,
+      body,
+      platformChannelSpecifics,
+      payload: 'notification',
+    );
+  }
+
+  void handleNotificationSelection(String? payload) {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const HomePage()),
+      (Route<dynamic> route) => false,
+    );
+  }
+
+  void showHabitNotification() {
+    sendNotification(
+        'Habit Notification', 'Remember to perform your daily habit!');
+  }
+
+  void showTaskNotification() {
+    sendNotification(
+        'Task Notification', 'You have a pending task to complete!');
+  }
+
+  void showStreakNotification() {
+    sendNotification(
+        'Streak Notification', 'Keep up the good work! Your streak continues!');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +205,7 @@ class _NotificationsMenuState extends State<NotificationsMenu> {
                   onChanged: (bool value) {
                     setState(() {
                       pauseAll = value;
+                      updateNotificationSettings();
                     });
                   },
                 ),
@@ -98,20 +225,22 @@ class _NotificationsMenuState extends State<NotificationsMenu> {
                     RadioListTile(
                       title: const Text('Off'),
                       value: 0,
-                      groupValue: dailyHabitReminderValue,
+                      groupValue: habitNotificationsValue,
                       onChanged: (value) {
                         setState(() {
-                          dailyHabitReminderValue = value as int;
+                          habitNotificationsValue = value as int;
+                          updateNotificationSettings();
                         });
                       },
                     ),
                     RadioListTile(
                       title: const Text('On'),
                       value: 1,
-                      groupValue: dailyHabitReminderValue,
+                      groupValue: habitNotificationsValue,
                       onChanged: (value) {
                         setState(() {
-                          dailyHabitReminderValue = value as int;
+                          habitNotificationsValue = value as int;
+                          updateNotificationSettings();
                         });
                       },
                     ),
@@ -137,6 +266,7 @@ class _NotificationsMenuState extends State<NotificationsMenu> {
                       onChanged: (value) {
                         setState(() {
                           taskNotificationsValue = value as int;
+                          updateNotificationSettings();
                         });
                       },
                     ),
@@ -147,6 +277,11 @@ class _NotificationsMenuState extends State<NotificationsMenu> {
                       onChanged: (value) {
                         setState(() {
                           taskNotificationsValue = value as int;
+                          updateNotificationSettings();
+
+                          if (value == 1) {
+                            showTaskNotification();
+                          }
                         });
                       },
                     ),
@@ -172,6 +307,7 @@ class _NotificationsMenuState extends State<NotificationsMenu> {
                       onChanged: (value) {
                         setState(() {
                           streakNotificationsValue = value as int;
+                          updateNotificationSettings();
                         });
                       },
                     ),
@@ -182,6 +318,7 @@ class _NotificationsMenuState extends State<NotificationsMenu> {
                       onChanged: (value) {
                         setState(() {
                           streakNotificationsValue = value as int;
+                          updateNotificationSettings();
                         });
                       },
                     ),
@@ -196,14 +333,14 @@ class _NotificationsMenuState extends State<NotificationsMenu> {
         onPressed: () {
           print('Floating button pressed');
         },
-        child: const Icon(Icons.add),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
+        child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        child: Container(
+        child: SizedBox(
           height: kBottomNavigationBarHeight,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -213,7 +350,7 @@ class _NotificationsMenuState extends State<NotificationsMenu> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
+                    MaterialPageRoute(builder: (context) => const HomePage()),
                   );
                 },
               ),
@@ -222,7 +359,8 @@ class _NotificationsMenuState extends State<NotificationsMenu> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const CalendarPage()),
+                    MaterialPageRoute(
+                        builder: (context) => const CalendarPage()),
                   );
                 },
               ),
@@ -240,7 +378,7 @@ class _NotificationsMenuState extends State<NotificationsMenu> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const InfoPage()),
+                    MaterialPageRoute(builder: (context) => InformationCentre()),
                   );
                 },
               ),

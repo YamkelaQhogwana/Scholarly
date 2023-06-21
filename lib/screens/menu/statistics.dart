@@ -7,7 +7,6 @@ import 'package:scholarly/screens/home.dart';
 import 'package:scholarly/screens/info.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-
 class MenuStatistics extends StatelessWidget {
   const MenuStatistics({Key? key});
 
@@ -16,8 +15,9 @@ class MenuStatistics extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: AppColors.kMainText, size: 18),
-        title: const Text('Statistics', style: TextStyle(color: AppColors.kMainText, fontSize: 16)),
-        backgroundColor: const Color.fromARGB(255, 248, 248, 248) ,
+        title: const Text('Statistics',
+            style: TextStyle(color: AppColors.kMainText, fontSize: 16)),
+        backgroundColor: const Color.fromARGB(255, 248, 248, 248),
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -25,7 +25,8 @@ class MenuStatistics extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Overview', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
+            const Text('Overview',
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
             const SizedBox(height: 10),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,7 +54,8 @@ class MenuStatistics extends StatelessWidget {
             const SizedBox(height: 10.0),
             BarGraphWidget(DummyStatsData.habitsCompletedWeek),
             const SizedBox(height: 25.0),
-            const Text('Habit Streaks', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
+            const Text('Habit Streaks',
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
             const SizedBox(height: 10),
             Wrap(
               spacing: 1,
@@ -136,7 +138,7 @@ class MenuStatistics extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const InfoPage()),
+                  MaterialPageRoute(builder: (context) => InformationCentre()),
                 );
               },
             ),
@@ -159,18 +161,25 @@ class MenuStatistics extends StatelessWidget {
         children: [
           Text(
             value,
-            style: const TextStyle(fontSize: 38.0, fontWeight: FontWeight.bold, color: AppColors.kPrimary400),
+            style: const TextStyle(
+                fontSize: 38.0,
+                fontWeight: FontWeight.bold,
+                color: AppColors.kPrimary400),
           ),
           Text(
             label,
             textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 12.0, color: AppColors.kMainText, fontWeight: FontWeight.w500),
+            style: const TextStyle(
+                fontSize: 12.0,
+                color: AppColors.kMainText,
+                fontWeight: FontWeight.w500),
           ),
         ],
       ),
     );
   }
 }
+
 class BarGraphWidget extends StatelessWidget {
   final Map<String, int> data;
 
@@ -178,9 +187,8 @@ class BarGraphWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<DataPoint> chartData = data.entries
-        .map((entry) => DataPoint(entry.value, entry.key))
-        .toList();
+    List<DataPoint> chartData =
+        data.entries.map((entry) => DataPoint(entry.value, entry.key)).toList();
 
     return Container(
       width: 350,
@@ -210,24 +218,3 @@ class DataPoint {
 
   DataPoint(this.x, this.y);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

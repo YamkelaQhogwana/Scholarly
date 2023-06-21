@@ -9,6 +9,7 @@ import 'package:scholarly/screens/habits.dart';
 import 'package:scholarly/screens/info.dart';
 import 'package:scholarly/screens/habit_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:scholarly/screens/main_screen_menu.dart';
 
 class AddHabits extends StatefulWidget {
   const AddHabits({Key? key}) : super(key: key);
@@ -56,25 +57,64 @@ class _AddHabitsState extends State<AddHabits> {
               onPressed: () {
                 // Get the entered values from the controllers
                 final String habitName = habitNameController.text.trim();
-                final int numberOfDays =
-                    int.tryParse(numberOfDaysController.text) ?? 0;
+                final String numberOfDaysText =
+                    numberOfDaysController.text.trim();
+                final int numberOfDays = int.tryParse(numberOfDaysText) ?? 0;
                 final user = FirebaseAuth.instance.currentUser;
                 final userEmail = user?.email ?? '';
+
+                // Check if habit name and days are valid
+                if (habitName.isEmpty ||
+                    numberOfDaysText.isEmpty ||
+                    numberOfDays > 7) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Invalid Data'),
+                        content: Text(
+                            'Please enter valid habit name and number of days (less than or equal to 7).'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(); // Close the dialog
+                            },
+                            child: Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                  return; // Do not proceed with adding the habit to the database
+                }
+
                 // Create a new habit with the entered data
                 final Habit newHabit = Habit(
-                  userEmail: userEmail, // Replace with the actual user ID
+                  userEmail: userEmail,
                   name: habitName,
                   days: numberOfDays,
                   isCompleted: false,
                 );
 
                 // Insert the new habit into the database
+                // Insert the new habit into the database
                 FirebaseFirestore.instance
                     .collection('habits')
-                    .add(newHabit.toMap());
+                    .add(newHabit.toMap())
+                    .then((value) {
+                  // Update the fetched habits list with the new habit
+                  setState(() {
+                    habits.add(newHabit);
+                  });
 
-                // Close the dialog
-                Navigator.of(context).pop();
+                  // Close the dialog
+                  Navigator.of(context).pop();
+
+                  // Show a snackbar to indicate the new habit creation
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('New habit created')),
+                  );
+                });
               },
               child: Text('Add'),
             ),
@@ -228,15 +268,17 @@ class _AddHabitsState extends State<AddHabits> {
               padding: const EdgeInsets.only(bottom: 50.0),
               child: Column(
                 children:
-                habits.map((habit) => HabitWidget(habit: habit)).toList(),
+                    habits.map((habit) => HabitWidget(habit: habit)).toList(),
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(30.0),
               child: ElevatedButton(
                 onPressed: () {
-                  // Placeholder code for save button
-                  print('Save Habits and Goals pressed');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MenuPage()),
+                  );
                 },
                 style: ButtonStyle(
                   minimumSize: MaterialStateProperty.all(
@@ -298,7 +340,7 @@ class _AddHabitsState extends State<AddHabits> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => InfoPage()),
+                  MaterialPageRoute(builder: (context) => InformationCentre()),
                 );
               },
             ),

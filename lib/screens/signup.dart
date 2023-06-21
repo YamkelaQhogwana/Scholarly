@@ -8,9 +8,10 @@ import 'onboarding.dart';
 
 final Auth _auth = Auth();
 final CollectionReference _usersCollection =
-FirebaseFirestore.instance.collection('users');
+    FirebaseFirestore.instance.collection('users');
 final GoogleSignIn _googleSignIn = GoogleSignIn();
 final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
 class SignUpPage extends StatefulWidget {
   @override
   _SignUpPageState createState() => _SignUpPageState();
@@ -20,7 +21,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
-  TextEditingController();
+      TextEditingController();
   bool _isSigningUp = false;
   final TextEditingController _fullNameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -36,13 +37,13 @@ class _SignUpPageState extends State<SignUpPage> {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       final GoogleSignInAuthentication googleAuth =
-      await googleUser!.authentication;
+          await googleUser!.authentication;
       final OAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
       final UserCredential userCredential =
-      await _firebaseAuth.signInWithCredential(credential);
+          await _firebaseAuth.signInWithCredential(credential);
       final User? user = userCredential.user;
 
       if (user != null) {
@@ -58,7 +59,7 @@ class _SignUpPageState extends State<SignUpPage> {
           'campus': 'Becfordview',
           'year': 'Third Year',
           'course': 'Software Engineering',
-          'icon': 'assets/images/avatar/black-wn-av.png'
+          'icon': 'images/avatar/black-wn-av.png'
         });
 
         // Navigate to the onboarding page
@@ -99,10 +100,12 @@ class _SignUpPageState extends State<SignUpPage> {
 
     try {
       // Check if the email is already in use
-      final existingUser = await _firebaseAuth.fetchSignInMethodsForEmail(email);
+      final existingUser =
+          await _firebaseAuth.fetchSignInMethodsForEmail(email);
       if (existingUser.isNotEmpty) {
         setState(() {
-          _errorMessage = 'Email is already in use. Please use a different email address.';
+          _errorMessage =
+              'Email is already in use. Please use a different email address.';
           _isSigningUp = false; // Stop the loading indicator
         });
         return;
@@ -122,7 +125,7 @@ class _SignUpPageState extends State<SignUpPage> {
         'campus': 'Bedfordview',
         'year': 'Third Year',
         'course': 'Software Engineering',
-        'icon': 'assets/images/avatar/black-wn-av.png'
+        'icon': 'images/avatar/black-wn-av.png'
       });
 
       // Registration successful, navigate to the onboarding page
@@ -149,7 +152,7 @@ class _SignUpPageState extends State<SignUpPage> {
   String _getErrorMessage(RegistrationException exception) {
     if (exception.exception is FirebaseAuthException) {
       final FirebaseAuthException firebaseException =
-      exception.exception as FirebaseAuthException;
+          exception.exception as FirebaseAuthException;
       switch (firebaseException.code) {
         case 'email-already-in-use':
           return 'Email already exists. Please use a different email address.';
@@ -162,7 +165,7 @@ class _SignUpPageState extends State<SignUpPage> {
       }
     } else if (exception.exception is FirebaseException) {
       final FirebaseException firebaseException =
-      exception.exception as FirebaseException;
+          exception.exception as FirebaseException;
       if (firebaseException.code == 'email-already-in-use') {
         return 'Email already exists. Please use a different email address.';
       } else if (firebaseException.code == 'invalid-email') {
@@ -174,8 +177,6 @@ class _SignUpPageState extends State<SignUpPage> {
       return 'Registration failed. Please try again later.';
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -254,12 +255,12 @@ class _SignUpPageState extends State<SignUpPage> {
                           borderSide: BorderSide.none,
                         ),
                       ),
-                      style: TextStyle(fontFamily:'Poppins', fontSize: 14, color: Colors.black),
+                      style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 14,
+                          color: Colors.black),
                     ),
                   ),
-
-
-
                   SizedBox(height: 28.0),
                   const Padding(
                     padding: EdgeInsets.only(left: 30.0),
@@ -302,10 +303,12 @@ class _SignUpPageState extends State<SignUpPage> {
                           borderSide: BorderSide.none,
                         ),
                       ),
-                      style: TextStyle(fontFamily: 'Poppins', fontSize:14,color: Colors.black),
+                      style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 14,
+                          color: Colors.black),
                     ),
                   ),
-
                   SizedBox(height: 28.0),
                   const Padding(
                     padding: EdgeInsets.only(left: 30.0),
@@ -398,7 +401,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       style: TextStyle(color: Colors.black),
                     ),
                   ),
-
                   SizedBox(height: 28.0),
                   Container(
                     margin: EdgeInsets.only(left: 39.0),
@@ -415,10 +417,12 @@ class _SignUpPageState extends State<SignUpPage> {
                       ],
                     ),
                     child: Material(
-                      color: Color(0xFF383B53), // Set the background color explicitly
+                      color: Color(
+                          0xFF383B53), // Set the background color explicitly
                       borderRadius: BorderRadius.circular(10.0),
                       child: InkWell(
-                        onTap: _isSigningUp ? null : _registerWithEmailAndPassword,
+                        onTap:
+                            _isSigningUp ? null : _registerWithEmailAndPassword,
                         child: Container(
                           width: double.infinity,
                           height: 50.0,
@@ -433,7 +437,9 @@ class _SignUpPageState extends State<SignUpPage> {
                                       width: 24.0,
                                       height: 24.0,
                                       child: CircularProgressIndicator(
-                                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                Colors.white),
                                       ),
                                     ),
                                   ),
@@ -459,7 +465,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   SizedBox(height: 16.0),
                   Container(
                     padding:
-                    EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
+                        EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -489,7 +495,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       ],
                     ),
                   ),
-
                   SizedBox(height: 15.0),
                   Align(
                     alignment: Alignment.center,
@@ -499,7 +504,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(5.0),
-                        border: Border.all(color: Color(0xFF121212), width: 1.0),
+                        border:
+                            Border.all(color: Color(0xFF121212), width: 1.0),
                       ),
                       child: InkWell(
                         onTap: _signInWithGoogle, // Add this method

@@ -17,7 +17,7 @@ import 'package:iconify_flutter/icons/majesticons.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
 import 'package:scholarly/screens/menu/habits.dart';
 import 'package:scholarly/screens/menu/statistics.dart';
-import 'package:scholarly/screens/feedback_form.dart';
+import 'package:scholarly/screens/menu/feedback.dart';
 
 class ClassesPage extends StatefulWidget {
   @override
@@ -26,6 +26,7 @@ class ClassesPage extends StatefulWidget {
 
 class _ClassesPageState extends State<ClassesPage> {
   late String userName = '';
+  late String icon = "";
   late List<Map<String, dynamic>> modules;
   late List<Color> containerColors = [
     const Color(0xFFEAF5E6), // First color
@@ -58,11 +59,11 @@ class _ClassesPageState extends State<ClassesPage> {
             .get();
         if (snapshot.docs.isNotEmpty) {
           DocumentSnapshot userDoc = snapshot.docs.first;
-          Map<String, dynamic>? data =
-          userDoc.data() as Map<String, dynamic>?;
+          Map<String, dynamic>? data = userDoc.data() as Map<String, dynamic>?;
           if (data != null) {
             setState(() {
               userName = data['fname'] ?? '';
+              icon = data['icon'];
             });
           }
         }
@@ -72,14 +73,16 @@ class _ClassesPageState extends State<ClassesPage> {
     }
   }
 
-  void _onAddModule(String name,
-      String code,
-      String grade,
-      String lecturer,
-      TextEditingController moduleNameController,
-      TextEditingController moduleCodeController,
-      TextEditingController moduleGradeController,
-      TextEditingController moduleLecturerController,) async {
+  void _onAddModule(
+    String name,
+    String code,
+    String grade,
+    String lecturer,
+    TextEditingController moduleNameController,
+    TextEditingController moduleCodeController,
+    TextEditingController moduleGradeController,
+    TextEditingController moduleLecturerController,
+  ) async {
     try {
       User? user = FirebaseAuth.instance.currentUser;
       if (user != null) {
@@ -148,10 +151,7 @@ class _ClassesPageState extends State<ClassesPage> {
         child: Column(
           children: [
             SizedBox(
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height,
+              height: MediaQuery.of(context).size.height,
               child: Column(
                 children: [
                   Expanded(
@@ -164,7 +164,7 @@ class _ClassesPageState extends State<ClassesPage> {
                             child: Row(
                               children: [
                                 Image.asset(
-                                  'assets/images/avatars/black-wn-av.png',
+                                  icon,
                                   width: 55,
                                   height: 55,
                                 ),
@@ -189,11 +189,10 @@ class _ClassesPageState extends State<ClassesPage> {
                                             ConnectionState.waiting) {
                                           return const CircularProgressIndicator();
                                         } else if (snapshot.hasData) {
-                                          int moduleCount = snapshot.data!
-                                              .length;
+                                          int moduleCount =
+                                              snapshot.data!.length;
                                           return Text(
-                                            'You have $moduleCount module${moduleCount !=
-                                                1 ? 's' : ''} this block',
+                                            'You have $moduleCount module${moduleCount != 1 ? 's' : ''} this block',
                                             style: const TextStyle(
                                               fontFamily: 'Montserrat',
                                               fontWeight: FontWeight.w500,
@@ -222,7 +221,8 @@ class _ClassesPageState extends State<ClassesPage> {
                                       Scaffold.of(context).openEndDrawer();
                                     },
                                     child: Padding(
-                                      padding: const EdgeInsets.only(left: 60.0),
+                                      padding:
+                                          const EdgeInsets.only(left: 60.0),
                                       child: SvgPicture.string(
                                         '''
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -244,8 +244,8 @@ class _ClassesPageState extends State<ClassesPage> {
                               child: Padding(
                                 padding: const EdgeInsets.only(
                                     top: 30, left: 25, right: 25, bottom: 30),
-                                child: FutureBuilder<
-                                    List<Map<String, dynamic>>>(
+                                child:
+                                    FutureBuilder<List<Map<String, dynamic>>>(
                                   future: fetchModuleData(),
                                   builder: (context, snapshot) {
                                     if (snapshot.connectionState ==
@@ -253,11 +253,12 @@ class _ClassesPageState extends State<ClassesPage> {
                                       return const CircularProgressIndicator();
                                     } else if (snapshot.hasData) {
                                       List<Map<String, dynamic>> moduleData =
-                                      snapshot.data!;
+                                          snapshot.data!;
                                       if (moduleData.isNotEmpty) {
                                         return ListView.builder(
                                           shrinkWrap: true,
-                                          physics: const NeverScrollableScrollPhysics(),
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
                                           itemCount: moduleData.length,
                                           itemBuilder: (context, index) {
                                             String moduleName =
@@ -270,11 +271,11 @@ class _ClassesPageState extends State<ClassesPage> {
                                             String moduleLecturer =
                                                 moduleData[index]['lecturer'] ??
                                                     '';
-                                            int colorIndex = index %
-                                                containerColors.length;
+                                            int colorIndex =
+                                                index % containerColors.length;
                                             Color containerColor =
-                                            containerColors[index %
-                                                containerColors.length];
+                                                containerColors[index %
+                                                    containerColors.length];
 
                                             // Get the corresponding text/icon color based on the container color using the mapping
                                             Color textIconColor =
@@ -287,94 +288,125 @@ class _ClassesPageState extends State<ClassesPage> {
                                                 width: 350,
                                                 height: 170,
                                                 decoration: BoxDecoration(
-                                                  color: containerColors[colorIndex],
+                                                  color: containerColors[
+                                                      colorIndex],
                                                   // Assign the color based on the index
-                                                  borderRadius: BorderRadius
-                                                      .circular(10),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
                                                 ),
                                                 child: Stack(
                                                   children: [
                                                     Column(
-                                                      crossAxisAlignment: CrossAxisAlignment
-                                                          .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: [
-                                                        const SizedBox(height: 20),
+                                                        const SizedBox(
+                                                            height: 20),
                                                         Padding(
-                                                          padding: const EdgeInsets
-                                                              .symmetric(
-                                                              horizontal: 20),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      20),
                                                           child: Text(
                                                             'Module Name',
                                                             style: TextStyle(
-                                                              fontFamily: 'Montserrat',
-                                                              fontWeight: FontWeight
-                                                                  .w500,
+                                                              fontFamily:
+                                                                  'Montserrat',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
                                                               fontSize: 12,
-                                                              color: textIconColor,
+                                                              color:
+                                                                  textIconColor,
                                                             ),
                                                           ),
                                                         ),
-                                                        const SizedBox(height: 3),
+                                                        const SizedBox(
+                                                            height: 3),
                                                         Padding(
-                                                          padding: const EdgeInsets
-                                                              .symmetric(
-                                                              horizontal: 20),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      20),
                                                           child: Text(
                                                             moduleName,
-                                                            style: const TextStyle(
-                                                              fontFamily: 'Montserrat',
-                                                              fontWeight: FontWeight
-                                                                  .w700,
+                                                            style:
+                                                                const TextStyle(
+                                                              fontFamily:
+                                                                  'Montserrat',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
                                                               fontSize: 16,
                                                               color: Color(
                                                                   0xFF1D1D1D),
                                                             ),
                                                           ),
                                                         ),
-                                                        const SizedBox(height: 10),
+                                                        const SizedBox(
+                                                            height: 10),
                                                         Padding(
-                                                          padding: const EdgeInsets
-                                                              .symmetric(
-                                                              horizontal: 20),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      20),
                                                           child: Text(
                                                             'Module Code',
                                                             style: TextStyle(
-                                                              fontFamily: 'Montserrat',
-                                                              fontWeight: FontWeight
-                                                                  .w500,
+                                                              fontFamily:
+                                                                  'Montserrat',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
                                                               fontSize: 12,
-                                                              color: textIconColor,
+                                                              color:
+                                                                  textIconColor,
                                                             ),
                                                           ),
                                                         ),
-                                                        const SizedBox(height: 3),
+                                                        const SizedBox(
+                                                            height: 3),
                                                         Padding(
-                                                          padding: const EdgeInsets
-                                                              .symmetric(
-                                                              horizontal: 20),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      20),
                                                           child: Text(
                                                             moduleCode,
-                                                            style: const TextStyle(
-                                                              fontFamily: 'Montserrat',
-                                                              fontWeight: FontWeight
-                                                                  .w700,
+                                                            style:
+                                                                const TextStyle(
+                                                              fontFamily:
+                                                                  'Montserrat',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
                                                               fontSize: 16,
                                                               color: Color(
                                                                   0xFF1D1D1D),
                                                             ),
                                                           ),
                                                         ),
-                                                        const SizedBox(height: 10),
+                                                        const SizedBox(
+                                                            height: 10),
                                                         Padding(
-                                                          padding: const EdgeInsets
-                                                              .only(left: 20),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 20),
                                                           child: Row(
-                                                            mainAxisAlignment: MainAxisAlignment
-                                                                .start,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
                                                             children: [
                                                               Column(
-                                                                crossAxisAlignment: CrossAxisAlignment
-                                                                    .start,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
                                                                 children: [
                                                                   SvgPicture
                                                                       .string(
@@ -385,17 +417,23 @@ class _ClassesPageState extends State<ClassesPage> {
                     ''',
                                                                     width: 12,
                                                                     height: 12,
-                                                                    color: textIconColor,
+                                                                    color:
+                                                                        textIconColor,
                                                                   ),
                                                                   const SizedBox(
-                                                                      height: 5),
+                                                                      height:
+                                                                          5),
                                                                   Text(
                                                                     moduleGrade,
-                                                                    style: const TextStyle(
-                                                                      fontFamily: 'Montserrat',
-                                                                      fontWeight: FontWeight
-                                                                          .w700,
-                                                                      fontSize: 16,
+                                                                    style:
+                                                                        const TextStyle(
+                                                                      fontFamily:
+                                                                          'Montserrat',
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700,
+                                                                      fontSize:
+                                                                          16,
                                                                       color: Color(
                                                                           0xFF1D1D1D),
                                                                     ),
@@ -405,13 +443,15 @@ class _ClassesPageState extends State<ClassesPage> {
                                                               const SizedBox(
                                                                   width: 20),
                                                               Column(
-                                                                crossAxisAlignment: CrossAxisAlignment
-                                                                    .start,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
                                                                 children: [
                                                                   Padding(
                                                                     padding: const EdgeInsets
-                                                                        .only(
-                                                                        left: 50),
+                                                                            .only(
+                                                                        left:
+                                                                            50),
                                                                     child: SvgPicture
                                                                         .string(
                                                                       '''
@@ -419,24 +459,31 @@ class _ClassesPageState extends State<ClassesPage> {
                             <path fill="#8F76C9" d="M8 8a3 3 0 1 0 0-6a3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0a2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1s1-4 6-4s6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664h10Z"/>
                           </svg>
                           ''',
-                                                                      color: textIconColor,
+                                                                      color:
+                                                                          textIconColor,
                                                                       width: 12,
-                                                                      height: 12,
+                                                                      height:
+                                                                          12,
                                                                     ),
                                                                   ),
                                                                   const SizedBox(
-                                                                      height: 5),
+                                                                      height:
+                                                                          5),
                                                                   Padding(
                                                                     padding: const EdgeInsets
-                                                                        .only(
-                                                                        left: 50),
+                                                                            .only(
+                                                                        left:
+                                                                            50),
                                                                     child: Text(
                                                                       moduleLecturer,
-                                                                      style: const TextStyle(
-                                                                        fontFamily: 'Montserrat',
-                                                                        fontWeight: FontWeight
-                                                                            .w700,
-                                                                        fontSize: 16,
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        fontFamily:
+                                                                            'Montserrat',
+                                                                        fontWeight:
+                                                                            FontWeight.w700,
+                                                                        fontSize:
+                                                                            16,
                                                                         color: Color(
                                                                             0xFF1D1D1D),
                                                                       ),
@@ -462,69 +509,114 @@ class _ClassesPageState extends State<ClassesPage> {
                                                             context: context,
                                                             builder: (context) {
                                                               return AlertDialog(
-                                                                title: const Text(
+                                                                title:
+                                                                    const Text(
                                                                   'Delete Module',
-                                                                  style: TextStyle(
-                                                                    fontFamily: 'Montserrat',
-                                                                    fontWeight: FontWeight.w500,
-                                                                    fontSize: 16,
-                                                                    color: Colors.black,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontFamily:
+                                                                        'Montserrat',
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    fontSize:
+                                                                        16,
+                                                                    color: Colors
+                                                                        .black,
                                                                   ),
                                                                 ),
-                                                                content: const Text(
+                                                                content:
+                                                                    const Text(
                                                                   'Are you sure you want to delete this module?',
-                                                                  style: TextStyle(
-                                                                    fontFamily: 'Montserrat',
-                                                                    fontWeight: FontWeight.w400,
-                                                                    fontSize: 14,
-                                                                    color: Colors.black,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontFamily:
+                                                                        'Montserrat',
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                    fontSize:
+                                                                        14,
+                                                                    color: Colors
+                                                                        .black,
                                                                   ),
                                                                 ),
                                                                 actions: [
                                                                   TextButton(
-                                                                    child: const Text(
+                                                                    child:
+                                                                        const Text(
                                                                       'Cancel',
-                                                                      style: TextStyle(
-                                                                        fontFamily: 'Montserrat',
-                                                                        fontWeight: FontWeight.w500,
-                                                                        fontSize: 14,
-                                                                        color: Colors.black,
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontFamily:
+                                                                            'Montserrat',
+                                                                        fontWeight:
+                                                                            FontWeight.w500,
+                                                                        fontSize:
+                                                                            14,
+                                                                        color: Colors
+                                                                            .black,
                                                                       ),
                                                                     ),
-                                                                    onPressed: () {
-                                                                      Navigator.pop(context);
+                                                                    onPressed:
+                                                                        () {
+                                                                      Navigator.pop(
+                                                                          context);
                                                                     },
                                                                   ),
                                                                   TextButton(
-                                                                    child: const Text(
+                                                                    child:
+                                                                        const Text(
                                                                       'Delete',
-                                                                      style: TextStyle(
-                                                                        fontFamily: 'Montserrat',
-                                                                        fontWeight: FontWeight.w500,
-                                                                        fontSize: 14,
-                                                                        color: Colors.red,
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontFamily:
+                                                                            'Montserrat',
+                                                                        fontWeight:
+                                                                            FontWeight.w500,
+                                                                        fontSize:
+                                                                            14,
+                                                                        color: Colors
+                                                                            .red,
                                                                       ),
                                                                     ),
-                                                                    onPressed: () async {
+                                                                    onPressed:
+                                                                        () async {
                                                                       // Delete the module from Firebase
-                                                                      DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
-                                                                          .collection('modules')
-                                                                          .where('name', isEqualTo: moduleName)
-                                                                          .limit(1)
+                                                                      DocumentSnapshot docSnapshot = await FirebaseFirestore
+                                                                          .instance
+                                                                          .collection(
+                                                                              'modules')
+                                                                          .where(
+                                                                              'name',
+                                                                              isEqualTo:
+                                                                                  moduleName)
+                                                                          .limit(
+                                                                              1)
                                                                           .get()
-                                                                          .then((snapshot) => snapshot.docs.first);
+                                                                          .then((snapshot) => snapshot
+                                                                              .docs
+                                                                              .first);
 
-                                                                      if (docSnapshot.exists) {
-                                                                        docSnapshot.reference.delete();
+                                                                      if (docSnapshot
+                                                                          .exists) {
+                                                                        docSnapshot
+                                                                            .reference
+                                                                            .delete();
                                                                       }
 
                                                                       // Refresh the displayed modules by calling fetchModuleData()
-                                                                      List<Map<String, dynamic>> updatedModules = await fetchModuleData();
-                                                                      setState(() {
-                                                                        modules = updatedModules;
+                                                                      List<Map<String, dynamic>>
+                                                                          updatedModules =
+                                                                          await fetchModuleData();
+                                                                      setState(
+                                                                          () {
+                                                                        modules =
+                                                                            updatedModules;
                                                                       });
 
-                                                                      Navigator.pop(context);
+                                                                      Navigator.pop(
+                                                                          context);
                                                                     },
                                                                   ),
                                                                 ],
@@ -584,10 +676,9 @@ class _ClassesPageState extends State<ClassesPage> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) =>
-                                            AddClasses(
-                                              onAddModule: _onAddModule,
-                                            ),
+                                        builder: (context) => AddClasses(
+                                          onAddModule: _onAddModule,
+                                        ),
                                       ),
                                     );
                                   },
@@ -621,10 +712,8 @@ class _ClassesPageState extends State<ClassesPage> {
         children: [
           Positioned(
             bottom: kBottomNavigationBarHeight / 2,
-            left: (MediaQuery
-                .of(context)
-                .size
-                .width - 56) / 2, // Adjust the left position
+            left: (MediaQuery.of(context).size.width - 56) /
+                2, // Adjust the left position
             child: Container(
               width: 56,
               height: 56,
@@ -636,7 +725,7 @@ class _ClassesPageState extends State<ClassesPage> {
               child: IconButton(
                 onPressed: () {
                   // Placeholder code for add button
-                  showTaskFormBottomSheet(context);
+                  //showTaskFormBottomSheet(context);
                   print('Add button pressed');
                 },
                 icon: const Icon(
@@ -690,7 +779,7 @@ class _ClassesPageState extends State<ClassesPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const InfoPage()),
+                  MaterialPageRoute(builder: (context) => InformationCentre()),
                 );
               },
             ),
@@ -744,7 +833,8 @@ class _ClassesPageState extends State<ClassesPage> {
               leading: const Iconify(MaterialSymbols.person_2_rounded),
               title: const Text('Profile'),
               onTap: () {
-                Navigator.push(context,
+                Navigator.push(
+                  context,
                   MaterialPageRoute(
                     builder: (context) => const ProfileMenu(),
                   ),
@@ -756,7 +846,8 @@ class _ClassesPageState extends State<ClassesPage> {
               leading: const Iconify(Mdi.bell_badge),
               title: const Text('Notifications'),
               onTap: () {
-                Navigator.push(context,
+                Navigator.push(
+                  context,
                   MaterialPageRoute(
                     builder: (context) => const NotificationsMenu(),
                   ),
@@ -827,7 +918,6 @@ class _ClassesPageState extends State<ClassesPage> {
             ),
           ],
         ),
-
       ),
     );
   }

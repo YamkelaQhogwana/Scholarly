@@ -7,6 +7,12 @@ import 'notification_menu.dart';
 import 'edithabits.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:scholarly/screens/constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'login.dart';
+import 'package:scholarly/screens/menu/statistics.dart';
+import 'package:scholarly/screens/menu/feedback.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,6 +48,34 @@ class MenuPage extends StatefulWidget {
 
 class _MenuPageState extends State<MenuPage> {
   bool isDarkMode = false;
+  String fullName = "";
+  String icon = "";
+  String year = "";
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    final user = FirebaseAuth.instance.currentUser;
+    final userEmail = user?.email ?? '';
+    if (user != null) {
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: userEmail)
+          .get();
+      if (querySnapshot.docs.isNotEmpty) {
+        Map<String, dynamic> userData = querySnapshot.docs[0].data();
+        setState(() {
+          fullName = userData['fname'];
+          icon = userData['icon'];
+          year = userData['year'];
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,14 +146,14 @@ class _MenuPageState extends State<MenuPage> {
                             ),
                             child: ClipOval(
                               child: Image.asset(
-                                'assets/images/avatars/black-wn-av.png',
+                                icon,
                                 fit: BoxFit.cover,
                               ),
                             ),
                           ),
                           SizedBox(height: 16.0),
                           Text(
-                            'Jane Doe',
+                            fullName,
                             style: TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
@@ -127,7 +161,7 @@ class _MenuPageState extends State<MenuPage> {
                           ),
                           SizedBox(height: 8.0),
                           Text(
-                            'Third Year',
+                            ' Year ${year}',
                             style: TextStyle(
                               fontSize: 16.0,
                               color: Colors.grey,
@@ -180,7 +214,11 @@ class _MenuPageState extends State<MenuPage> {
                             title: 'Statistics',
                             onTap: () {
                               // Handle Statistics menu item click
-                              print('Statistics Clicked');
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MenuStatistics()),
+                              );
                               // Perform navigation or any other actions
                             },
                           ),
@@ -190,7 +228,11 @@ class _MenuPageState extends State<MenuPage> {
                             onTap: () {
                               // Handle Feedback menu item click
                               print('Feedback Clicked');
-                              // Perform navigation or any other actions
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => FeedbackForm()),
+                              );
                             },
                           ),
                           MenuItem(
@@ -199,6 +241,12 @@ class _MenuPageState extends State<MenuPage> {
                             onTap: () {
                               // Handle Logout menu item click
                               print('Logout Clicked');
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Login(),
+                                ),
+                              );
                               // Perform navigation or any other actions
                             },
                           ),

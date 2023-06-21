@@ -3,7 +3,7 @@ import 'package:scholarly/constants/colors.dart';
 import 'package:scholarly/screens/calendar.dart';
 import 'package:scholarly/screens/classes.dart';
 import 'package:scholarly/screens/info.dart';
-import 'package:scholarly/screens/feedback_form.dart';
+import 'package:scholarly/screens/menu/feedback.dart';
 import 'package:scholarly/modules/events.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:scholarly/screens/habits_tab.dart';
@@ -234,7 +234,7 @@ class _HomePageState extends State<HomePage>
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => InfoPage()),
+                  MaterialPageRoute(builder: (context) => InformationCentre()),
                 );
               },
             ),

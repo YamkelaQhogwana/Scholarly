@@ -184,7 +184,7 @@ class HabitsPage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const InfoPage()),
+                  MaterialPageRoute(builder: (context) => InformationCentre()),
                 );
               },
             ),

@@ -20,7 +20,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.17.0 <3.0.0'
+  sdk: ">=2.17.0 <3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -33,28 +33,22 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_auth: ^4.6.2
   firebase_core: ^2.13.1
-  flutter_local_notifications: ^14.1.1
+  firebase_database: ^10.2.3
   flutter:
     sdk: flutter
+  flutter_local_notifications: ^14.1.1
   flutter_svg: ^1.0.0
-  shared_preferences: ^2.0.13
-  table_calendar: ^3.0.9
   google_sign_in: ^6.1.4
   iconify_flutter: ^0.0.5
   provider: ^5.0.0
+  shared_preferences: ^2.0.13
+  syncfusion_flutter_charts: ^21.2.10
+  table_calendar: ^3.0.9
 
 dev_dependencies:
+  flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
-
-
-
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
-  flutter_lints: ^2.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -69,6 +63,11 @@ flutter:
   assets:
     - assets/images/avatars/black-wn-av.png
     - assets/images/icons/change-avi.png
+    - assets/images/avatars/black-mn-av.png
+    - assets/images/avatars/brunette-wn-av.png
+    - assets/images/avatars/ginger-mn-av.png
+    - assets/images/avatars/tan-mn-av.png
+    - assets/images/avatars/white-wn-av.png
     - assets/images/onboarding-img1.png
     - assets/images/onboarding-img2.png
     - assets/images/onboarding-img3.png

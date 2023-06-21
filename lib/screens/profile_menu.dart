@@ -4,9 +4,54 @@ import 'package:scholarly/screens/home.dart';
 import 'package:scholarly/screens/calendar.dart';
 import 'package:scholarly/screens/classes.dart';
 import 'package:scholarly/screens/info.dart'; // Import InfoPage class
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ProfileMenu extends StatelessWidget {
+class ProfileMenu extends StatefulWidget {
   const ProfileMenu({Key? key}) : super(key: key);
+
+  @override
+  _ProfileMenuState createState() => _ProfileMenuState();
+}
+
+class _ProfileMenuState extends State<ProfileMenu> {
+  String fullName = "";
+  String email = "";
+  String institution = "";
+  String campus = "";
+  String year = "";
+  String course = "";
+  String icon = "";
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    final user = FirebaseAuth.instance.currentUser;
+    final userEmail = user?.email ?? '';
+    if (user != null) {
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: userEmail)
+          .get();
+      if (querySnapshot.docs.isNotEmpty) {
+        Map<String, dynamic> userData = querySnapshot.docs[0].data();
+        setState(() {
+          fullName = userData['fname'];
+          email = userData['email'];
+          institution = userData['institution'];
+          campus = userData['campus'];
+          year = userData['year'];
+          course = userData['course'];
+          icon = userData['icon'];
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,22 +111,21 @@ class ProfileMenu extends StatelessWidget {
                   Container(
                     width: 60,
                     height: 60,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                        image:
-                            AssetImage('assets/images/avatars/black-wn-av.png'),
+                        image: AssetImage(icon),
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
                   const SizedBox(width: 16),
-                  const Expanded(
+                  Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Jane Doe',
+                          fullName,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
@@ -90,7 +134,7 @@ class ProfileMenu extends StatelessWidget {
                         ),
                         SizedBox(height: 4),
                         Text(
-                          'BSC in IT Software Engineering',
+                          course,
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 14,
@@ -130,8 +174,8 @@ class ProfileMenu extends StatelessWidget {
                               ),
                             ),
                           ),
-                          child: const Text(
-                            'Jane Doe',
+                          child: Text(
+                            fullName,
                             style: TextStyle(
                               color: Colors.grey,
                               fontSize: 12,
@@ -164,8 +208,8 @@ class ProfileMenu extends StatelessWidget {
                               ),
                             ),
                           ),
-                          child: const Text(
-                            'janedoe@university.co.za',
+                          child: Text(
+                            email,
                             style: TextStyle(
                               color: Colors.grey,
                               fontSize: 12,
@@ -198,8 +242,8 @@ class ProfileMenu extends StatelessWidget {
                               ),
                             ),
                           ),
-                          child: const Text(
-                            'Eduvos',
+                          child: Text(
+                            institution,
                             style: TextStyle(
                               color: Colors.grey,
                               fontSize: 12,
@@ -233,8 +277,8 @@ class ProfileMenu extends StatelessWidget {
                               ),
                             ),
                           ),
-                          child: const Text(
-                            'Bedfordview',
+                          child: Text(
+                            campus,
                             style: TextStyle(
                               color: Colors.grey,
                               fontSize: 12,
@@ -267,8 +311,8 @@ class ProfileMenu extends StatelessWidget {
                               ),
                             ),
                           ),
-                          child: const Text(
-                            'Year 3',
+                          child: Text(
+                            '${year}',
                             style: TextStyle(
                               color: Colors.grey,
                               fontSize: 12,
@@ -301,8 +345,8 @@ class ProfileMenu extends StatelessWidget {
                               ),
                             ),
                           ),
-                          child: const Text(
-                            'Software Engineering',
+                          child: Text(
+                            course,
                             style: TextStyle(
                               color: Colors.grey,
                               fontSize: 12,
@@ -350,7 +394,8 @@ class ProfileMenu extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const CalendarPage()),
+                    MaterialPageRoute(
+                        builder: (context) => const CalendarPage()),
                   );
                 },
               ),
@@ -368,7 +413,7 @@ class ProfileMenu extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const InfoPage()),
+                    MaterialPageRoute(builder: (context) => InformationCentre()),
                   );
                 },
               ),

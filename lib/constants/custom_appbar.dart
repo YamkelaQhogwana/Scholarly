@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/ci.dart';
 import 'package:scholarly/screens/main_screen_menu.dart';
-import 'package:scholarly/screens/menu-stats.dart';
+import 'package:scholarly/screens/menu/statistics.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({Key? key}) : super(key: key);
