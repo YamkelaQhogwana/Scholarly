@@ -20,6 +20,8 @@ import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/octicon.dart';
 import 'package:iconify_flutter/icons/bi.dart';
 import 'package:iconify_flutter/icons/material_symbols.dart';
+import 'package:scholarly/screens/tasks_form.dart';
+
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({Key? key}) : super(key: key);
@@ -437,6 +439,7 @@ class _CalendarPageState extends State<CalendarPage> {
             child: IconButton(
               onPressed: () {
                 // Placeholder code for add button
+                showTaskFormBottomSheet(context);
                 print('Add button pressed');
               },
               icon: const Icon(Icons.add, color: Colors.white), // Set the icon color
