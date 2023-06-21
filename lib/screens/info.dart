@@ -3,6 +3,7 @@ import 'package:scholarly/constants/colors.dart';
 import 'package:scholarly/screens/home.dart';
 import 'package:scholarly/screens/calendar.dart';
 import 'package:scholarly/screens/classes.dart';
+import 'package:scholarly/screens/feedback_form.dart';
 
 class InfoPage extends StatelessWidget {
   const InfoPage({Key? key}) : super(key: key);
