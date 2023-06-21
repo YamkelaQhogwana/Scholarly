@@ -17,7 +17,7 @@ import 'package:iconify_flutter/icons/majesticons.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
 import 'package:scholarly/screens/menu/habits.dart';
 import 'package:scholarly/screens/menu/statistics.dart';
-
+import 'package:scholarly/screens/feedback_form.dart';
 
 class ClassesPage extends StatefulWidget {
   @override
@@ -636,6 +636,7 @@ class _ClassesPageState extends State<ClassesPage> {
               child: IconButton(
                 onPressed: () {
                   // Placeholder code for add button
+                  showTaskFormBottomSheet(context);
                   print('Add button pressed');
                 },
                 icon: const Icon(
