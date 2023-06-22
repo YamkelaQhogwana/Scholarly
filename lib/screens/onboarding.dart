@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:scholarly/screens/home.dart';
 
@@ -62,7 +64,28 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 backgroundColor:
                 MaterialStateProperty.all<Color>(AppColors.kPrimary400),
               ),
-              onPressed: () {
+              onPressed: () async {
+                // Get the currently logged-in user
+                User? user = FirebaseAuth.instance.currentUser;
+
+                if (user != null) {
+                  String userEmail = user.email ?? '';
+
+                  // Update Firestore document with hasSeenOnboarding = true
+                  await FirebaseFirestore.instance
+                      .collection('users')
+                      .where('email', isEqualTo: userEmail)
+                      .get()
+                      .then((QuerySnapshot snapshot) {
+                    if (snapshot.size > 0) {
+                      // Update the first document found with the matching email
+                      DocumentSnapshot userDoc = snapshot.docs[0];
+                      userDoc.reference.update({'hasSeenOnboarding': true});
+                    }
+                  });
+                }
+
+                // Navigate to the home page or any desired destination
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const HomePage()),

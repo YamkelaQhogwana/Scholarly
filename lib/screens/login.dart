@@ -7,6 +7,9 @@ import 'auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import 'home.dart';
+
+
 class LoginStatusWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -54,7 +57,6 @@ class _LoginState extends State<Login> {
 
   String get userName => _firebaseAuth.currentUser?.displayName ?? '';
 
-
   void handleSubmit() async {
     if (_formKey.currentState!.validate()) {
       final email = _emailController.text;
@@ -73,12 +75,35 @@ class _LoginState extends State<Login> {
           User? user = FirebaseAuth.instance.currentUser;
           if (user != null) {
             await Auth().updateDisplayName(user.email!.split('@')[0]);
-          }
 
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => OnboardingPage()),
-          );
+            // Retrieve the user document from Firestore
+            QuerySnapshot snapshot = await FirebaseFirestore.instance
+                .collection('users')
+                .where('email', isEqualTo: user.email)
+                .limit(1)
+                .get();
+
+            if (snapshot.docs.isNotEmpty) {
+              DocumentSnapshot userSnapshot = snapshot.docs[0];
+
+              // Check the value of hasSeenOnboarding
+              bool hasSeenOnboarding = userSnapshot['hasSeenOnboarding'] ?? false;
+
+              if (hasSeenOnboarding) {
+                // User has already seen onboarding, navigate to homepage
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                );
+              } else {
+                // User has not seen onboarding, navigate to onboarding page
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => OnboardingPage()),
+                );
+              }
+            }
+          }
         } else {
           setState(() {
             _errorMessage = 'Incorrect email or password.';
@@ -103,14 +128,12 @@ class _LoginState extends State<Login> {
   Future<void> _signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      final GoogleSignInAuthentication googleAuth = await googleUser!
-          .authentication;
+      final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
       final OAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-      final UserCredential userCredential = await _firebaseAuth
-          .signInWithCredential(credential);
+      final UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
       final User? user = userCredential.user;
 
       if (user != null) {
@@ -120,19 +143,33 @@ class _LoginState extends State<Login> {
             .where('email', isEqualTo: user.email)
             .limit(1)
             .get();
+
         if (snapshot.docs.isEmpty) {
           // If the user document does not exist, create a new one
           await FirebaseFirestore.instance.collection('users').add({
             'email': user.email,
             'fname': user.displayName,
-            // add other fields as needed
+            'pauseNotifications': true,
+            'habitNotifications': 0,
+            'streakNotifications': 0,
+            'taskNotifications': 0,
+            'institution': 'Eduvos',
+            'campus': 'Bedfordview',
+            'year': 'Third Year',
+            'course': 'Software Engineering',
+            'icon': 'images/avatars/black-wn-av.png'
           });
-        }
 
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => OnboardingPage()),
-        );
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => OnboardingPage()),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+          );
+        }
       } else {
         // Google sign-in failed, handle the error
       }
@@ -140,6 +177,7 @@ class _LoginState extends State<Login> {
       print('Error signing in with Google: $e');
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
