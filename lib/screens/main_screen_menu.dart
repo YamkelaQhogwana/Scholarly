@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
-import 'habits.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
+import 'package:scholarly/screens/calendar.dart';
+import 'package:scholarly/screens/tasks_form.dart';
 import 'profile_menu.dart';
 import 'notification_menu.dart';
 import 'edithabits.dart';
@@ -51,6 +52,7 @@ class _MenuPageState extends State<MenuPage> {
   String fullName = "";
   String icon = "";
   String year = "";
+  late String _previousRoute;
 
   @override
   void initState() {
@@ -236,6 +238,19 @@ class _MenuPageState extends State<MenuPage> {
                             },
                           ),
                           MenuItem(
+                            iconData: Icons.home,
+                            title: 'Home',
+                            onTap: () {
+                              // Handle Feedback menu item click
+                              print('Home Clicked');
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CalendarPage()),
+                              );
+                            },
+                          ),
+                          MenuItem(
                             iconData: Icons.logout,
                             title: 'Logout',
                             onTap: () {
@@ -271,6 +286,13 @@ class _MenuPageState extends State<MenuPage> {
                                 },
                               ),
                             ],
+                          ),
+                          MenuItem(
+                            iconData: Icons.close,
+                            title: 'Close',
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
                           ),
                           Spacer(),
                           Padding(

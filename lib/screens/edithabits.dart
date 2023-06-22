@@ -5,7 +5,6 @@ import 'package:scholarly/constants/colors.dart';
 import 'package:scholarly/screens/calendar.dart';
 import 'package:scholarly/screens/classes.dart';
 import 'package:scholarly/screens/home.dart';
-import 'package:scholarly/screens/habits.dart';
 import 'package:scholarly/screens/info.dart';
 import 'package:scholarly/screens/habit_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -172,7 +171,7 @@ class _AddHabitsState extends State<AddHabits> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => HabitsPage(),
+                                  builder: (context) => MenuPage(),
                                 ),
                               );
                             },

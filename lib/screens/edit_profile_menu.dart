@@ -168,12 +168,30 @@ class _EditProfileMenuState extends State<EditProfileMenu> {
   }
 
   void saveProfileData() {
-    final fullNameValue = fullNameController.text;
-    final emailValue = emailController.text;
-    final institutionValue = institutionController.text;
-    final campusValue = campusController.text;
-    final yearValue = yearController.text;
-    final courseValue = courseController.text;
+    String fullNameValue = fullNameController.text;
+    if (fullNameValue.isEmpty) {
+      fullNameValue = fullName;
+    }
+    String emailValue = emailController.text;
+    if (emailValue.isEmpty) {
+      emailValue = email;
+    }
+    String institutionValue = institutionController.text;
+    if (institutionValue.isEmpty) {
+      institutionValue = institution;
+    }
+    String campusValue = campusController.text;
+    if (campusValue.isEmpty) {
+      campusValue = campus;
+    }
+    String yearValue = yearController.text;
+    if (yearValue.isEmpty) {
+      yearValue = fullName;
+    }
+    String courseValue = courseController.text;
+    if (courseValue.isEmpty) {
+      courseValue = course;
+    }
 
     if (fullNameValue.isNotEmpty &&
         emailValue.isNotEmpty &&
@@ -471,7 +489,10 @@ class _EditProfileMenuState extends State<EditProfileMenu> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Placeholder code for the floating button
-          print('Floating button pressed');
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+          );
         },
         shape: RoundedRectangleBorder(
           borderRadius:

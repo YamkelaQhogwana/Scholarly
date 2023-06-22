@@ -7,6 +7,7 @@ import 'package:scholarly/screens/info.dart'; // Import InfoPage class
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../constants/colors.dart';
 
 class ProfileMenu extends StatefulWidget {
   const ProfileMenu({Key? key}) : super(key: key);
@@ -362,63 +363,86 @@ class _ProfileMenuState extends State<ProfileMenu> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Placeholder code for the floating button
-          print('Floating button pressed');
-        },
-        shape: RoundedRectangleBorder(
-          borderRadius:
-              BorderRadius.circular(8), // Adjust the border radius as desired
-        ),
-        child: const Icon(Icons.add),
+      floatingActionButton: Stack(
+        children: [
+          Positioned(
+            bottom: kBottomNavigationBarHeight / 2,
+            left: (MediaQuery.of(context).size.width - 56) /
+                2, // Adjust the left position
+            child: Container(
+              width: 56,
+              height: 56,
+              decoration: BoxDecoration(
+                color: AppColors.kPrimary400,
+                // Set your desired button color here
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: IconButton(
+                onPressed: () {
+                  // Placeholder code for add button
+                  //showTaskFormBottomSheet(context);
+                  print('Add button pressed');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomePage()),
+                  );
+                },
+                icon: const Icon(
+                  Icons.add,
+                  color: Colors.white, // Set the icon color
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        child: SizedBox(
-          height: kBottomNavigationBarHeight,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              IconButton(
-                icon: const Icon(Icons.home),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const HomePage()),
-                  );
-                },
-              ),
-              IconButton(
-                icon: const Icon(Icons.calendar_month),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const CalendarPage()),
-                  );
-                },
-              ),
-              IconButton(
-                icon: const Icon(Icons.school),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ClassesPage()),
-                  );
-                },
-              ),
-              IconButton(
-                icon: const Icon(Icons.newspaper),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => InformationCentre()),
-                  );
-                },
-              ),
-            ],
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.home),
+              color: AppColors.kMainText,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomePage()),
+                );
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.calendar_month),
+              color: AppColors.kMainText,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const CalendarPage()),
+                );
+              },
+            ),
+            const SizedBox(width: 56), // Empty space for the float button
+            IconButton(
+              icon: const Icon(Icons.school),
+              color: AppColors.kPrimary400,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ClassesPage()),
+                );
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.newspaper),
+              color: AppColors.kMainText,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => InformationCentre()),
+                );
+              },
+            ),
+          ],
         ),
       ),
     );

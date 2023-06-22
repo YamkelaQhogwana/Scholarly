@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/material_symbols.dart';
+import 'package:scholarly/screens/main_screen_menu.dart';
 import '../constants/colors.dart';
 import 'calendar.dart';
 import 'home.dart';
@@ -218,7 +219,12 @@ class _ClassesPageState extends State<ClassesPage> {
                                 Builder(
                                   builder: (context) => GestureDetector(
                                     onTap: () {
-                                      Scaffold.of(context).openEndDrawer();
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => MenuPage(),
+                                        ),
+                                      );
                                     },
                                     child: Padding(
                                       padding:
@@ -727,6 +733,10 @@ class _ClassesPageState extends State<ClassesPage> {
                   // Placeholder code for add button
                   //showTaskFormBottomSheet(context);
                   print('Add button pressed');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomePage()),
+                  );
                 },
                 icon: const Icon(
                   Icons.add,

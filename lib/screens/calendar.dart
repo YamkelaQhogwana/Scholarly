@@ -529,7 +529,6 @@ class _CalendarPageState extends State<CalendarPage> {
                 onPressed: () {
                   // Placeholder code for add button
                   showTaskFormBottomSheet(context);
-                  print('Add button pressed');
                 },
                 icon: const Icon(Icons.add,
                     color: Colors.white), // Set the icon color
