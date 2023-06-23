@@ -23,7 +23,37 @@ class LoginStatusWidget extends StatelessWidget {
             return Login();
           } else {
             // User is logged in
-            return OnboardingPage();
+            return FutureBuilder<QuerySnapshot>(
+              future: FirebaseFirestore.instance
+                  .collection('users')
+                  .where('email', isEqualTo: user.email)
+                  .limit(1)
+                  .get(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  // Waiting for Firestore data
+                  return Scaffold(
+                    body: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                } else if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+                  DocumentSnapshot userSnapshot = snapshot.data!.docs[0];
+                  bool hasSeenOnboarding = userSnapshot['hasSeenOnboarding'] ?? false;
+
+                  if (hasSeenOnboarding) {
+                    // User has already seen onboarding, navigate to homepage
+                    return HomePage();
+                  } else {
+                    // User has not seen onboarding, navigate to onboarding page
+                    return OnboardingPage();
+                  }
+                } else {
+                  // Couldn't find the user document or the connection failed
+                  return Center(child: Text('An error occurred.'));
+                }
+              },
+            );
           }
         } else {
           // Connection state is still loading
