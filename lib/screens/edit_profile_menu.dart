@@ -32,12 +32,12 @@ class _EditProfileMenuState extends State<EditProfileMenu> {
   TextEditingController courseController = TextEditingController();
 
   List<String> iconOptions = [
-    'images/avatars/black-wn-av.png',
-    'images/avatars/black-mn-av.png',
-    'images/avatars/brunette-wn-av.png',
-    'images/avatars/ginger-mn-av.png',
-    'images/avatars/tan-mn-av.png',
-    'images/avatars/white-wn-av.png'
+    'assets/images/avatars/black-wn-av.png',
+    'assets/images/avatars/black-mn-av.png',
+    'assets/images/avatars/brunette-wn-av.png',
+    'assets/images/avatars/ginger-mn-av.png',
+    'assets/images/avatars/tan-mn-av.png',
+    'assets/images/avatars/white-wn-av.png'
   ];
 
   @override

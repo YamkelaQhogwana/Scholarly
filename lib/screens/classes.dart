@@ -20,6 +20,8 @@ import 'package:scholarly/screens/menu/habits.dart';
 import 'package:scholarly/screens/menu/statistics.dart';
 import 'package:scholarly/screens/menu/feedback.dart';
 
+import 'package:flutter/material.dart';
+
 class ClassesPage extends StatefulWidget {
   @override
   _ClassesPageState createState() => _ClassesPageState();
@@ -28,6 +30,8 @@ class ClassesPage extends StatefulWidget {
 class _ClassesPageState extends State<ClassesPage> {
   late String userName = '';
   late String icon = "";
+  late bool isIconLoading = true; // New variable to track icon loading state
+
   late List<Map<String, dynamic>> modules;
   late List<Color> containerColors = [
     const Color(0xFFEAF5E6), // First color
@@ -46,10 +50,35 @@ class _ClassesPageState extends State<ClassesPage> {
   @override
   void initState() {
     super.initState();
-    fetchUserData();
+    fetchUserDataWithRetry();
   }
+  void fetchUserDataWithRetry() {
+    const retryDelay = Duration(seconds: 2); // Adjust the delay as needed
+    const maxRetryAttempts = 3; // Maximum number of retry attempts
+    int retryCount = 0;
 
-  void fetchUserData() async {
+    void fetchData() async {
+      try {
+        await fetchUserData();
+        // Image loaded successfully, break out of the loop
+        return;
+      } catch (e) {
+        print('Error fetching user data: $e');
+        retryCount++;
+        await Future.delayed(retryDelay);
+        if (retryCount < maxRetryAttempts) {
+          fetchData(); // Retry fetching data
+        } else {
+          setState(() {
+            isIconLoading = false; // Set loading state to false even if retries fail
+          });
+        }
+      }
+    }
+
+    fetchData();
+  }
+  Future<void> fetchUserData() async {
     try {
       User? user = FirebaseAuth.instance.currentUser;
       if (user != null) {
@@ -65,6 +94,7 @@ class _ClassesPageState extends State<ClassesPage> {
             setState(() {
               userName = data['fname'] ?? '';
               icon = data['icon'];
+              isIconLoading = false; // Set the loading state to false when the icon is loaded
             });
           }
         }
@@ -164,7 +194,9 @@ class _ClassesPageState extends State<ClassesPage> {
                             padding: const EdgeInsets.only(top: 65, left: 25),
                             child: Row(
                               children: [
-                                Image.asset(
+                                isIconLoading
+                                    ? CircularProgressIndicator() // Show loading indicator while icon is loading
+                                    : Image.asset(
                                   icon,
                                   width: 55,
                                   height: 55,
