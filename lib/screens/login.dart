@@ -6,11 +6,11 @@ import 'package:scholarly/screens/signup.dart';
 import 'auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
 import 'home.dart';
-
+import 'package:scholarly/screens/admin/dashboard.dart';
 
 class LoginStatusWidget extends StatelessWidget {
+  String adminEmail = "admin@scholarly.com";
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
@@ -39,9 +39,12 @@ class LoginStatusWidget extends StatelessWidget {
                   );
                 } else if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
                   DocumentSnapshot userSnapshot = snapshot.data!.docs[0];
-                  bool hasSeenOnboarding = userSnapshot['hasSeenOnboarding'] ?? false;
+                  bool hasSeenOnboarding =
+                      userSnapshot['hasSeenOnboarding'] ?? false;
 
-                  if (hasSeenOnboarding) {
+                  if (user.email == adminEmail) {
+                    return AdminDashboard();
+                  } else if (hasSeenOnboarding) {
                     // User has already seen onboarding, navigate to homepage
                     return HomePage();
                   } else {
@@ -76,7 +79,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -99,7 +101,7 @@ class _LoginState extends State<Login> {
 
       try {
         bool loginSuccessful =
-        await Auth().signInWithEmailAndPassword(email, password);
+            await Auth().signInWithEmailAndPassword(email, password);
 
         if (loginSuccessful) {
           User? user = FirebaseAuth.instance.currentUser;
@@ -117,7 +119,8 @@ class _LoginState extends State<Login> {
               DocumentSnapshot userSnapshot = snapshot.docs[0];
 
               // Check the value of hasSeenOnboarding
-              bool hasSeenOnboarding = userSnapshot['hasSeenOnboarding'] ?? false;
+              bool hasSeenOnboarding =
+                  userSnapshot['hasSeenOnboarding'] ?? false;
 
               if (hasSeenOnboarding) {
                 // User has already seen onboarding, navigate to homepage
@@ -158,12 +161,14 @@ class _LoginState extends State<Login> {
   Future<void> _signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser!.authentication;
       final OAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-      final UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
+      final UserCredential userCredential =
+          await _firebaseAuth.signInWithCredential(credential);
       final User? user = userCredential.user;
 
       if (user != null) {
@@ -208,7 +213,6 @@ class _LoginState extends State<Login> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -233,8 +237,8 @@ class _LoginState extends State<Login> {
                 ),
                 if (_errorMessage.isNotEmpty)
                   Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 31.0, vertical: 8.0),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 31.0, vertical: 8.0),
                     child: Text(
                       _errorMessage,
                       style: TextStyle(
@@ -277,15 +281,16 @@ class _LoginState extends State<Login> {
                         fontSize: 12.0,
                         fontWeight: FontWeight.normal,
                       ),
-                      contentPadding:
-                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 15.0),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0),
                         borderSide: BorderSide.none,
                       ),
                       errorStyle: TextStyle(height: 1), // New line
                     ),
-                    style: TextStyle(fontFamily: 'Poppins',
+                    style: TextStyle(
+                        fontFamily: 'Poppins',
                         fontSize: 14.0,
                         color: Colors.black),
                   ),
@@ -325,21 +330,20 @@ class _LoginState extends State<Login> {
                         fontSize: 12.0,
                         fontWeight: FontWeight.normal,
                       ),
-                      contentPadding:
-                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 15.0),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0),
                         borderSide: BorderSide.none,
                       ),
                     ),
-                    style: TextStyle(
-                        fontFamily: 'Poppins', color: Colors.black),
+                    style:
+                        TextStyle(fontFamily: 'Poppins', color: Colors.black),
                   ),
                 ),
                 SizedBox(height: 28.0),
                 Center(
                   child: Container(
-
                     width: 330.0,
                     height: 50.0,
                     decoration: BoxDecoration(
@@ -373,8 +377,9 @@ class _LoginState extends State<Login> {
                                       width: 24.0,
                                       height: 24.0,
                                       child: CircularProgressIndicator(
-                                        valueColor: AlwaysStoppedAnimation<
-                                            Color>(Colors.white),
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                Colors.white),
                                       ),
                                     ),
                                   ),
@@ -402,8 +407,8 @@ class _LoginState extends State<Login> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) =>
-                            ForgotPassword()),
+                        MaterialPageRoute(
+                            builder: (context) => ForgotPassword()),
                       );
                     },
                     child: const Text(
@@ -421,8 +426,8 @@ class _LoginState extends State<Login> {
                 ),
                 SizedBox(height: 16.0),
                 Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 50.0, vertical: 8.0),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 50.0, vertical: 8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
