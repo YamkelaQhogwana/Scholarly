@@ -4,6 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:scholarly/screens/admin/blogs.dart';
+import 'package:scholarly/screens/admin/messages.dart';
+import 'package:scholarly/screens/admin/users.dart';
+import 'package:scholarly/screens/login.dart';
 
 class AdminDashboard extends StatefulWidget {
   const AdminDashboard({Key? key}) : super(key: key);
@@ -72,6 +75,11 @@ class _AdminDashboardState extends State<AdminDashboard> {
                   buttonText: 'View Messages',
                   buttonColor: AppColors.kBlueDark,
                   onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AdminMessagesPage()),
+                    );
                     // Navigate to View Messages page
                   },
                 ),
@@ -89,7 +97,10 @@ class _AdminDashboardState extends State<AdminDashboard> {
                   buttonText: 'Manage Users',
                   buttonColor: AppColors.kPurpleDark,
                   onPressed: () {
-                    // Navigate to Manage Users page
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AdminUsersPage()),
+                    );
                   },
                 ),
               ),
@@ -109,6 +120,25 @@ class _AdminDashboardState extends State<AdminDashboard> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => AdminBlogsPage()),
+                    );
+                  },
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.6,
+                height: MediaQuery.of(context).size.height * 0.4,
+                decoration: BoxDecoration(
+                  color: AppColors.kGreen,
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: GridItem(
+                  icon: Icons.logout,
+                  buttonText: 'Logout',
+                  buttonColor: AppColors.kGreenDark,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Login()),
                     );
                   },
                 ),
