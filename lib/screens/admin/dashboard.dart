@@ -3,6 +3,7 @@ import 'package:scholarly/constants/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:scholarly/screens/admin/blogs.dart';
 
 class AdminDashboard extends StatefulWidget {
   const AdminDashboard({Key? key}) : super(key: key);
@@ -47,10 +48,9 @@ class _AdminDashboardState extends State<AdminDashboard> {
       appBar: AppBar(
         title: Row(
           children: [
-            Icon(Icons
-                .admin_panel_settings), // Replace with the actual admin icon
+            Icon(Icons.admin_panel_settings),
             SizedBox(width: 8),
-            Text("Scholarly Admin Panel"), // Replace with the actual admin name
+            Text("Scholarly Admin Panel"),
           ],
         ),
       ),
@@ -71,6 +71,9 @@ class _AdminDashboardState extends State<AdminDashboard> {
                   icon: Icons.message,
                   buttonText: 'View Messages',
                   buttonColor: AppColors.kBlueDark,
+                  onPressed: () {
+                    // Navigate to View Messages page
+                  },
                 ),
               ),
               SizedBox(height: 16),
@@ -85,6 +88,9 @@ class _AdminDashboardState extends State<AdminDashboard> {
                   icon: Icons.person,
                   buttonText: 'Manage Users',
                   buttonColor: AppColors.kPurpleDark,
+                  onPressed: () {
+                    // Navigate to Manage Users page
+                  },
                 ),
               ),
               SizedBox(height: 16),
@@ -96,9 +102,15 @@ class _AdminDashboardState extends State<AdminDashboard> {
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: GridItem(
-                  icon: Icons.person,
-                  buttonText: 'Manage Users',
+                  icon: Icons.newspaper,
+                  buttonText: 'Blogs',
                   buttonColor: AppColors.kPinkDark,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AdminBlogsPage()),
+                    );
+                  },
                 ),
               ),
             ],
@@ -113,11 +125,13 @@ class GridItem extends StatelessWidget {
   final IconData icon;
   final String buttonText;
   final Color buttonColor;
+  final VoidCallback onPressed;
 
   const GridItem({
     required this.icon,
     required this.buttonText,
     required this.buttonColor,
+    required this.onPressed,
   });
 
   @override
@@ -132,7 +146,7 @@ class GridItem extends StatelessWidget {
           Icon(icon, size: 48),
           SizedBox(height: 16),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: onPressed,
             style: ElevatedButton.styleFrom(primary: buttonColor),
             child: Text(buttonText),
           ),
