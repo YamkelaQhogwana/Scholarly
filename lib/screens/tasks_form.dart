@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:scholarly/constants/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'home.dart';
 
 void main() {
   runApp(MyApp());
@@ -22,25 +23,6 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Task Form'),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          child: Text('Open Bottom Sheet'),
-          onPressed: () {
-            showTaskFormBottomSheet(context);
-          },
-        ),
-      ),
     );
   }
 }
