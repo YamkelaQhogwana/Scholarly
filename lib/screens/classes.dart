@@ -19,7 +19,7 @@ import 'package:iconify_flutter/icons/mdi.dart';
 import 'package:scholarly/screens/menu/habits.dart';
 import 'package:scholarly/screens/menu/statistics.dart';
 import 'package:scholarly/screens/menu/feedback.dart';
-
+import 'tasks_form.dart';
 import 'package:flutter/material.dart';
 
 class ClassesPage extends StatefulWidget {
@@ -52,6 +52,7 @@ class _ClassesPageState extends State<ClassesPage> {
     super.initState();
     fetchUserDataWithRetry();
   }
+
   void fetchUserDataWithRetry() {
     const retryDelay = Duration(seconds: 2); // Adjust the delay as needed
     const maxRetryAttempts = 3; // Maximum number of retry attempts
@@ -70,7 +71,8 @@ class _ClassesPageState extends State<ClassesPage> {
           fetchData(); // Retry fetching data
         } else {
           setState(() {
-            isIconLoading = false; // Set loading state to false even if retries fail
+            isIconLoading =
+                false; // Set loading state to false even if retries fail
           });
         }
       }
@@ -78,6 +80,7 @@ class _ClassesPageState extends State<ClassesPage> {
 
     fetchData();
   }
+
   Future<void> fetchUserData() async {
     try {
       User? user = FirebaseAuth.instance.currentUser;
@@ -94,7 +97,8 @@ class _ClassesPageState extends State<ClassesPage> {
             setState(() {
               userName = data['fname'] ?? '';
               icon = data['icon'];
-              isIconLoading = false; // Set the loading state to false when the icon is loaded
+              isIconLoading =
+                  false; // Set the loading state to false when the icon is loaded
             });
           }
         }
@@ -197,10 +201,10 @@ class _ClassesPageState extends State<ClassesPage> {
                                 isIconLoading
                                     ? CircularProgressIndicator() // Show loading indicator while icon is loading
                                     : Image.asset(
-                                  icon,
-                                  width: 55,
-                                  height: 55,
-                                ),
+                                        icon,
+                                        width: 55,
+                                        height: 55,
+                                      ),
                                 const SizedBox(width: 10),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -763,12 +767,7 @@ class _ClassesPageState extends State<ClassesPage> {
               child: IconButton(
                 onPressed: () {
                   // Placeholder code for add button
-                  //showTaskFormBottomSheet(context);
-                  print('Add button pressed');
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
-                  );
+                  showTaskFormBottomSheet(context);
                 },
                 icon: const Icon(
                   Icons.add,
