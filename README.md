@@ -28,9 +28,11 @@ Note: Make sure you have a stable internet connection and sufficient storage spa
 ### For Developers (Local Development)
 
 1. Clone the repository to your local machine.
-2. Install the necessary dependencies by running `npm install` or `yarn install`.
-3. Start the development server with `npm start` or `yarn start`.
-4. Launch the app on your mobile device or emulator.
+2. Install the necessary dependencies by running the following command in the project directory: `flutter pub get`.
+3. Open the project in your preferred IDE or code editor.
+4. Connect your mobile device or start an emulator.
+5. Start the development server by running the following command: `flutter run`
+   This command will build the Flutter app and launch it on your connected device or emulator.
 
 ## Technologies Used
 
