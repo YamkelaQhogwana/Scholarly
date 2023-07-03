@@ -1,70 +1,66 @@
-import 'dart:collection';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:iconify_flutter/iconify_flutter.dart';
+import 'package:iconify_flutter/icons/bi.dart';
 import 'package:iconify_flutter/icons/bx.dart';
 import 'package:iconify_flutter/icons/gridicons.dart';
 import 'package:iconify_flutter/icons/majesticons.dart';
+import 'package:iconify_flutter/icons/material_symbols.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
+import 'package:iconify_flutter/icons/octicon.dart';
 import 'package:scholarly/constants/colors.dart';
 import 'package:scholarly/constants/custom_appbar.dart';
-import 'package:scholarly/modules/events.dart';
 import 'package:scholarly/screens/classes.dart';
+import 'package:scholarly/screens/edit_task.dart';
 import 'package:scholarly/screens/info.dart';
 import 'package:scholarly/screens/menu/habits.dart';
 import 'package:scholarly/screens/menu/notification_menu.dart';
 import 'package:scholarly/screens/menu/profile_menu.dart';
 import 'package:scholarly/screens/menu/statistics.dart';
+import 'package:scholarly/screens/tasks_form.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
-import 'package:iconify_flutter/iconify_flutter.dart';
-import 'package:iconify_flutter/icons/octicon.dart';
-import 'package:iconify_flutter/icons/bi.dart';
-import 'package:iconify_flutter/icons/material_symbols.dart';
-import 'package:scholarly/screens/tasks_form.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'home.dart';
+
 
 class CalendarPage extends StatefulWidget {
-  const CalendarPage({Key? key}) : super(key: key);
-
   @override
   _CalendarPageState createState() => _CalendarPageState();
-}
 
-int getHashCode(DateTime key) {
-  return key.day * 1000000 + key.month * 10000 + key.year;
 }
 
 class _CalendarPageState extends State<CalendarPage> {
-  final ValueNotifier<List<Event>> _selectedEvents = ValueNotifier([]);
-  String icon = "";
-
-  DateTime _currentMonth = DateTime.now();
-  List<Event> events = getDummyEvents();
-  PageController _pageController =
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final PageController _pageController =
       PageController(initialPage: DateTime.now().month - 1);
-
-  final Set<DateTime> _selectedDays = LinkedHashSet<DateTime>(
-    equals: isSameDay,
-    hashCode: getHashCode,
-  );
-
-  CalendarFormat _calendarFormat = CalendarFormat.month;
+  String icon = "";
+  final CalendarFormat _calendarFormat = CalendarFormat.month;
+  DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
-  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    setState(() {
-      _focusedDay = focusedDay;
-      if (_selectedDays.contains(selectedDay)) {
-        _selectedDays.remove(selectedDay);
-      } else {
-        _selectedDays.add(selectedDay);
-      }
-    });
 
-    _selectedEvents.value = getDummyEvents()
-        .where((event) => isSameDay(event.date, selectedDay))
-        .toList();
+  final DateTime _firstDay = DateTime(DateTime.now().year - 1);
+  final DateTime _lastDay = DateTime(DateTime.now().year + 1);
+
+
+  String _formatDate(DateTime date) {
+    final month = DateFormat.MMMM().format(date);
+    final day = DateFormat.d().format(date);
+    final year = DateFormat.y().format(date);
+    return '$month $day, $year';
+  }
+  String? loggedInUserId;
+  List<DocumentSnapshot> tasks = [];
+  DateTime _currentMonth = DateTime.now();
+
+  int _currentPageIndex = 0;
+
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentUser();
+    _fetchTasks();
   }
 
   @override
@@ -73,10 +69,10 @@ class _CalendarPageState extends State<CalendarPage> {
     super.dispose();
   }
 
-  @override
-  void initState() {
-    super.initState();
-    fetchUserData();
+  void _changePage(int index) {
+    setState(() {
+      _currentPageIndex = index;
+    });
   }
 
   Future<void> fetchUserData() async {
@@ -96,8 +92,28 @@ class _CalendarPageState extends State<CalendarPage> {
     }
   }
 
-  // Helper function to get the Color from a string representation
-  Color _getColorFromString(String colorString) {
+  Future<void> _getCurrentUser() async {
+    final user = _auth.currentUser;
+    if (user != null) {
+      setState(() {
+        loggedInUserId = user.uid;
+      });
+      await _fetchTasks();
+    }
+  }
+
+  Future<void> _fetchTasks() async {
+    final snapshot = await _firestore
+        .collection('tasks')
+        .where('userId', isEqualTo: loggedInUserId)
+        .get();
+
+    setState(() {
+      tasks = snapshot.docs;
+    });
+  }
+
+    Color _getColorFromString(String colorString) {
     switch (colorString) {
       case 'kYellowLight':
         return AppColors.kYellowLight;
@@ -164,25 +180,28 @@ class _CalendarPageState extends State<CalendarPage> {
     }
   }
 
-  String _formatParticipants(List<String> participants) {
-    if (participants.length <= 1) {
-      return participants.join(', ');
-    } else {
-      return "${participants[0]} +${participants.length - 1}";
-    }
-  }
+  String _formatParticipants(String participants) {
+  List<String> participantList = participants.split(',');
 
-  @override
+  if (participantList.length <= 1) {
+    return participants;
+  } else {
+    return "${participantList[0]} +${participantList.length - 1}";
+  }
+}
+
+
+@override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(),
       body: Column(
         children: [
-          TableCalendar<Event>(
-            firstDay: DateTime.utc(2000, 01, 01),
-            lastDay: DateTime.utc(2100, 12, 31),
-            focusedDay: _currentMonth,
-            calendarFormat: CalendarFormat.month,
+          TableCalendar(
+            calendarFormat: _calendarFormat,
+            focusedDay: _focusedDay,
+            firstDay: _firstDay,
+            lastDay: _lastDay,
             calendarStyle: CalendarStyle(
               defaultTextStyle: const TextStyle(
                   color: AppColors.kMainText, fontWeight: FontWeight.w600),
@@ -190,17 +209,12 @@ class _CalendarPageState extends State<CalendarPage> {
                   color: AppColors.kDarkGray, fontWeight: FontWeight.w600),
               outsideDaysVisible: false,
               todayDecoration: BoxDecoration(
-                  color: AppColors.kPrimary300,
-                  borderRadius: BorderRadius.circular(15)),
+                  color: const Color.fromARGB(255, 237, 224, 84),
+                  borderRadius: BorderRadius.circular(5)),
               markerDecoration: const BoxDecoration(
                   color: AppColors.kPrimary400, shape: BoxShape.circle),
             ),
-            eventLoader: (day) => getDummyEvents()
-                .where((event) => isSameDay(event.date, day))
-                .toList(),
-            startingDayOfWeek: StartingDayOfWeek.monday,
-            selectedDayPredicate: (day) => _selectedDays.contains(day),
-            onDaySelected: _onDaySelected,
+            startingDayOfWeek: StartingDayOfWeek.sunday,
             headerStyle: const HeaderStyle(
               titleCentered: true,
               titleTextStyle: TextStyle(color: AppColors.kDarkGray),
@@ -214,12 +228,22 @@ class _CalendarPageState extends State<CalendarPage> {
               weekdayStyle: TextStyle(color: AppColors.kMainText),
               weekendStyle: TextStyle(color: AppColors.kDarkGray),
             ),
-            onPageChanged: (date) {
+            selectedDayPredicate: (day) {
+              return isSameDay(_selectedDay, day);
+            },
+            onDaySelected: (selectedDay, focusedDay) {
               setState(() {
-                _currentMonth = date;
+                _selectedDay = selectedDay;
+                _focusedDay = focusedDay;
+              });
+            },
+            onPageChanged: (focusedDay) {
+              setState(() {
+                _focusedDay = focusedDay;
               });
             },
           ),
+          const SizedBox(height: 16),
           Expanded(
             child: PageView.builder(
               controller: _pageController,
@@ -230,279 +254,291 @@ class _CalendarPageState extends State<CalendarPage> {
                 });
               },
               itemBuilder: (context, index) {
-                List<Event> eventsForMonth = events
-                    .where((event) => event.date.month == _currentMonth.month)
+                List<DocumentSnapshot> tasksForMonth = tasks
+                    .where((task) => task['date'].toDate().month == _currentMonth.month)
                     .toList();
 
+                Map<DateTime, List<DocumentSnapshot>> groupedTasks = {};
+
+                for (DocumentSnapshot task in tasksForMonth) {
+                  DateTime taskDate = task['date'].toDate();
+                  DateTime dateOnly = DateTime(
+                    taskDate.year,
+                    taskDate.month,
+                    taskDate.day,
+                  );
+
+                  if (groupedTasks.containsKey(dateOnly)) {
+                    groupedTasks[dateOnly]!.add(task);
+                  } else {
+                    groupedTasks[dateOnly] = [task];
+                  }
+                }
+
+                List<DateTime> sortedDates = groupedTasks.keys.toList()
+                  ..sort((a, b) => a.compareTo(b));
+
                 return ListView.builder(
-                  itemCount: eventsForMonth.length,
+                  itemCount: sortedDates.length,
                   itemBuilder: (context, index) {
-                    Event event = eventsForMonth[index];
+                    DateTime date = sortedDates[index];
+                    List<DocumentSnapshot> tasksForDay = groupedTasks[date]!;
 
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if (index == 0 ||
-                            event.date.day !=
-                                eventsForMonth[index - 1].date.day)
-                          // Render the day as the title with horizontal line
-                          ListTile(
-                            title: Row(
-                              children: [
-                                Text(
-                                  DateFormat('EEEE, MMMM d').format(event.date),
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14,
-                                      color: AppColors.kDarkGray),
+                        ListTile(
+                          title: Row(
+                            children: [
+                              Text(
+                                DateFormat('EEEE, MMMM d').format(date),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                  color: AppColors.kDarkGray,
                                 ),
-                                const SizedBox(width: 10),
-                                const Expanded(
-                                  child: Divider(
-                                    color: AppColors
-                                        .kDarkGray, // Customize the color of the line
-                                    thickness:
-                                        1, // Customize the thickness of the line
+                              ),
+                              const SizedBox(width: 10),
+                              const Expanded(
+                                child: Divider(
+                                  color: AppColors.kDarkGray,
+                                  thickness: 1,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: tasksForDay.length,
+                          itemBuilder: (context, index) {
+                            DocumentSnapshot task = tasksForDay[index];
+                            
+                            final startTime = task['startTime'] as String;
+                            final endTime = task['endTime'] as String;
+                            
+
+                            return ListTile(
+                              onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content: Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => EditTaskPage(task: task),
+                                        ),
+                                      );
+                                    },
+                                    child: const IconButton(
+                                      icon: Iconify(
+                                        MaterialSymbols.edit_square_outline_rounded,
+                                        size: 20,
+                                        color: AppColors.kDarkGray,
+                                      ),
+                                      onPressed: null,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const Text(
+                                'Task Title',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 13,
+                                    color: AppColors.kDarkGray),
+                              ),
+                              Text(
+                                task['title'],
+                                style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              const SizedBox(height: 5),
+                              const Text(
+                                'insert duration later',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 13,
+                                    color: AppColors.kDarkGray),
+                              ),
+                              const SizedBox(height: 16),
+                              const Text(
+                                'Details',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 13,
+                                    color: AppColors.kDarkGray),
+                              ),
+                              Text(
+                                task['description'],
+                                style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.kDarkGray),
+                              ),
+                              const SizedBox(height: 16),
+                              Row(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        'Venue',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 13,
+                                            color: AppColors.kDarkGray),
+                                      ),
+                                      Text(
+                                       task['location'].isNotEmpty ? task['location'] : 'Unknown',
+                                        style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(width: 25),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        'Participants',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 13,
+                                            color: AppColors.kDarkGray),
+                                      ),
+                                      Text(
+                                        task['participants'].isNotEmpty ? task['participants'] : 'None',
+                                        style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                   
+                                    bool isDone = task['done'];
+                                    task.reference.update({'done': !isDone});
+                                  });
+                                },
+                                child: const Text('Task Complete'),
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
+                                    
+                                    bool isDone = task['done'];
+                                    return isDone ? Colors.grey : AppColors.kPrimary400;
+                                  }),
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(0),
+                                    ),
+                                  ),
+                                  minimumSize: MaterialStateProperty.all<Size>(
+                                    const Size(double.infinity, 0),
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                              Align(
+                                alignment: Alignment.center,
+                                child: TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                        color: AppColors.kDarkGray),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ListTile(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                final startTime = DateTime(
-                                  event.date.year,
-                                  event.date.month,
-                                  event.date.day,
-                                  event.startTime.hour,
-                                  event.startTime.minute,
-                                );
-                                final endTime = DateTime(
-                                  event.date.year,
-                                  event.date.month,
-                                  event.date.day,
-                                  event.endTime.hour,
-                                  event.endTime.minute,
-                                );
-                                final duration = endTime.difference(startTime);
-
-                                return AlertDialog(
-                                  content: Container(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
+                        ),
+                      );
+                    },
+                  );
+                },
+                              leading: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    DateFormat('HH:mm').format(
+                                      DateFormat('hh:mm a').parse(startTime),
+                                    ),
+                                  ),
+                                  Text(
+                                    DateFormat('HH:mm').format(
+                                      DateFormat('hh:mm a').parse(endTime),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              title: Padding(
+                                padding: const EdgeInsets.only(bottom: 8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
                                       children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            IconButton(
-                                              onPressed: () {
-                                                // Edit button action
-                                              },
-                                              icon: const Iconify(
-                                                  MaterialSymbols
-                                                      .edit_square_outline_rounded,
-                                                  size: 20,
-                                                  color: AppColors.kDarkGray),
-                                            ),
-                                          ],
-                                        ),
-                                        const Text(
-                                          'Task Title',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 13,
-                                              color: AppColors.kDarkGray),
-                                        ),
-                                        Text(
-                                          event.title,
-                                          style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                        const SizedBox(height: 5),
-                                        Text(
-                                          '${DateFormat('hh:mm a').format(startTime)} - ${DateFormat('hh:mm a').format(endTime)} '
-                                          '(${duration.inHours}h ${duration.inMinutes.remainder(60)}m)',
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 13,
-                                              color: AppColors.kDarkGray),
-                                        ),
-                                        const SizedBox(height: 16),
-                                        Row(
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                const Text(
-                                                  'Venue',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 13,
-                                                      color:
-                                                          AppColors.kDarkGray),
-                                                ),
-                                                Text(
-                                                  event.venue,
-                                                  style: const TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(width: 25),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                const Text(
-                                                  'Participants',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 13,
-                                                      color:
-                                                          AppColors.kDarkGray),
-                                                ),
-                                                Text(
-                                                  _formatParticipants(
-                                                      event.participants),
-                                                  style: const TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            // Task complete action
-                                          },
-                                          child: const Text('Task Complete'),
-                                          style: ButtonStyle(
-                                            backgroundColor: MaterialStateProperty
-                                                .all<Color>(AppColors
-                                                    .kPrimary400), // Set background color
-                                            shape: MaterialStateProperty.all<
-                                                RoundedRectangleBorder>(
-                                              RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(
-                                                    0), // Set zero border radius
-                                              ),
-                                            ),
-                                            minimumSize:
-                                                MaterialStateProperty.all<Size>(
-                                              const Size(double.infinity,
-                                                  0), // Take full width of dialog
-                                            ),
+                                        Container(
+                                          width: 10,
+                                          height: 10,
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: AppColors.kPrimary400,
                                           ),
                                         ),
-                                        Align(
-                                          alignment: Alignment.center,
-                                          child: TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: const Text(
-                                              'Cancel',
-                                              style: TextStyle(
-                                                  color: AppColors.kDarkGray),
-                                            ),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          task['title'],
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16,
                                           ),
                                         ),
                                       ],
                                     ),
-                                  ),
-                                );
-                              },
+                                    Row(
+                                      children: [
+                                        const Iconify(Octicon.location, size: 15, color: AppColors.kDarkGray),
+                                        const SizedBox(width: 4),
+                                        Text(task['location'].isNotEmpty ? task['location'] : 'Unknown'),
+                                        const SizedBox(width: 10),
+                                        const Iconify(Bi.person, size: 20, color: AppColors.kDarkGray),
+                                        const SizedBox(width: 4),
+                                        Text(_formatParticipants(task['participants'].isNotEmpty ? task['participants'] : 'None',)),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
                             );
                           },
-                          leading: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                DateFormat('hh:mm').format(DateTime(
-                                  event.date.year,
-                                  event.date.month,
-                                  event.date.day,
-                                  event.startTime.hour,
-                                  event.startTime.minute,
-                                )),
-                              ),
-                              Text(
-                                DateFormat('hh:mm').format(DateTime(
-                                  event.date.year,
-                                  event.date.month,
-                                  event.date.day,
-                                  event.endTime.hour,
-                                  event.endTime.minute,
-                                )),
-                              ),
-                            ],
-                          ),
-                          title: Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 10,
-                                      height: 10,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: _getColorFromString(event
-                                            .cateColour), // Use the mapping to get the color
-                                      ),
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      event.title,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 16),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    const Iconify(Octicon.location,
-                                        size: 15, color: AppColors.kDarkGray),
-                                    const SizedBox(width: 4),
-                                    Text(event.venue),
-                                    const SizedBox(width: 10),
-                                    const Iconify(Bi.person,
-                                        size: 20, color: AppColors.kDarkGray),
-                                    const SizedBox(width: 4),
-                                    Text(_formatParticipants(
-                                        event.participants)),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
                         ),
-                        if (index == eventsForMonth.length - 1)
-                          const SizedBox(
-                              height:
-                                  30), // Add some space at the bottom of the last event
                       ],
                     );
                   },
@@ -510,29 +546,29 @@ class _CalendarPageState extends State<CalendarPage> {
               },
             ),
           ),
+          const SizedBox(height: 50)
+
+
+
         ],
       ),
       floatingActionButton: Stack(
         children: [
           Positioned(
             bottom: kBottomNavigationBarHeight / 2,
-            left: (MediaQuery.of(context).size.width - 56) /
-                2, // Adjust the left position
+            left: (MediaQuery.of(context).size.width - 56) / 2,
             child: Container(
               width: 56,
               height: 56,
               decoration: BoxDecoration(
-                color:
-                    AppColors.kPrimary400, // Set your desired button color here
+                color: AppColors.kPrimary400,
                 borderRadius: BorderRadius.circular(10.0),
               ),
               child: IconButton(
                 onPressed: () {
-                  // Placeholder code for add button
                   showTaskFormBottomSheet(context);
                 },
-                icon: const Icon(Icons.add,
-                    color: Colors.white), // Set the icon color
+                icon: const Icon(Icons.add, color: Colors.white),
               ),
             ),
           ),
@@ -545,7 +581,7 @@ class _CalendarPageState extends State<CalendarPage> {
           children: [
             IconButton(
               icon: const Icon(Icons.home),
-              color: AppColors.kMainText,
+              color:AppColors.kMainText,
               onPressed: () {
                 Navigator.push(
                   context,
@@ -559,7 +595,7 @@ class _CalendarPageState extends State<CalendarPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const CalendarPage()),
+                  MaterialPageRoute(builder: (context) => CalendarPage()),
                 );
               },
             ),
@@ -580,142 +616,9 @@ class _CalendarPageState extends State<CalendarPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => InformationCentre()),
+                  MaterialPageRoute(builder: (context) => const InformationCentre()),
                 );
               },
-            ),
-          ],
-        ),
-      ),
-      endDrawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            SizedBox(
-              height: 250.0,
-              child: DrawerHeader(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 120.0,
-                      height: 120.0,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                      ),
-                      child: ClipOval(
-                        child: Image.asset(
-                          icon,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16.0),
-                    const Text(
-                      'Jane Doe',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8.0),
-                    const Text(
-                      'Third Year',
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            ListTile(
-              leading: const Iconify(MaterialSymbols.person_2_rounded),
-              title: const Text('Profile'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ProfileMenu(),
-                  ),
-                );
-                // Add your logic for Inbox onTap
-              },
-            ),
-            ListTile(
-              leading: const Iconify(Mdi.bell_badge),
-              title: const Text('Notifications'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const NotificationsMenu(),
-                  ),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Iconify(Mdi.clock_check),
-              title: const Text('Habits/Goals'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const HabitsPage(),
-                  ),
-                );
-                // Add your logic for Sent onTap
-              },
-            ),
-            ListTile(
-              leading: const Iconify(Gridicons.stats_down_alt),
-              title: const Text('Statistics'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MenuStatistics(),
-                  ),
-                );
-                // Add your logic for Sent onTap
-              },
-            ),
-            ListTile(
-              leading: const Iconify(Mdi.comment_text),
-              title: const Text('Feedback'),
-              onTap: () {
-                print('Feedback');
-              },
-            ),
-            ListTile(
-              leading: const Iconify(Majesticons.logout),
-              title: const Text('Logout'),
-              onTap: () {
-                print('Logout Clicked');
-              },
-            ),
-            ListTile(
-              leading: const Iconify(Bx.bxs_moon),
-              title: const Text('Dark Mode'),
-              onTap: () {
-                print('DarkMode');
-              },
-            ),
-            const SizedBox(
-              height: 50,
-            ),
-            const Expanded(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Text(
-                  'Scholarly v.1.0.0',
-                  style: TextStyle(
-                    fontSize: 12.0,
-                    color: Colors.grey,
-                  ),
-                ),
-              ),
             ),
           ],
         ),
