@@ -4,7 +4,6 @@ import 'package:scholarly/screens/calendar.dart';
 import 'package:scholarly/screens/info.dart';
 import 'package:scholarly/screens/classes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:scholarly/screens/main_screen_menu.dart';
 
@@ -521,8 +520,7 @@ class _EditProfileMenuState extends State<EditProfileMenu> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const CalendarPage()),
+                    MaterialPageRoute(builder: (context) => CalendarPage()),
                   );
                 },
               ),

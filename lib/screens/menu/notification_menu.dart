@@ -359,8 +359,7 @@ class _NotificationsMenuState extends State<NotificationsMenu> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const CalendarPage()),
+                    MaterialPageRoute(builder: (context) => CalendarPage()),
                   );
                 },
               ),
@@ -378,7 +377,8 @@ class _NotificationsMenuState extends State<NotificationsMenu> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => InformationCentre()),
+                    MaterialPageRoute(
+                        builder: (context) => InformationCentre()),
                   );
                 },
               ),

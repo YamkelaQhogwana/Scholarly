@@ -18,9 +18,7 @@ import 'package:iconify_flutter/icons/majesticons.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
 import 'package:scholarly/screens/menu/habits.dart';
 import 'package:scholarly/screens/menu/statistics.dart';
-import 'package:scholarly/screens/menu/feedback.dart';
 import 'tasks_form.dart';
-import 'package:flutter/material.dart';
 
 class ClassesPage extends StatefulWidget {
   @override
@@ -799,7 +797,7 @@ class _ClassesPageState extends State<ClassesPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const CalendarPage()),
+                  MaterialPageRoute(builder: (context) => CalendarPage()),
                 );
               },
             ),

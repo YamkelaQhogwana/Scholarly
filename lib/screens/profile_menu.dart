@@ -417,7 +417,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const CalendarPage()),
+                  MaterialPageRoute(builder: (context) => CalendarPage()),
                 );
               },
             ),

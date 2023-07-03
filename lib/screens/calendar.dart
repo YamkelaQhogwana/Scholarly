@@ -13,6 +13,7 @@ import 'package:scholarly/constants/colors.dart';
 import 'package:scholarly/constants/custom_appbar.dart';
 import 'package:scholarly/screens/classes.dart';
 import 'package:scholarly/screens/edit_task.dart';
+import 'package:scholarly/screens/home.dart';
 import 'package:scholarly/screens/info.dart';
 import 'package:scholarly/screens/menu/habits.dart';
 import 'package:scholarly/screens/menu/notification_menu.dart';
@@ -22,11 +23,9 @@ import 'package:scholarly/screens/tasks_form.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 
-
 class CalendarPage extends StatefulWidget {
   @override
   _CalendarPageState createState() => _CalendarPageState();
-
 }
 
 class _CalendarPageState extends State<CalendarPage> {
@@ -42,19 +41,18 @@ class _CalendarPageState extends State<CalendarPage> {
   final DateTime _firstDay = DateTime(DateTime.now().year - 1);
   final DateTime _lastDay = DateTime(DateTime.now().year + 1);
 
-
   String _formatDate(DateTime date) {
     final month = DateFormat.MMMM().format(date);
     final day = DateFormat.d().format(date);
     final year = DateFormat.y().format(date);
     return '$month $day, $year';
   }
+
   String? loggedInUserId;
   List<DocumentSnapshot> tasks = [];
   DateTime _currentMonth = DateTime.now();
 
   int _currentPageIndex = 0;
-
 
   @override
   void initState() {
@@ -113,7 +111,7 @@ class _CalendarPageState extends State<CalendarPage> {
     });
   }
 
-    Color _getColorFromString(String colorString) {
+  Color _getColorFromString(String colorString) {
     switch (colorString) {
       case 'kYellowLight':
         return AppColors.kYellowLight;
@@ -181,17 +179,16 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 
   String _formatParticipants(String participants) {
-  List<String> participantList = participants.split(',');
+    List<String> participantList = participants.split(',');
 
-  if (participantList.length <= 1) {
-    return participants;
-  } else {
-    return "${participantList[0]} +${participantList.length - 1}";
+    if (participantList.length <= 1) {
+      return participants;
+    } else {
+      return "${participantList[0]} +${participantList.length - 1}";
+    }
   }
-}
 
-
-@override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(),
@@ -255,7 +252,8 @@ class _CalendarPageState extends State<CalendarPage> {
               },
               itemBuilder: (context, index) {
                 List<DocumentSnapshot> tasksForMonth = tasks
-                    .where((task) => task['date'].toDate().month == _currentMonth.month)
+                    .where((task) =>
+                        task['date'].toDate().month == _currentMonth.month)
                     .toList();
 
                 Map<DateTime, List<DocumentSnapshot>> groupedTasks = {};
@@ -308,179 +306,210 @@ class _CalendarPageState extends State<CalendarPage> {
                             ],
                           ),
                         ),
-                        
                         ListView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           itemCount: tasksForDay.length,
                           itemBuilder: (context, index) {
                             DocumentSnapshot task = tasksForDay[index];
-                            
+
                             final startTime = task['startTime'] as String;
                             final endTime = task['endTime'] as String;
-                            
 
                             return ListTile(
                               onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        content: Container(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => EditTaskPage(task: task),
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      content: Container(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            EditTaskPage(
+                                                                task: task),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: const IconButton(
+                                                    icon: Iconify(
+                                                      MaterialSymbols
+                                                          .edit_square_outline_rounded,
+                                                      size: 20,
+                                                      color:
+                                                          AppColors.kDarkGray,
+                                                    ),
+                                                    onPressed: null,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const Text(
+                                              'Task Title',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 13,
+                                                  color: AppColors.kDarkGray),
+                                            ),
+                                            Text(
+                                              task['title'],
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            const SizedBox(height: 5),
+                                            const Text(
+                                              'insert duration later',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 13,
+                                                  color: AppColors.kDarkGray),
+                                            ),
+                                            const SizedBox(height: 16),
+                                            const Text(
+                                              'Details',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 13,
+                                                  color: AppColors.kDarkGray),
+                                            ),
+                                            Text(
+                                              task['description'],
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: AppColors.kDarkGray),
+                                            ),
+                                            const SizedBox(height: 16),
+                                            Row(
+                                              children: [
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    const Text(
+                                                      'Venue',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          fontSize: 13,
+                                                          color: AppColors
+                                                              .kDarkGray),
+                                                    ),
+                                                    Text(
+                                                      task['location']
+                                                              .isNotEmpty
+                                                          ? task['location']
+                                                          : 'Unknown',
+                                                      style: const TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                  ],
+                                                ),
+                                                const SizedBox(width: 25),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    const Text(
+                                                      'Participants',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          fontSize: 13,
+                                                          color: AppColors
+                                                              .kDarkGray),
+                                                    ),
+                                                    Text(
+                                                      task['participants']
+                                                              .isNotEmpty
+                                                          ? task['participants']
+                                                          : 'None',
+                                                      style: const TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  bool isDone = task['done'];
+                                                  task.reference.update(
+                                                      {'done': !isDone});
+                                                });
+                                              },
+                                              child:
+                                                  const Text('Task Complete'),
+                                              style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty
+                                                        .resolveWith<Color>(
+                                                            (states) {
+                                                  bool isDone = task['done'];
+                                                  return isDone
+                                                      ? Colors.grey
+                                                      : AppColors.kPrimary400;
+                                                }),
+                                                shape:
+                                                    MaterialStateProperty.all<
+                                                        RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            0),
+                                                  ),
+                                                ),
+                                                minimumSize:
+                                                    MaterialStateProperty.all<
+                                                        Size>(
+                                                  const Size(
+                                                      double.infinity, 0),
+                                                ),
+                                              ),
+                                            ),
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: const Text(
+                                                  'Cancel',
+                                                  style: TextStyle(
+                                                      color:
+                                                          AppColors.kDarkGray),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      );
-                                    },
-                                    child: const IconButton(
-                                      icon: Iconify(
-                                        MaterialSymbols.edit_square_outline_rounded,
-                                        size: 20,
-                                        color: AppColors.kDarkGray,
                                       ),
-                                      onPressed: null,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const Text(
-                                'Task Title',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 13,
-                                    color: AppColors.kDarkGray),
-                              ),
-                              Text(
-                                task['title'],
-                                style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              const SizedBox(height: 5),
-                              const Text(
-                                'insert duration later',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 13,
-                                    color: AppColors.kDarkGray),
-                              ),
-                              const SizedBox(height: 16),
-                              const Text(
-                                'Details',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 13,
-                                    color: AppColors.kDarkGray),
-                              ),
-                              Text(
-                                task['description'],
-                                style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.kDarkGray),
-                              ),
-                              const SizedBox(height: 16),
-                              Row(
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      const Text(
-                                        'Venue',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 13,
-                                            color: AppColors.kDarkGray),
-                                      ),
-                                      Text(
-                                       task['location'].isNotEmpty ? task['location'] : 'Unknown',
-                                        style: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(width: 25),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      const Text(
-                                        'Participants',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 13,
-                                            color: AppColors.kDarkGray),
-                                      ),
-                                      Text(
-                                        task['participants'].isNotEmpty ? task['participants'] : 'None',
-                                        style: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                   
-                                    bool isDone = task['done'];
-                                    task.reference.update({'done': !isDone});
-                                  });
-                                },
-                                child: const Text('Task Complete'),
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
-                                    
-                                    bool isDone = task['done'];
-                                    return isDone ? Colors.grey : AppColors.kPrimary400;
-                                  }),
-                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(0),
-                                    ),
-                                  ),
-                                  minimumSize: MaterialStateProperty.all<Size>(
-                                    const Size(double.infinity, 0),
-                                  ),
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.center,
-                                child: TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
+                                    );
                                   },
-                                  child: const Text(
-                                    'Cancel',
-                                    style: TextStyle(
-                                        color: AppColors.kDarkGray),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
+                                );
+                              },
                               leading: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -524,13 +553,23 @@ class _CalendarPageState extends State<CalendarPage> {
                                     ),
                                     Row(
                                       children: [
-                                        const Iconify(Octicon.location, size: 15, color: AppColors.kDarkGray),
+                                        const Iconify(Octicon.location,
+                                            size: 15,
+                                            color: AppColors.kDarkGray),
                                         const SizedBox(width: 4),
-                                        Text(task['location'].isNotEmpty ? task['location'] : 'Unknown'),
+                                        Text(task['location'].isNotEmpty
+                                            ? task['location']
+                                            : 'Unknown'),
                                         const SizedBox(width: 10),
-                                        const Iconify(Bi.person, size: 20, color: AppColors.kDarkGray),
+                                        const Iconify(Bi.person,
+                                            size: 20,
+                                            color: AppColors.kDarkGray),
                                         const SizedBox(width: 4),
-                                        Text(_formatParticipants(task['participants'].isNotEmpty ? task['participants'] : 'None',)),
+                                        Text(_formatParticipants(
+                                          task['participants'].isNotEmpty
+                                              ? task['participants']
+                                              : 'None',
+                                        )),
                                       ],
                                     ),
                                   ],
@@ -547,9 +586,6 @@ class _CalendarPageState extends State<CalendarPage> {
             ),
           ),
           const SizedBox(height: 50)
-
-
-
         ],
       ),
       floatingActionButton: Stack(
@@ -581,7 +617,7 @@ class _CalendarPageState extends State<CalendarPage> {
           children: [
             IconButton(
               icon: const Icon(Icons.home),
-              color:AppColors.kMainText,
+              color: AppColors.kMainText,
               onPressed: () {
                 Navigator.push(
                   context,
@@ -616,7 +652,8 @@ class _CalendarPageState extends State<CalendarPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const InformationCentre()),
+                  MaterialPageRoute(
+                      builder: (context) => const InformationCentre()),
                 );
               },
             ),

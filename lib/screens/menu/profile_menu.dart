@@ -5,7 +5,6 @@ import 'package:scholarly/screens/calendar.dart';
 import 'package:scholarly/screens/classes.dart';
 import 'package:scholarly/screens/info.dart'; // Import InfoPage class
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfileMenu extends StatefulWidget {
@@ -394,8 +393,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const CalendarPage()),
+                    MaterialPageRoute(builder: (context) => CalendarPage()),
                   );
                 },
               ),

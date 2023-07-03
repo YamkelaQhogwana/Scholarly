@@ -31,7 +31,7 @@ class CustomBottomNav extends StatelessWidget implements PreferredSizeWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const CalendarPage()),
+                  MaterialPageRoute(builder: (context) => CalendarPage()),
                 );
               },
             ),

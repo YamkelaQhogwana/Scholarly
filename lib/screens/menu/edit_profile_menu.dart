@@ -500,8 +500,7 @@ class _EditProfileMenuState extends State<EditProfileMenu> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const CalendarPage()),
+                    MaterialPageRoute(builder: (context) => CalendarPage()),
                   );
                 },
               ),
@@ -519,7 +518,8 @@ class _EditProfileMenuState extends State<EditProfileMenu> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => InformationCentre()),
+                    MaterialPageRoute(
+                        builder: (context) => InformationCentre()),
                   );
                 },
               ),

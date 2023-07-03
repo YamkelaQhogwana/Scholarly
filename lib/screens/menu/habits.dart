@@ -90,7 +90,7 @@ class HabitsPage extends StatelessWidget {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                            const AddHabits()),
+                                                const AddHabits()),
                                       );
                                     },
                                     child: ColorFiltered(
@@ -163,7 +163,7 @@ class HabitsPage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const CalendarPage()),
+                  MaterialPageRoute(builder: (context) => CalendarPage()),
                 );
               },
             ),
