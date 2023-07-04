@@ -21,7 +21,7 @@ class _EditProfileMenuState extends State<EditProfileMenu> {
   String campus = "";
   String year = "";
   String course = "";
-  String icon = "";
+  String icon = "images/avatars/black-wn-av.png";
 
   TextEditingController fullNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -31,12 +31,12 @@ class _EditProfileMenuState extends State<EditProfileMenu> {
   TextEditingController courseController = TextEditingController();
 
   List<String> iconOptions = [
-    'assets/images/avatars/black-wn-av.png',
-    'assets/images/avatars/black-mn-av.png',
-    'assets/images/avatars/brunette-wn-av.png',
-    'assets/images/avatars/ginger-mn-av.png',
-    'assets/images/avatars/tan-mn-av.png',
-    'assets/images/avatars/white-wn-av.png'
+    'images/avatars/black-wn-av.png',
+    'images/avatars/black-mn-av.png',
+    'images/avatars/brunette-wn-av.png',
+    'images/avatars/ginger-mn-av.png',
+    'images/avatars/tan-mn-av.png',
+    'images/avatars/white-wn-av.png'
   ];
 
   @override
@@ -185,7 +185,7 @@ class _EditProfileMenuState extends State<EditProfileMenu> {
     }
     String yearValue = yearController.text;
     if (yearValue.isEmpty) {
-      yearValue = fullName;
+      yearValue = year;
     }
     String courseValue = courseController.text;
     if (courseValue.isEmpty) {
