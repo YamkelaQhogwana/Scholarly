@@ -50,7 +50,7 @@ class MenuPage extends StatefulWidget {
 class _MenuPageState extends State<MenuPage> {
   bool isDarkMode = false;
   String fullName = "";
-  String icon = "";
+  String icon = "images/avatars/black-wn-av.png";
   String year = "";
   late String _previousRoute;
 
@@ -81,238 +81,225 @@ class _MenuPageState extends State<MenuPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: DefaultTextStyle(
-        style: TextStyle(fontFamily: 'Poppins'),
-        child: Stack(
-          children: [
-            Container(
-              color: isDarkMode ? Colors.black : Colors.white,
-              child: Center(
-                child: Text(
-                  'Main Content',
-                  style: TextStyle(
-                    fontSize: 24.0,
-                    color: isDarkMode ? Colors.white : Colors.black,
-                  ),
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.25,
-                height: MediaQuery.of(context).size.height,
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                  child: Container(
-                    color: Colors.transparent,
-                  ),
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.75,
-                height: MediaQuery.of(context).size.height,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 10.0,
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('images/menu_background.png'),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: DefaultTextStyle(
+            style: TextStyle(fontFamily: 'Poppins'),
+            child: Stack(
+              children: [
+                Center(
+                  child: Text(
+                    'Main Content',
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      color: isDarkMode ? Colors.white : Colors.black,
                     ),
-                  ],
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(16.0),
-                    bottomLeft: Radius.circular(16.0),
                   ),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 64.0),
-                    Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 120.0,
-                            height: 120.0,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                            ),
-                            child: ClipOval(
-                              child: Image.asset(
-                                icon,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 16.0),
-                          Text(
-                            fullName,
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: 8.0),
-                          Text(
-                            ' Year ${year}',
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ],
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.25,
+                    height: MediaQuery.of(context).size.height,
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                      child: Container(
+                        color: Colors.transparent,
                       ),
                     ),
-                    SizedBox(height: 32.0),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          MenuItem(
-                            iconData: Icons.person,
-                            title: 'Profile',
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ProfileMenu(),
-                                ),
-                              );
-                            },
-                          ),
-                          MenuItem(
-                            iconData: Icons.notifications,
-                            title: 'Notifications',
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => NotificationsMenu(),
-                                ),
-                              );
-                            },
-                          ),
-                          MenuItem(
-                            iconData: Icons.check_box,
-                            title: 'Habits/Goals',
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => AddHabits()),
-                              );
-                            },
-                          ),
-                          MenuItem(
-                            iconData: Icons.insert_chart,
-                            title: 'Statistics',
-                            onTap: () {
-                              // Handle Statistics menu item click
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MenuStatistics()),
-                              );
-                              // Perform navigation or any other actions
-                            },
-                          ),
-                          MenuItem(
-                            iconData: Icons.feedback,
-                            title: 'Feedback',
-                            onTap: () {
-                              // Handle Feedback menu item click
-                              print('Feedback Clicked');
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => FeedbackForm()),
-                              );
-                            },
-                          ),
-                          MenuItem(
-                            iconData: Icons.home,
-                            title: 'Home',
-                            onTap: () {
-                              // Handle Feedback menu item click
-                              print('Home Clicked');
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => CalendarPage()),
-                              );
-                            },
-                          ),
-                          MenuItem(
-                            iconData: Icons.logout,
-                            title: 'Logout',
-                            onTap: () {
-                              // Handle Logout menu item click
-                              print('Logout Clicked');
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Login(),
-                                ),
-                              );
-                              // Perform navigation or any other actions
-                            },
-                          ),
-                          Row(
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    height: MediaQuery.of(context).size.height,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 10.0,
+                        ),
+                      ],
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(16.0),
+                        bottomLeft: Radius.circular(16.0),
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 64.0),
+                        Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 16.0),
-                                child: Icon(Icons.dark_mode),
+                              Container(
+                                width: 120.0,
+                                height: 120.0,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                ),
+                                child: ClipOval(
+                                  child: Image.asset(
+                                    icon,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                               ),
-                              SizedBox(width: 8.0),
+                              SizedBox(height: 16.0),
                               Text(
-                                'Dark Mode',
-                                style: TextStyle(fontSize: 16.0),
+                                fullName,
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                              SizedBox(width: 8.0),
-                              Switch(
-                                value: isDarkMode,
-                                onChanged: (bool value) {
-                                  setState(() {
-                                    isDarkMode = value;
-                                  });
-                                },
+                              SizedBox(height: 8.0),
+                              Text(
+                                ' Year ${year}',
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  color: Colors.grey,
+                                ),
                               ),
                             ],
                           ),
-                          MenuItem(
-                            iconData: Icons.close,
-                            title: 'Close',
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                          Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 16.0),
-                            child: Text(
-                              'Scholarly v.1.0.0',
-                              style: TextStyle(
-                                fontSize: 12.0,
-                                color: Colors.grey,
+                        ),
+                        SizedBox(height: 32.0),
+                        Expanded(
+                          child: Column(
+                            children: [
+                              MenuItem(
+                                iconData: Icons.person,
+                                title: 'Profile',
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ProfileMenu(),
+                                    ),
+                                  );
+                                },
                               ),
-                            ),
+                              MenuItem(
+                                iconData: Icons.notifications,
+                                title: 'Notifications',
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => NotificationsMenu(),
+                                    ),
+                                  );
+                                },
+                              ),
+                              MenuItem(
+                                iconData: Icons.check_box,
+                                title: 'Habits/Goals',
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => AddHabits()),
+                                  );
+                                },
+                              ),
+                              MenuItem(
+                                iconData: Icons.insert_chart,
+                                title: 'Statistics',
+                                onTap: () {
+                                  // Handle Statistics menu item click
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MenuStatistics()),
+                                  );
+                                  // Perform navigation or any other actions
+                                },
+                              ),
+                              MenuItem(
+                                iconData: Icons.feedback,
+                                title: 'Feedback',
+                                onTap: () {
+                                  // Handle Feedback menu item click
+                                  print('Feedback Clicked');
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => FeedbackForm()),
+                                  );
+                                },
+                              ),
+                              MenuItem(
+                                iconData: Icons.home,
+                                title: 'Home',
+                                onTap: () {
+                                  // Handle Feedback menu item click
+                                  print('Home Clicked');
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => CalendarPage()),
+                                  );
+                                },
+                              ),
+                              MenuItem(
+                                iconData: Icons.logout,
+                                title: 'Logout',
+                                onTap: () {
+                                  // Handle Logout menu item click
+                                  print('Logout Clicked');
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Login(),
+                                    ),
+                                  );
+                                  // Perform navigation or any other actions
+                                },
+                              ),
+                              MenuItem(
+                                iconData: Icons.close,
+                                title: 'Close',
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              Spacer(),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 16.0),
+                                child: Text(
+                                  'Scholarly v.1.0.0',
+                                  style: TextStyle(
+                                    fontSize: 12.0,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
