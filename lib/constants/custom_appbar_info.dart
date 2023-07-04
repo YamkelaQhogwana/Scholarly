@@ -19,6 +19,7 @@ class CustomAppBarInfo extends StatefulWidget implements PreferredSizeWidget {
 class _CustomAppBarInfoState extends State<CustomAppBarInfo> {
   late String userName = '';
   late List<Map<String, dynamic>> modules;
+  late String icon = '';
 
   @override
   void initState() {
@@ -42,6 +43,7 @@ class _CustomAppBarInfoState extends State<CustomAppBarInfo> {
           if (data != null) {
             setState(() {
               userName = data['fname'] ?? '';
+              icon = data['icon'] ?? '';
             });
           }
         }
@@ -67,26 +69,27 @@ class _CustomAppBarInfoState extends State<CustomAppBarInfo> {
         height: 60,
         child: Row(
           children: [
-            const CircleAvatar(
-              radius: 30,
-              backgroundImage:
-                  AssetImage('assets/images/avatars/black-wn-av.png'),
-              backgroundColor: Color.fromARGB(255, 255, 255, 255),
+            CircleAvatar(
+                radius: 30,
+                backgroundImage: AssetImage(icon) // Fetch the icon from the database
+
+              // backgroundColor: Color.fromARGB(255, 255, 255, 255),
             ),
+
             const SizedBox(width: 10),
-           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                userName,
-                style: const TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w700,
-                  fontSize: 25,
-                  color: Color(0xFF1D1D1D),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  userName,
+                  style: const TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 25,
+                    color: Color(0xFF1D1D1D),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 3),
+                const SizedBox(height: 3),
                 const Text(
                   'Welcome to the information center!',
                   style: TextStyle(
@@ -95,8 +98,8 @@ class _CustomAppBarInfoState extends State<CustomAppBarInfo> {
                     fontWeight: FontWeight.w400,
                   ),
                 ),
-            ],
-          ),
+              ],
+            ),
             const Spacer(),
             IconButton(
               onPressed: () {
@@ -104,7 +107,7 @@ class _CustomAppBarInfoState extends State<CustomAppBarInfo> {
                   context,
                   MaterialPageRoute(builder: (context) => MenuPage()),
                 );
-                
+
               },
               icon: const Iconify(
                 Ci.menu_alt_05,
@@ -115,7 +118,7 @@ class _CustomAppBarInfoState extends State<CustomAppBarInfo> {
           ],
         ),
       ),
-     
+
     );
   }
 }
